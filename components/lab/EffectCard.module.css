@@ -67,6 +67,7 @@
 }
 
 .body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.titleRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .title { font-size: 20px; font-weight: 700; }
 .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
 .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
@@ -100,40 +101,39 @@
   to { transform: translate(-50%, -50%) scale(40); opacity: 0; }
 }
 
-/* 点赞按钮（与重播/调参/代码同行，靠右） */
+/* 点赞按钮（标题右侧极简 icon+数字） */
 .likeBtn {
-  margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--card);
+  gap: 3px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
   color: var(--muted);
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
 }
 .likeBtn:hover {
-  transform: scale(1.05);
   color: hsl(340 85% 55%);
-  border-color: hsl(340 85% 65%);
-  background: hsl(340 85% 97%);
+  background: hsl(340 85% 96%);
+  transform: scale(1.05);
 }
 .likeBtn:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 .likeBtn.liked {
   color: hsl(340 85% 55%);
-  border-color: hsl(340 85% 65%);
   background: hsl(340 85% 95%);
   cursor: default;
 }
 .likeBtn.liked:hover {
   transform: none;
+  background: hsl(340 85% 95%);
 }
 .heartIcon {
   font-size: 14px;

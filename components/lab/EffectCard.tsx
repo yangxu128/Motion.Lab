@@ -105,10 +105,19 @@ export function EffectCard({ effect }: { effect: Effect }) {
     <div className={styles.card} ref={cardRef} data-category={effect.category}>
       <div className={styles.preview} onMouseEnter={replay}><Preview key={key} params={params} /></div>
       <div className={styles.body}>
-        <div>
+        <div className={styles.titleRow}>
           <div className={styles.title}>{effect.name}</div>
-          <div className={styles.desc}>{effect.description}</div>
+          <button
+            className={`${styles.likeBtn} ${liked ? styles.liked : ''} ${bouncing ? styles.bouncing : ''}`}
+            onClick={handleLike}
+            aria-label={liked ? `已点赞（${likes}）` : '点赞'}
+            title={liked ? `已点赞 · ${likes}` : '点赞'}
+          >
+            <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
+            <span className={styles.likeCount}>{likes}</span>
+          </button>
         </div>
+        <div className={styles.desc}>{effect.description}</div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
           {effect.tags.slice(0, 2).map((t) => <span key={t} className={styles.tag}>{t}</span>)}
         </div>
@@ -116,15 +125,6 @@ export function EffectCard({ effect }: { effect: Effect }) {
           <Button onClick={(e: any) => handleButtonClick(e, replay)}>▶ 重播</Button>
           <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('params'))}>⚙ 调参</Button>
           <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('code'))}>{'< / >'} 代码</Button>
-          <button
-            className={`${styles.likeBtn} ${liked ? styles.liked : ''} ${bouncing ? styles.bouncing : ''}`}
-            onClick={handleLike}
-            aria-label={liked ? '已点赞' : '点赞'}
-            title={liked ? '已点赞' : '点赞'}
-          >
-            <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
-            <span className={styles.likeCount}>{likes}</span>
-          </button>
         </div>
       </div>
     </div>
