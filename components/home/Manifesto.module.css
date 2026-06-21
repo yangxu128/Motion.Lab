@@ -1,0 +1,7 @@
+.section { padding: 120px 48px; }
+.heading { font-size: clamp(48px, 8vw, 120px); margin-bottom: 80px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+.card { padding: 32px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.card h3 { font-size: 48px; margin-bottom: 16px; }
+.card p { color: var(--muted); line-height: 1.5; }
+.num { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 24px; }

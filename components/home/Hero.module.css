@@ -1,0 +1,5 @@
+.hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 48px 80px; overflow: hidden; }
+.title { font-size: clamp(72px, 14vw, 220px); letter-spacing: -0.05em; line-height: 0.88; }
+.title span { display: inline-block; }
+.subtitle { margin-top: 24px; font-size: clamp(18px, 2vw, 24px); color: var(--muted); max-width: 600px; }
+.kicker { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 32px; color: var(--muted); }
