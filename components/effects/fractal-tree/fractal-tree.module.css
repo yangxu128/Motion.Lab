@@ -1,1 +1,7 @@
-.canvas { width: 100%; height: 100%; display: block; }
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: linear-gradient(180deg, hsl(250 60% 10%), hsl(220 55% 14%));
+  border-radius: 12px;
+}

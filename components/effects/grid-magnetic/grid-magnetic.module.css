@@ -5,14 +5,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background:
+    radial-gradient(circle at 50% 50%, hsl(260 40% 96%), hsl(220 20% 94%));
+  border-radius: 8px;
+  overflow: hidden;
 }
 .dot {
   position: absolute;
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
-  transition: transform 0.2s ease-out, background 0.2s ease-out;
+  background: hsl(280 40% 55%);
+  box-shadow: 0 0 4px hsl(280 60% 60% / 0.35);
+  transition: transform 0.2s ease-out, background 0.2s ease-out, box-shadow 0.2s ease-out;
   pointer-events: none;
   will-change: transform;
 }

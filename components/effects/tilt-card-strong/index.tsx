@@ -18,6 +18,7 @@ export default function TiltCardStrong({ params }: { params: { max: number } }) 
   return (
     <PreviewFrame>
       <div ref={ref} className={styles.card} onMouseMove={onMove} onMouseLeave={onLeave}>STRONG TILT</div>
+      <span className={styles.hint}>Move mouse</span>
     </PreviewFrame>
   );
 }

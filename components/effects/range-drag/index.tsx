@@ -43,6 +43,7 @@ export default function RangeDrag({ params }: { params: { max: number } }) {
         </div>
         <div ref={valRef} className={styles.val}>0</div>
       </div>
+      <span className={styles.hint}>Drag the knob</span>
     </PreviewFrame>
   );
 }

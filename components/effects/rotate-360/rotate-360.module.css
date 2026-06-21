@@ -1,2 +1,10 @@
-.icon { font-size: 80px; line-height: 1; color: hsl(280 90% 60%); display: inline-block; animation: rot360 var(--duration, 2s) linear infinite; font-weight: 700; }
+.icon {
+  font-size: 80px;
+  line-height: 1;
+  color: hsl(280 90% 60%);
+  display: inline-block;
+  animation: rot360 var(--duration, 2s) linear infinite;
+  font-weight: 800;
+  filter: drop-shadow(0 6px 14px hsl(280 90% 60% / 0.4));
+}
 @keyframes rot360 { to { transform: rotate(360deg); } }

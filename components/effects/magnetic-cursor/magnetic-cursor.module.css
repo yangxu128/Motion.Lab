@@ -1,11 +1,26 @@
 .btn {
-  padding: 16px 32px;
-  background: hsl(280 90% 60%);
+  padding: 20px 44px;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(320 90% 55%));
   color: white;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: 0.02em;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 12px 28px rgba(180, 60, 220, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(60, 40, 80, 0.55);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
 }

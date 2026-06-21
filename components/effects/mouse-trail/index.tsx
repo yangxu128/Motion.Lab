@@ -29,6 +29,7 @@ export default function MouseTrail({ params }: { params: { count: number; size: 
   return (
     <PreviewFrame>
       <div ref={zoneRef} className={styles.zone}>
+        <span className={styles.hint}>Move mouse</span>
         {Array.from({ length: params.count }, (_, i) => (
           <div
             key={i}

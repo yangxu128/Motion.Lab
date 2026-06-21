@@ -1,16 +1,18 @@
 .wrap {
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
 }
 
 .pulse {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
 }
 .pulse span {
   position: absolute;
@@ -32,23 +34,24 @@
 
 .orbit {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   animation: spin 1.6s linear infinite;
 }
 .orbit span {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18px;
-  height: 18px;
-  margin: -9px 0 0 -9px;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
   border-radius: 50%;
   background: hsl(200 90% 60%);
+  box-shadow: 0 0 12px currentColor;
 }
-.orbit span:nth-child(1) { background: hsl(280 90% 60%); transform: rotate(0deg) translateX(40px); }
-.orbit span:nth-child(2) { background: hsl(200 90% 60%); transform: rotate(120deg) translateX(40px); }
-.orbit span:nth-child(3) { background: hsl(40 90% 60%); transform: rotate(240deg) translateX(40px); }
+.orbit span:nth-child(1) { background: hsl(280 90% 60%); transform: rotate(0deg) translateX(48px); }
+.orbit span:nth-child(2) { background: hsl(200 90% 60%); transform: rotate(120deg) translateX(48px); }
+.orbit span:nth-child(3) { background: hsl(40 90% 60%); transform: rotate(240deg) translateX(48px); }
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -56,16 +59,17 @@
 .wave {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 80px;
+  gap: 7px;
+  height: 96px;
 }
 .wave span {
   display: block;
-  width: 10px;
+  width: 12px;
   height: 100%;
   border-radius: 6px;
   background: linear-gradient(180deg, hsl(280 90% 65%), hsl(200 90% 60%));
   animation: wave 1s ease-in-out infinite;
+  box-shadow: 0 0 10px hsl(280 90% 60% / 0.5);
 }
 .wave span:nth-child(1) { animation-delay: 0s; }
 .wave span:nth-child(2) { animation-delay: 0.1s; }

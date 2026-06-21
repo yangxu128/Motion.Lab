@@ -5,6 +5,7 @@ export default function HoverIconSpin({ params }: { params: { duration: number }
   return (
     <PreviewFrame>
       <button className={styles.btn} style={{ ['--duration' as any]: `${params.duration}s` }}><span className={styles.icon}>⚙</span></button>
+      <span className={styles.hint}>Hover</span>
     </PreviewFrame>
   );
 }

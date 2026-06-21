@@ -24,6 +24,7 @@ export default function StickyStack({ params }: { params: { count: number } }) {
           </div>
         ))}
       </div>
+      <span className={styles.hint}>Scroll</span>
     </PreviewFrame>
   );
 }

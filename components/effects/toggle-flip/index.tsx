@@ -8,6 +8,7 @@ export default function ToggleFlip({ params }: { params: { duration: number } })
     <PreviewFrame>
       <div className={`${styles.tg} ${on ? styles.on : ''}`} onClick={() => setOn((v) => !v)} style={{ ['--duration' as any]: `${params.duration}s` }}>
         <div className={styles.knob} />
+        <span className={styles.hint}>Click to toggle</span>
       </div>
     </PreviewFrame>
   );

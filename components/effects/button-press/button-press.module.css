@@ -1,2 +1,30 @@
-.btn { padding: 14px 32px; border: none; background: hsl(280 90% 60%); color: white; font-weight: 700; font-size: 18px; border-radius: 10px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; box-shadow: 0 6px 0 hsl(280 90% 35%); }
-.btn:active { transform: scale(var(--scale, 0.92)) translateY(4px); box-shadow: 0 2px 0 hsl(280 90% 35%); }
+.btn {
+  padding: 18px 40px;
+  border: none;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(300 90% 55%));
+  color: white;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 8px 0 hsl(280 90% 35%), 0 12px 24px rgba(180, 60, 220, 0.3);
+}
+.btn:active {
+  transform: scale(var(--scale, 0.92)) translateY(4px);
+  box-shadow: 0 2px 0 hsl(280 90% 35%);
+}
+.hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(60, 40, 80, 0.55);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+}

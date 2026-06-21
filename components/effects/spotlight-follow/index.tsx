@@ -18,7 +18,7 @@ export default function SpotlightFollow({ params }: { params: { size: number } }
   return (
     <PreviewFrame>
       <div ref={ref} className={styles.spot} onMouseMove={onMove} onMouseLeave={onLeave}>
-        <div className={styles.inner}>SPOTLIGHT</div>
+        <div className={styles.inner}>MOVE MOUSE</div>
       </div>
     </PreviewFrame>
   );

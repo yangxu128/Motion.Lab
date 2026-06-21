@@ -1,3 +1,19 @@
-.vmarquee { height: 60px; overflow: hidden; font-size: 24px; font-weight: 700; }
+.vmarquee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  overflow: hidden;
+  font-size: 24px;
+  font-weight: 800;
+  color: hsl(0 0% 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+}
 .vmarquee > div { animation: vm var(--duration, 15s) linear infinite; }
 @keyframes vm { from { transform: translateY(0); } to { transform: translateY(-100%); } }

@@ -30,5 +30,21 @@
   font-size: 56px;
   font-weight: 900;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.hint {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(60, 40, 80, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  background: rgba(255,255,255,0.7);
+  padding: 3px 10px;
+  border-radius: 999px;
 }

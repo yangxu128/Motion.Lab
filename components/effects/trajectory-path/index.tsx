@@ -26,8 +26,8 @@ export default function TrajectoryPath({ params }: { params: { duration: number 
   return (
     <PreviewFrame>
       <svg className={styles.svg} viewBox="0 0 200 100" preserveAspectRatio="none">
-        <path ref={pathRef} d="M10,80 C40,10 70,90 100,40 S160,90 190,30" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeDasharray="4 4" />
-        <circle ref={dotRef} r="5" fill="hsl(280 90% 60%)" cx="10" cy="80" />
+        <path ref={pathRef} d="M10,80 C40,10 70,90 100,40 S160,90 190,30" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="3" strokeDasharray="6 6" />
+        <circle ref={dotRef} r="8" fill="hsl(280 90% 60%)" cx="10" cy="80" style={{ filter: 'drop-shadow(0 0 8px hsl(280 90% 60%))' }} />
       </svg>
     </PreviewFrame>
   );

@@ -1,2 +1,18 @@
-.t { font-size: 48px; font-weight: 900; color: white; margin: 0; text-shadow: var(--intensity, 6px) 0 hsl(320 90% 60%); animation: tss var(--duration, 2s) ease-in-out infinite alternate; }
+.t {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  font-size: 48px;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  text-shadow: var(--intensity, 6px) 0 hsl(320 90% 60%);
+  animation: tss var(--duration, 2s) ease-in-out infinite alternate;
+}
 @keyframes tss { from { text-shadow: var(--intensity, 6px) 0 hsl(320 90% 60%); } to { text-shadow: calc(var(--intensity, 6px) * -1) 0 hsl(180 90% 60%); } }

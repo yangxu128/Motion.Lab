@@ -60,6 +60,7 @@ export default function DragScroll({ params }: { params: { duration: number } })
           ))}
         </div>
       </div>
+      <span className={styles.hint}>Drag me</span>
     </PreviewFrame>
   );
 }

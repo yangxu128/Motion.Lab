@@ -8,15 +8,28 @@
   justify-content: center;
 }
 .btn {
-  padding: 18px 48px;
-  background: hsl(0 90% 60%);
+  padding: 22px 56px;
+  background: linear-gradient(135deg, hsl(0 90% 62%), hsl(20 90% 58%));
   color: white;
   border: none;
   border-radius: 999px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.2em;
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 12px 30px rgba(255, 60, 60, 0.4);
+  box-shadow: 0 14px 32px rgba(255, 60, 60, 0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(60, 40, 80, 0.55);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
 }

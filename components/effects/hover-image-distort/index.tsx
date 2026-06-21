@@ -15,6 +15,7 @@ export default function HoverImageDistort({ params }: { params: { amount: number
           </defs>
         </svg>
         <div className={styles.distort}>HOVER</div>
+        <span className={styles.hint}>Hover</span>
       </div>
     </PreviewFrame>
   );

@@ -24,6 +24,7 @@ export default function ParallaxMouse({ params }: { params: { intensity: number 
         <div className={`${styles.layer} ${styles.mid}`} data-depth="2" />
         <div className={`${styles.layer} ${styles.fg}`} data-depth="3" />
         <span className={styles.label}>PARALLAX</span>
+        <span className={styles.hint}>Move mouse</span>
       </div>
     </PreviewFrame>
   );

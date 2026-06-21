@@ -5,7 +5,9 @@
   max-height: 240px;
   color: hsl(280 90% 60%);
   transition: d 0.3s;
+  filter: drop-shadow(0 0 10px hsl(280 90% 60% / 0.55));
 }
 .path {
   transition: d 0.4s ease-in-out;
+  stroke-width: 6px;
 }

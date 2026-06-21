@@ -1,4 +1,15 @@
-.marquee { display: flex; gap: 32px; animation: marquee var(--duration, 12s) linear infinite; white-space: nowrap; font-size: 24px; font-weight: 700; }
+.marquee {
+  display: flex;
+  gap: 32px;
+  animation: marquee var(--duration, 12s) linear infinite;
+  white-space: nowrap;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: hsl(260 40% 25%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
 .marquee span { display: inline-block; }
 .marquee[data-direction='right'] { animation-direction: reverse; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

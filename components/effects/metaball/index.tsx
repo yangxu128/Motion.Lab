@@ -15,7 +15,8 @@ export default function Metaball({ params }: { params: { count: number; blur: nu
       const size = 60 + Math.random() * 40;
       b.style.width = size + 'px';
       b.style.height = size + 'px';
-      b.style.background = i % 2 ? 'hsl(280 90% 60%)' : 'hsl(180 90% 55%)';
+      const colors = ['hsl(280 90% 60%)', 'hsl(320 90% 60%)', 'hsl(180 90% 55%)', 'hsl(50 90% 60%)'];
+      b.style.background = colors[i % 4];
       mb.appendChild(b);
       balls.push({ el: b, x: Math.random() * Math.max(0, mb.offsetWidth - size), y: Math.random() * Math.max(0, mb.offsetHeight - size), vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2, size });
     }

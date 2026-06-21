@@ -1,2 +1,20 @@
-.reveal { font-size: 64px; font-weight: 900; font-family: var(--font-display); letter-spacing: -0.03em; line-height: 1; clip-path: inset(0 0 100% 0); animation: reveal var(--duration, 1.2s) cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.reveal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  font-size: 64px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: hsl(0 0% 100%);
+  clip-path: inset(0 0 100% 0);
+  animation: reveal var(--duration, 1.2s) cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
 @keyframes reveal { to { clip-path: inset(0 0 0 0); } }

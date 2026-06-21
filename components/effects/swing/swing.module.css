@@ -1,2 +1,9 @@
-.icon { font-size: 64px; line-height: 1; display: inline-block; transform-origin: top center; animation: swing var(--duration, 1.6s) ease-in-out infinite; }
+.icon {
+  font-size: 72px;
+  line-height: 1;
+  display: inline-block;
+  transform-origin: top center;
+  animation: swing var(--duration, 1.6s) ease-in-out infinite;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.2));
+}
 @keyframes swing { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } }

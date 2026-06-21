@@ -25,6 +25,7 @@ export default function ThreeDTilt({ params }: { params: { max: number } }) {
       >
         <div className={styles.tilt}>TILT</div>
       </div>
+      <span className={styles.hint}>Move mouse</span>
     </PreviewFrame>
   );
 }

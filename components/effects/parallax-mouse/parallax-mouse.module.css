@@ -29,4 +29,22 @@
 .label {
   position: relative;
   z-index: 1;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: white;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
 }

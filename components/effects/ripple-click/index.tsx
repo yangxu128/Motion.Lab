@@ -19,6 +19,7 @@ export default function RippleClick({ params }: { params: { duration: number } }
       <button className={styles.btn} style={{ ['--duration' as any]: `${params.duration}s` }} onClick={handleClick}>
         Click
       </button>
+      <span className={styles.hint}>Click me</span>
     </PreviewFrame>
   );
 }

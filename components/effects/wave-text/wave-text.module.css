@@ -1,4 +1,19 @@
-.wave { display: inline-block; font-size: 48px; font-weight: 900; font-family: var(--font-display); letter-spacing: 0.1em; }
+.wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  font-size: 48px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  color: hsl(0 0% 100%);
+}
 .wave span { display: inline-block; animation: wave var(--duration, 1.6s) ease-in-out infinite; }
 .wave span:nth-child(1) { animation-delay: 0.1s; }
 .wave span:nth-child(2) { animation-delay: 0.2s; }

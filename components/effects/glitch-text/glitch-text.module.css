@@ -1,6 +1,23 @@
-.glitch { position: relative; font-size: 64px; font-weight: 900; font-family: var(--font-display); letter-spacing: -0.02em; }
-.glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; }
-.glitch::before { color: cyan; animation: glitchA var(--duration, 2.5s) infinite; }
-.glitch::after { color: magenta; animation: glitchB var(--duration, 2.5s) infinite; }
+.glitch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  position: relative;
+  font-size: 64px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  color: hsl(0 0% 100%);
+  margin: 0;
+}
+.glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 32px; box-sizing: border-box; }
+.glitch::before { color: hsl(180 100% 60%); animation: glitchA var(--duration, 2.5s) infinite; }
+.glitch::after { color: hsl(320 100% 60%); animation: glitchB var(--duration, 2.5s) infinite; }
 @keyframes glitchA { 0%, 100% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(2px, -1px); } }
 @keyframes glitchB { 0%, 100% { transform: translate(0); } 20% { transform: translate(2px, -1px); } 40% { transform: translate(-1px, 2px); } }

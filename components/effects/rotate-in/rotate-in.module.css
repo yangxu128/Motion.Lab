@@ -1,2 +1,12 @@
-.box { padding: 24px 32px; background: hsl(50 90% 55%); color: white; border-radius: 12px; font-weight: 700; font-size: 32px; animation: rotateIn var(--duration, 0.7s) ease-out both; }
+.box {
+  padding: 24px 32px;
+  background: linear-gradient(135deg, hsl(50 90% 55%), hsl(30 90% 55%));
+  color: white;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.2);
+  animation: rotateIn var(--duration, 0.7s) ease-out both;
+}
 @keyframes rotateIn { from { transform: rotate(-180deg) scale(0.3); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }

@@ -1,2 +1,29 @@
-.box { padding: 28px 40px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; font-weight: 800; font-size: 18px; color: #222; }
-.box:hover { transform: translateY(calc(var(--lift, 8px) * -1)); box-shadow: 0 18px 36px rgba(0,0,0,0.2); }
+.box {
+  padding: 32px 48px;
+  background: linear-gradient(135deg, #ffffff, hsl(260 40% 96%));
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(60, 40, 100, 0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: hsl(260 40% 25%);
+}
+.box:hover {
+  transform: translateY(calc(var(--lift, 8px) * -1));
+  box-shadow: 0 24px 44px rgba(60, 40, 100, 0.22), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(60, 40, 80, 0.55);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+}
