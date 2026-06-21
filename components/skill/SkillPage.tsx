@@ -1,5 +1,6 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { gsap } from 'gsap';
 import styles from './SkillPage.module.css';
 
 interface Props {
@@ -9,32 +10,208 @@ interface Props {
 
 const STEPS = [
   {
-    n: 1,
-    title: '安装 Skill',
-    desc: '将下方 SKILL.md 下载到你的 Agent 项目（如 Claude Code 的 .claude/skills/ 目录），或直接复制内容粘贴到 Agent 配置中。',
+    n: '01',
+    title: '下载 SKILL.md',
+    desc: '点击下方按钮下载 SKILL.md，存到你的 Agent 项目里（Claude Code 的 .claude/skills/ 目录，或类似位置）。',
   },
   {
-    n: 2,
-    title: '描述需求',
-    desc: '用自然语言告诉 Agent 你想要的动效，例如"给按钮加点击波纹"、"标题用打字机效果"、"做个粒子背景"。',
+    n: '02',
+    title: '用自然语言提问',
+    desc: '告诉 Agent 你想要的动效——"给按钮加点击波纹"、"标题用打字机效果"、"做个粒子背景"。',
   },
   {
-    n: 3,
-    title: '获取代码',
-    desc: 'Agent 会从 160 个动效中匹配最合适的，返回可直接复制的 HTML/CSS/JS 源码与参数说明，按需粘贴到项目中即可。',
+    n: '03',
+    title: '复制可用代码',
+    desc: 'Agent 会从 160 个动效里匹配最合适的，给你 HTML/CSS/JS 三段代码，参数可调，直接粘贴即用。',
   },
 ];
 
 const EXAMPLES = [
-  { q: '帮我给按钮加个点击波纹效果', a: 'click-ripple-material' },
-  { q: '首页大标题想要打字机效果', a: 'text-typewriter-multi' },
-  { q: '做个粒子背景', a: 'particle-fountain / canvas-starfield / flow-field' },
-  { q: '卡片悬停时翻转显示背面', a: 'hover-flip-card' },
-  { q: '页面滚动时元素淡入', a: 'scroll-reveal' },
+  { q: '帮我给按钮加个点击波纹效果', a: 'click-ripple-material', accent: 'hsl(210 90% 55%)', accentBg: 'hsl(210 60% 97%)' },
+  { q: '首页大标题想要打字机效果', a: 'text-typewriter-multi', accent: 'hsl(280 85% 60%)', accentBg: 'hsl(280 55% 96%)' },
+  { q: '做个粒子背景', a: 'particle-fountain / canvas-starfield / flow-field', accent: 'hsl(340 85% 60%)', accentBg: 'hsl(340 50% 97%)' },
+  { q: '卡片悬停时翻转显示背面', a: 'hover-flip-card', accent: 'hsl(30 95% 55%)', accentBg: 'hsl(30 70% 95%)' },
+  { q: '页面滚动时元素淡入', a: 'scroll-reveal', accent: 'hsl(180 85% 50%)', accentBg: 'hsl(180 55% 95%)' },
 ];
+
+const TITLE = '让 AI 调用动效';
+const KICKER = 'AI Agent Skill · 2026';
 
 export function SkillPage({ skillMd, effectsCount }: Props) {
   const [copied, setCopied] = useState(false);
+
+  const heroRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const actionsRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const examplesRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const sectionHeadingsRef = useRef<HTMLHeadingElement[]>([]);
+
+  // Hero: char-by-char entrance (consistent with Home/Hero)
+  useEffect(() => {
+    if (!titleRef.current) return;
+    const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
+    gsap.fromTo(
+      chars,
+      { y: 80, autoAlpha: 0, rotateX: -90 },
+      { y: 0, autoAlpha: 1, rotateX: 0, stagger: 0.04, duration: 0.9, ease: 'power4.out' }
+    );
+  }, []);
+
+  // Hero: subtitle + actions fade in after chars
+  useEffect(() => {
+    if (subtitleRef.current) {
+      gsap.fromTo(
+        subtitleRef.current,
+        { y: 24, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.7, delay: 0.5, ease: 'power2.out' }
+      );
+    }
+    if (actionsRef.current) {
+      gsap.fromTo(
+        actionsRef.current.children,
+        { y: 20, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.5, delay: 0.8, ease: 'power2.out' }
+      );
+    }
+  }, []);
+
+  // Hero: mouse parallax on blobs (consistent with Home/Hero)
+  useEffect(() => {
+    if (!heroRef.current) return;
+    let raf = 0;
+    const handleMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const rect = heroRef.current!.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
+        blobs.forEach((blob, i) => {
+          const factor = (i + 1) * 10;
+          gsap.to(blob, { x: -x * factor, y: -y * factor, duration: 0.8, ease: 'power2.out' });
+        });
+      });
+    };
+    const handleLeave = () => {
+      const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
+      gsap.to(blobs, { x: 0, y: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' });
+    };
+    heroRef.current.addEventListener('mousemove', handleMove);
+    heroRef.current.addEventListener('mouseleave', handleLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      heroRef.current?.removeEventListener('mousemove', handleMove);
+      heroRef.current?.removeEventListener('mouseleave', handleLeave);
+    };
+  }, []);
+
+  // Scroll-reveal: section headings + steps + examples + preview
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const target = entry.target as HTMLElement;
+          const children = target.children;
+          if (target.dataset.reveal === 'stagger' && children.length > 0) {
+            gsap.fromTo(
+              children,
+              { y: 60, autoAlpha: 0, scale: 0.95 },
+              { y: 0, autoAlpha: 1, scale: 1, stagger: 0.1, duration: 0.7, ease: 'power3.out' }
+            );
+          } else {
+            gsap.fromTo(
+              target,
+              { y: 40, autoAlpha: 0 },
+              { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
+            );
+          }
+          observer.unobserve(target);
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    sectionHeadingsRef.current.forEach((h) => h && observer.observe(h));
+    if (stepsRef.current) observer.observe(stepsRef.current);
+    if (examplesRef.current) observer.observe(examplesRef.current);
+    if (previewRef.current) observer.observe(previewRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // 3D tilt + spotlight for step cards (consistent with Manifesto)
+  useEffect(() => {
+    if (!stepsRef.current) return;
+    const cards = Array.from(stepsRef.current.querySelectorAll<HTMLElement>(`.${styles.stepCard}`));
+    const cleanups: Array<() => void> = [];
+    cards.forEach((card) => {
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotX = (0.5 - y) * 6;
+        const rotY = (x - 0.5) * 6;
+        gsap.to(card, {
+          rotateX: rotX,
+          rotateY: rotY,
+          transformPerspective: 1000,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+      };
+      const onLeave = () => {
+        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      cleanups.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+    return () => cleanups.forEach((c) => c());
+  }, []);
+
+  // 3D tilt for example cards
+  useEffect(() => {
+    if (!examplesRef.current) return;
+    const cards = Array.from(examplesRef.current.querySelectorAll<HTMLElement>(`.${styles.exampleCard}`));
+    const cleanups: Array<() => void> = [];
+    cards.forEach((card) => {
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotX = (0.5 - y) * 3;
+        const rotY = (x - 0.5) * 3;
+        gsap.to(card, {
+          rotateX: rotX,
+          rotateY: rotY,
+          transformPerspective: 1200,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+      };
+      const onLeave = () => {
+        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      cleanups.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+    return () => cleanups.forEach((c) => c());
+  }, []);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -42,7 +219,6 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback
       const ta = document.createElement('textarea');
       ta.value = skillMd;
       document.body.appendChild(ta);
@@ -64,42 +240,65 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
     URL.revokeObjectURL(url);
   }, [skillMd]);
 
+  const setHeadingRef = (idx: number) => (el: HTMLHeadingElement | null) => {
+    if (el) sectionHeadingsRef.current[idx] = el;
+  };
+
   return (
     <main className={styles.main}>
-      {/* Hero */}
-      <section className={styles.hero}>
-        <div className={styles.heroInner}>
-          <div className={styles.kicker}>AI Agent Skill</div>
-          <h1 className={styles.title}>
-            让 AI 学会<span className={styles.accent}>调用动效</span>
+      {/* HERO — 与 Home/Hero 一致的视觉语言：blob 背景、char-by-char 渐变标题、副标题 + actions */}
+      <section ref={heroRef} className={styles.hero}>
+        <div className={styles.blob} style={{ top: '10%', left: '5%', width: 320, height: 320, background: 'hsl(280 90% 60%)', animationDelay: '0s' }} />
+        <div className={styles.blob} style={{ top: '55%', right: '8%', width: 380, height: 380, background: 'hsl(340 90% 55%)', animationDelay: '-2s' }} />
+        <div className={styles.blob} style={{ bottom: '10%', left: '25%', width: 260, height: 260, background: 'hsl(180 90% 50%)', animationDelay: '-4s' }} />
+        <div className={styles.blob} style={{ top: '25%', right: '22%', width: 220, height: 220, background: 'hsl(30 95% 55%)', animationDelay: '-6s' }} />
+
+        <div className={styles.heroContent}>
+          <div className={styles.kicker}>{KICKER}</div>
+          <h1 ref={titleRef} className={styles.heroTitle}>
+            {TITLE.split('').map((c, i) => (
+              <span key={i} data-char className={styles.heroChar}>
+                {c === ' ' ? '\u00A0' : c}
+              </span>
+            ))}
           </h1>
-          <p className={styles.subtitle}>
-            把 Motion.Lab 的 {effectsCount} 个动效打包成一个 Skill 文件，安装到任意 AI Agent 后，用自然语言即可获取可复制的动效源码。
+          <p ref={subtitleRef} className={styles.heroSubtitle}>
+            把 Motion.Lab 的 <strong className={styles.heroStrong}>{effectsCount}</strong> 个动效打包成 SKILL.md，
+            <br />安装到任意 AI Agent，用自然语言获取可复制的动效源码。
           </p>
-          <div className={styles.heroActions}>
+          <div ref={actionsRef} className={styles.heroActions}>
             <button className={styles.btnPrimary} onClick={handleDownload}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
               </svg>
-              下载 SKILL.md
+              <span>下载 SKILL.md</span>
             </button>
             <button className={styles.btnSecondary} onClick={handleCopy}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
-              {copied ? '已复制!' : '复制内容'}
+              <span>{copied ? '已复制 ✓' : '复制内容'}</span>
             </button>
           </div>
         </div>
+
+        <div className={styles.scrollIndicator}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v14M19 12l-7 7-7-7" />
+          </svg>
+        </div>
       </section>
 
-      {/* Usage steps */}
+      {/* 三步上手 — 与 Manifesto 一致的 3D tilt + spotlight 卡片 */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>三步上手</h2>
-        <div className={styles.steps}>
+        <div className={styles.headingWrap}>
+          <h2 ref={setHeadingRef(0)} className={styles.heading}>三步上手</h2>
+          <div className={styles.headingLine} />
+        </div>
+        <div ref={stepsRef} className={styles.steps} data-reveal="stagger">
           {STEPS.map((s) => (
-            <div key={s.n} className={styles.step}>
+            <div key={s.n} className={styles.stepCard}>
               <div className={styles.stepNum}>{s.n}</div>
               <h3 className={styles.stepTitle}>{s.title}</h3>
               <p className={styles.stepDesc}>{s.desc}</p>
@@ -108,37 +307,70 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
         </div>
       </section>
 
-      {/* Examples */}
+      {/* 示例对话 — 复用 Featured 风格：accent 顶边 + 类别色 + spotlight */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>示例对话</h2>
-        <div className={styles.examples}>
+        <div className={styles.headingWrap}>
+          <h2 ref={setHeadingRef(1)} className={styles.heading}>示例对话</h2>
+          <div className={styles.headingLine} />
+        </div>
+        <div ref={examplesRef} className={styles.examples} data-reveal="stagger">
           {EXAMPLES.map((ex, i) => (
-            <div key={i} className={styles.example}>
+            <div
+              key={i}
+              className={styles.exampleCard}
+              style={{
+                '--card-accent': ex.accent,
+                '--card-bg-start': ex.accentBg,
+                '--card-bg-end': '#ffffff',
+              } as React.CSSProperties}
+            >
+              <div className={styles.spotlight} />
               <div className={styles.exampleQ}>
-                <span className={styles.exampleBadge}>用户</span>
-                <span>{ex.q}</span>
+                <span className={styles.qBadge}>用户</span>
+                <span className={styles.qText}>{ex.q}</span>
               </div>
+              <div className={styles.divider} />
               <div className={styles.exampleA}>
-                <span className={styles.exampleBadgeA}>Agent</span>
-                <code className={styles.exampleCode}>{ex.a}</code>
+                <span className={styles.aBadge} style={{ background: ex.accent, color: 'white' }}>Agent</span>
+                <code className={styles.aCode}>{ex.a}</code>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SKILL.md preview */}
+      {/* SKILL.md 预览 — 仿终端风格：带 mac 红绿灯 + toolbar + 等宽 */}
       <section className={styles.section}>
-        <div className={styles.previewHeader}>
-          <h2 className={styles.sectionTitle}>SKILL.md 预览</h2>
-          <span className={styles.previewMeta}>{(skillMd.length / 1024).toFixed(1)} KB · Markdown</span>
+        <div className={styles.headingWrap}>
+          <h2 ref={setHeadingRef(2)} className={styles.heading}>SKILL.md 预览</h2>
+          <div className={styles.headingLine} />
         </div>
-        <div className={styles.preview}>
-          <pre className={styles.previewCode}><code>{skillMd}</code></pre>
-        </div>
-        <div className={styles.previewActions}>
-          <button className={styles.btnPrimary} onClick={handleDownload}>下载 SKILL.md</button>
-          <button className={styles.btnSecondary} onClick={handleCopy}>{copied ? '已复制!' : '复制全部'}</button>
+        <div ref={previewRef} className={styles.preview} data-reveal="stagger">
+          <div className={styles.terminal}>
+            <div className={styles.terminalBar}>
+              <span className={styles.terminalDot} style={{ background: '#ff5f57' }} />
+              <span className={styles.terminalDot} style={{ background: '#febc2e' }} />
+              <span className={styles.terminalDot} style={{ background: '#28c840' }} />
+              <span className={styles.terminalName}>SKILL.md</span>
+              <span className={styles.terminalMeta}>{(skillMd.length / 1024).toFixed(1)} KB · {effectsCount} effects</span>
+            </div>
+            <pre className={styles.terminalBody}><code>{skillMd}</code></pre>
+          </div>
+          <div className={styles.previewActions}>
+            <button className={styles.btnPrimary} onClick={handleDownload}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              <span>下载 SKILL.md</span>
+            </button>
+            <button className={styles.btnSecondary} onClick={handleCopy}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              <span>{copied ? '已复制 ✓' : '复制全部'}</span>
+            </button>
+          </div>
         </div>
       </section>
     </main>
