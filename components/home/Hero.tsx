@@ -75,48 +75,50 @@ export function Hero() {
     );
   }, []);
 
-  // Char hover bounce
-  useEffect(() => {
-    if (!titleRef.current) return;
-    const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
-    const handlers: Array<{ el: HTMLElement; fn: () => void }> = [];
-    chars.forEach((char) => {
-      const fn = () => {
-        gsap.fromTo(
-          char,
-          { y: 0 },
-          { y: -20, scale: 1.15, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1, overwrite: 'auto' }
-        );
-      };
-      char.addEventListener('mouseenter', fn);
-      handlers.push({ el: char, fn });
-    });
-    return () => {
-      handlers.forEach(({ el, fn }) => el.removeEventListener('mouseenter', fn));
-    };
-  }, []);
+  // Char hover bounce is now handled by CSS :hover in Hero.module.css
+  // (more reliable than GSAP tweens for hover state — no risk of getting stuck)
 
-  // Mouse parallax on blobs
+  // Mouse parallax on blobs — returns to center on leave
   useEffect(() => {
     if (!heroRef.current) return;
+    let raf = 0;
     const handleMove = (e: MouseEvent) => {
-      const rect = heroRef.current!.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
-      blobs.forEach((blob, i) => {
-        const factor = (i + 1) * 12;
-        gsap.to(blob, {
-          x: -x * factor,
-          y: -y * factor,
-          duration: 1.2,
-          ease: 'power2.out',
-          overwrite: 'auto',
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const rect = heroRef.current!.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
+        blobs.forEach((blob, i) => {
+          const factor = (i + 1) * 12;
+          gsap.to(blob, {
+            x: -x * factor,
+            y: -y * factor,
+            duration: 0.8,
+            ease: 'power2.out',
+            overwrite: 'auto',
+          });
         });
       });
     };
+    const handleLeave = () => {
+      cancelAnimationFrame(raf);
+      const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
+      gsap.to(blobs, {
+        x: 0,
+        y: 0,
+        duration: 1.0,
+        ease: 'elastic.out(1, 0.6)',
+        overwrite: 'auto',
+      });
+    };
     heroRef.current.addEventListener('mousemove', handleMove);
-    return () => heroRef.current?.removeEventListener('mousemove', handleMove);
+    heroRef.current.addEventListener('mouseleave', handleLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      heroRef.current?.removeEventListener('mousemove', handleMove);
+      heroRef.current?.removeEventListener('mouseleave', handleLeave);
+    };
   }, []);
 
   const text = '动效实验室';
