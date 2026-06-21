@@ -1,0 +1,6 @@
+.split { font-size: 64px; font-weight: 900; font-family: var(--font-display); letter-spacing: 0.1em; }
+.split span { display: inline-block; animation: split var(--duration, 0.8s) ease-out both; }
+.split span:nth-child(odd) { animation-name: splitTop; }
+.split span:nth-child(even) { animation-name: splitBot; }
+@keyframes splitTop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes splitBot { from { transform: translateY(100%); } to { transform: translateY(0); } }

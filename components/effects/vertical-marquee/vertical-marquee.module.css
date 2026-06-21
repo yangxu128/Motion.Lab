@@ -1,0 +1,3 @@
+.vmarquee { height: 60px; overflow: hidden; font-size: 24px; font-weight: 700; }
+.vmarquee > div { animation: vm var(--duration, 15s) linear infinite; }
+@keyframes vm { from { transform: translateY(0); } to { transform: translateY(-100%); } }
