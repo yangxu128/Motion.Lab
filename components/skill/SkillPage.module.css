@@ -1,0 +1,58 @@
+.main { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* Hero */
+.hero { padding: 80px 0 60px; text-align: center; }
+.heroInner { max-width: 720px; margin: 0 auto; }
+.kicker { display: inline-block; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: hsl(var(--accent-h) 90% 96%); padding: 6px 14px; border-radius: var(--radius-pill); margin-bottom: 24px; }
+.title { font-size: clamp(40px, 6vw, 64px); line-height: 1.05; margin-bottom: 20px; }
+.accent { background: linear-gradient(135deg, hsl(280 90% 60%), hsl(340 90% 60%)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.subtitle { font-size: 18px; line-height: 1.6; color: var(--muted); margin: 0 auto 36px; max-width: 560px; }
+.heroActions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* Buttons */
+.btnPrimary, .btnSecondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; border: none; }
+.btnPrimary { background: var(--fg); color: var(--bg); }
+.btnPrimary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10,10,10,0.2); }
+.btnSecondary { background: var(--card); color: var(--fg); border: 1px solid var(--border); }
+.btnSecondary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10,10,10,0.08); }
+
+/* Sections */
+.section { padding: 48px 0; border-top: 1px solid var(--border); }
+.sectionTitle { font-size: 28px; margin-bottom: 32px; }
+.previewHeader { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 8px; }
+.previewMeta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.step { padding: 28px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); transition: transform 0.3s, box-shadow 0.3s; }
+.step:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(10,10,10,0.1); }
+.stepNum { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, hsl(280 90% 60%), hsl(340 90% 60%)); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 18px; margin-bottom: 16px; }
+.stepTitle { font-size: 18px; margin-bottom: 8px; }
+.stepDesc { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+/* Examples */
+.examples { display: flex; flex-direction: column; gap: 16px; }
+.example { padding: 20px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
+.exampleQ, .exampleA { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.exampleA { margin-top: 10px; }
+.exampleBadge, .exampleBadgeA { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); flex-shrink: 0; }
+.exampleBadge { background: hsl(210 90% 95%); color: hsl(210 90% 40%); }
+.exampleBadgeA { background: hsl(280 90% 95%); color: hsl(280 90% 45%); }
+.exampleCode { font-family: var(--font-mono); font-size: 13px; color: var(--accent); background: hsl(var(--accent-h) 90% 97%); padding: 4px 10px; border-radius: 6px; }
+
+/* Preview */
+.preview { background: #0d1117; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); }
+.previewCode { margin: 0; padding: 24px; overflow-x: auto; max-height: 600px; overflow-y: auto; }
+.previewCode code { font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: #c9d1d9; white-space: pre-wrap; word-break: break-word; }
+.previewActions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .main { padding: 0 16px 60px; }
+  .hero { padding: 48px 0 40px; }
+  .steps { grid-template-columns: 1fr; }
+  .section { padding: 32px 0; }
+  .sectionTitle { font-size: 22px; }
+  .previewCode { padding: 16px; }
+  .previewCode code { font-size: 11px; }
+}

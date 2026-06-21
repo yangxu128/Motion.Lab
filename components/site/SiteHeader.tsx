@@ -10,6 +10,7 @@ export function SiteHeader() {
       <nav className={styles.nav}>
         <Link href="/" data-active={pathname === '/'}>首页</Link>
         <Link href="/lab" data-active={pathname?.startsWith('/lab')}>实验室</Link>
+        <Link href="/skill" data-active={pathname === '/skill'}>Skill</Link>
       </nav>
     </header>
   );

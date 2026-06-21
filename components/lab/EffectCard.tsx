@@ -1,15 +1,32 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import { ComponentType, useCallback, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/Button';
 import type { Effect } from '@/data/effects';
 import { getAllLikes, like } from '@/lib/likes';
 import styles from './EffectCard.module.css';
 
+type PreviewProps = Record<string, string | number>;
+
+// 模块级缓存：避免每次渲染都重建 dynamic 组件（160 张卡片性能关键）
+const previewCache = new Map<string, ComponentType<{ params: PreviewProps }>>();
+const loadingFallback = () => <div style={{ opacity: 0.3 }}>…</div>;
+
+function getPreview(effect: Effect): ComponentType<{ params: PreviewProps }> {
+  let Comp = previewCache.get(effect.id);
+  if (!Comp) {
+    Comp = dynamic(effect.preview, { ssr: false, loading: loadingFallback });
+    previewCache.set(effect.id, Comp);
+  }
+  return Comp;
+}
+
 export function EffectCard({ effect }: { effect: Effect }) {
-  const [params] = useState<Record<string, any>>(() => {
-    const p: Record<string, any> = {}; effect.params.forEach((p2) => (p[p2.key] = p2.default)); return p;
+  const [params] = useState<PreviewProps>(() => {
+    const p: PreviewProps = {};
+    effect.params.forEach((param) => (p[param.key] = param.default));
+    return p;
   });
   const [key, setKey] = useState(0);
   const [lastReplay, setLastReplay] = useState(0);
@@ -17,6 +34,7 @@ export function EffectCard({ effect }: { effect: Effect }) {
   const [liked, setLiked] = useState(false);
   const [bouncing, setBouncing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const Preview = getPreview(effect);
 
   useEffect(() => {
     const m = getAllLikes();
@@ -34,18 +52,21 @@ export function EffectCard({ effect }: { effect: Effect }) {
     return () => window.removeEventListener('likes-updated', onUpdate);
   }, [effect.id]);
 
-  const Preview = dynamic(effect.preview, { ssr: false, loading: () => <div style={{ opacity: 0.3 }}>…</div> });
-  const replay = () => {
+  const replay = useCallback(() => {
     if (Date.now() - lastReplay < 2000) return;
-    setKey((k) => k + 1); setLastReplay(Date.now());
-  };
-  const openPanel = (panel: 'code' | 'params') => {
+    setKey((k) => k + 1);
+    setLastReplay(Date.now());
+  }, [lastReplay]);
+
+  const openPanel = useCallback((panel: 'code' | 'params') => {
     const url = new URL(window.location.href);
-    url.searchParams.set('open', effect.id); url.searchParams.set('panel', panel);
+    url.searchParams.set('open', effect.id);
+    url.searchParams.set('panel', panel);
     window.history.pushState({}, '', url);
     window.dispatchEvent(new PopStateEvent('popstate'));
-  };
-  const handleLike = (e: React.MouseEvent) => {
+  }, [effect.id]);
+
+  const handleLike = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (liked) return;
     setLiked(true);
@@ -65,7 +86,7 @@ export function EffectCard({ effect }: { effect: Effect }) {
         setTimeout(() => heart.remove(), 1000);
       }
     }
-  };
+  }, [effect.id, liked]);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -122,9 +143,9 @@ export function EffectCard({ effect }: { effect: Effect }) {
           {effect.tags.slice(0, 2).map((t) => <span key={t} className={styles.tag}>{t}</span>)}
         </div>
         <div className={styles.actions}>
-          <Button onClick={(e: any) => handleButtonClick(e, replay)}>▶ 重播</Button>
-          <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('params'))}>⚙ 调参</Button>
-          <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('code'))}>{'< / >'} 代码</Button>
+          <Button onClick={(e) => handleButtonClick(e, replay)}>▶ 重播</Button>
+          <Button onClick={(e) => handleButtonClick(e, () => openPanel('params'))}>⚙ 调参</Button>
+          <Button onClick={(e) => handleButtonClick(e, () => openPanel('code'))}>{'< / >'} 代码</Button>
         </div>
       </div>
     </div>
