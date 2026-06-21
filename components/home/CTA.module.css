@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: 160px 48px;
+  padding: 180px 48px;
   text-align: center;
   overflow: hidden;
   background: linear-gradient(
@@ -16,9 +16,15 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.25;
+  opacity: 0.3;
   pointer-events: none;
   z-index: 0;
+  animation: orbPulse 10s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.15); opacity: 0.5; }
 }
 
 /* Floating particles */
@@ -29,6 +35,7 @@
   z-index: 0;
   animation: particleFloat 6s ease-in-out infinite;
   pointer-events: none;
+  box-shadow: 0 0 8px currentColor;
 }
 
 @keyframes particleFloat {
@@ -37,7 +44,7 @@
     opacity: 0.7;
   }
   50% {
-    transform: translateY(-24px) scale(1.3);
+    transform: translateY(-30px) scale(1.4);
     opacity: 0.35;
   }
 }
@@ -52,44 +59,92 @@
 .stats {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 36px;
+  gap: 32px;
+  margin-bottom: 48px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-.statItem {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: hsl(220 12% 65%);
+.statGroup {
+  display: flex;
+  align-items: center;
+  gap: 32px;
 }
 
 .statSep {
-  margin: 0 4px;
   color: hsl(260 30% 40%);
+  font-size: 18px;
+}
+
+.statItem {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(135deg, hsl(280 85% 70%), hsl(340 85% 65%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: hsl(220 12% 65%);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* Big heading */
 .big {
   font-size: clamp(64px, 12vw, 200px);
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   line-height: 0.9;
   letter-spacing: -0.04em;
   color: white;
   font-weight: 900;
+  position: relative;
+  display: inline-block;
 }
 
 .bigAccent {
   background: linear-gradient(
     135deg,
-    hsl(280 85% 65%) 0%,
-    hsl(340 85% 60%) 50%,
-    hsl(30 95% 58%) 100%
+    hsl(280 85% 70%) 0%,
+    hsl(340 85% 65%) 50%,
+    hsl(30 95% 60%) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.lead {
+  font-size: clamp(16px, 1.6vw, 20px);
+  color: hsl(220 10% 70%);
+  margin-bottom: 40px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.btnLink {
+  display: inline-block;
+  position: relative;
 }
 
 /* CTA button styling override */
@@ -99,4 +154,32 @@
   border-radius: 9999px !important;
   font-weight: 700 !important;
   letter-spacing: 0.02em !important;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ctaBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 32px hsl(280 70% 30% / 0.6);
+}
+
+/* Click ripple */
+.ripple {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: rippleExpand 0.8s ease-out forwards;
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: translate(-50%, -50%) scale(40);
+    opacity: 0;
+  }
 }

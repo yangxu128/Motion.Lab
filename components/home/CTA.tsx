@@ -1,3 +1,5 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import styles from './CTA.module.css';
@@ -13,14 +15,90 @@ const PARTICLES = [
   { top: '55%', left: '88%', size: 4, delay: '-4s', color: 'hsl(150 75% 48%)' },
 ];
 
-const STATS = ['40 动效', '4 分类', '无限可能'];
+// Animated stats with count-up
+const STATS: Array<{ value: number; suffix: string; label: string }> = [
+  { value: 40, suffix: '', label: '动效' },
+  { value: 4, suffix: '', label: '分类' },
+  { value: 100, suffix: '%', label: '开源' },
+];
+
+function CountUp({ target, suffix, inView }: { target: number; suffix: string; inView: boolean }) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let start: number | null = null;
+    const dur = 1600;
+    const tick = (t: number) => {
+      if (start === null) start = t;
+      const p = Math.min((t - start) / dur, 1);
+      // ease-out-cubic
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round(eased * target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [inView, target]);
+  return (
+    <span>
+      {val}
+      {suffix}
+    </span>
+  );
+}
+
+function StatItem({ stat, inView }: { stat: (typeof STATS)[number]; inView: boolean }) {
+  return (
+    <span className={styles.statItem}>
+      <span className={styles.statValue}>
+        <CountUp target={stat.value} suffix={stat.suffix} inView={inView} />
+      </span>
+      <span className={styles.statLabel}>{stat.label}</span>
+    </span>
+  );
+}
 
 export function CTA() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
+
+  // Trigger count-up when section enters viewport
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setInView(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Click ripple on CTA button
+  const handleBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const id = Date.now() + Math.random();
+    setRipples((prev) => [...prev, { id, x, y }]);
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== id));
+    }, 800);
+  };
+
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       {/* Background glow orbs */}
       <div className={styles.glowOrb} style={{ top: '10%', left: '20%', width: 400, height: 400, background: 'hsl(260 70% 40%)' }} />
       <div className={styles.glowOrb} style={{ bottom: '10%', right: '15%', width: 350, height: 350, background: 'hsl(280 65% 35%)' }} />
+      <div className={styles.glowOrb} style={{ top: '50%', left: '50%', width: 300, height: 300, background: 'hsl(300 60% 30%)', transform: 'translate(-50%, -50%)' }} />
 
       {/* Floating particles */}
       {PARTICLES.map((p, i) => (
@@ -41,18 +119,26 @@ export function CTA() {
       <div className={styles.content}>
         <div className={styles.stats}>
           {STATS.map((s, i) => (
-            <span key={s} className={styles.statItem}>
-              {s}
-              {i < STATS.length - 1 && <span className={styles.statSep}> · </span>}
+            <span key={i} className={styles.statGroup}>
+              <StatItem stat={s} inView={inView} />
+              {i < STATS.length - 1 && <span className={styles.statSep}>·</span>}
             </span>
           ))}
         </div>
         <h2 className={styles.big}>
           进<span className={styles.bigAccent}>实验室</span>
         </h2>
-        <Link href="/lab">
-          <Button variant="primary" className={styles.ctaBtn}>
+        <p className={styles.lead}>亲手调参,实时反馈,一键复制进项目。</p>
+        <Link href="/lab" className={styles.btnLink}>
+          <Button variant="primary" className={styles.ctaBtn} onClick={handleBtnClick}>
             开始探索 →
+            {ripples.map((r) => (
+              <span
+                key={r.id}
+                className={styles.ripple}
+                style={{ left: r.x, top: r.y }}
+              />
+            ))}
           </Button>
         </Link>
       </div>

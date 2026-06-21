@@ -10,16 +10,16 @@ export default function StickyStack({ params }: { params: { count: number } }) {
     if (!stack) return;
     const cards = Array.from(stack.querySelectorAll<HTMLDivElement>(`.${styles.card}`));
     cards.forEach((card, i) => {
-      card.style.top = `${80 + i * 8}px`;
+      card.style.top = `${8 + i * 4}px`;
       card.style.zIndex = String(i + 1);
     });
   }, [params.count]);
   const count = Math.max(3, Math.min(8, Math.round(params.count)));
   return (
-    <PreviewFrame style={{ padding: 0, overflow: 'hidden' }}>
+    <PreviewFrame style={{ padding: 0, overflow: 'hidden', height: 280 }}>
       <div ref={stackRef} className={styles.stack}>
         {Array.from({ length: count }).map((_, i) => (
-          <div key={i} className={styles.card} style={{ background: COLORS[i % COLORS.length], top: 80 + i * 8 }}>
+          <div key={i} className={styles.card} style={{ background: COLORS[i % COLORS.length], top: 8 + i * 4 }}>
             {i + 1}
           </div>
         ))}

@@ -75,19 +75,61 @@
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
+  transform-style: preserve-3d;
+}
+
+/* Mouse-following spotlight */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    250px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--card-accent) 22%, transparent),
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.item:hover .spotlight {
+  opacity: 1;
 }
 
 .item:hover {
-  transform: scale(1.03) translateY(-6px);
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.1),
     0 8px 24px color-mix(in srgb, var(--card-accent) 14%, transparent);
+}
+
+.item > *:not(.spotlight) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover arrow indicator */
+.arrow {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--card-accent);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.item:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Animated elements inside card */

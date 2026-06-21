@@ -1,5 +1,6 @@
 .section {
   padding: 120px 48px;
+  position: relative;
 }
 
 /* Heading with accent numbers */
@@ -8,6 +9,7 @@
   margin-bottom: 80px;
   line-height: 1.05;
   letter-spacing: -0.03em;
+  perspective: 1000px;
 }
 
 .headingAccent {
@@ -23,23 +25,25 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 32px;
+  perspective: 1200px;
 }
 
-/* Colorful cards */
+/* Colorful cards with 3D tilt + spotlight */
 .card {
   position: relative;
   padding: 36px 32px 32px;
-  background: var(--card, white);
   border-radius: var(--radius-card, 20px);
   border-top: 4px solid var(--cat-color);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
+/* Mouse-following spotlight */
 .card::before {
   content: '';
   position: absolute;
@@ -48,22 +52,48 @@
   opacity: 0;
   transition: opacity 0.35s ease;
   background: radial-gradient(
-    circle at 50% 0%,
-    color-mix(in srgb, var(--cat-color) 8%, transparent),
-    transparent 70%
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--cat-color) 18%, transparent),
+    transparent 60%
   );
   pointer-events: none;
+  z-index: 0;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--cat-color) 6%, transparent),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .card:hover {
-  transform: translateY(-8px);
   box-shadow:
-    0 20px 48px color-mix(in srgb, var(--cat-color) 18%, transparent),
-    0 4px 16px rgba(0, 0, 0, 0.08);
+    0 30px 60px color-mix(in srgb, var(--cat-color) 22%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.card:hover::before {
+.card:hover::before,
+.card:hover::after {
   opacity: 1;
+}
+
+/* Make content sit above the spotlight */
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Decorative icon in card */
@@ -71,10 +101,18 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 28px;
-  opacity: 0.15;
+  font-size: 36px;
+  opacity: 0.18;
   color: var(--cat-color);
   line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.6s ease;
+  z-index: 1;
+}
+
+.card:hover .cardIcon {
+  transform: rotate(180deg) scale(1.1);
+  opacity: 0.4;
 }
 
 /* Card number in category color */

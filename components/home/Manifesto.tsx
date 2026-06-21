@@ -30,10 +30,49 @@ const CATEGORY_COLORS: Record<string, { color: string; bg: string; icon: string 
 export function Manifesto() {
   const items = CATEGORIES.filter((c) => c.id !== 'all');
   const gridRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
+  // Heading char-by-char reveal on scroll
+  useEffect(() => {
+    if (!headingRef.current) return;
+    const heading = headingRef.current;
+    // Wrap text nodes in spans for animation
+    const text = heading.textContent || '';
+    heading.innerHTML = '';
+    Array.from(text).forEach((ch) => {
+      const span = document.createElement('span');
+      span.textContent = ch;
+      span.style.display = 'inline-block';
+      span.setAttribute('data-heading-char', '');
+      heading.appendChild(span);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.from(heading.querySelectorAll('[data-heading-char]'), {
+              y: 80,
+              opacity: 0,
+              rotateX: -90,
+              stagger: 0.02,
+              duration: 0.7,
+              ease: 'power3.out',
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(heading);
+    return () => observer.disconnect();
+  }, []);
+
+  // Card entrance + 3D tilt + mouse-following spotlight
   useEffect(() => {
     if (!gridRef.current) return;
-    const cards = gridRef.current.querySelectorAll(`.${styles.card}`);
+    const cards = Array.from(gridRef.current.querySelectorAll<HTMLElement>(`.${styles.card}`));
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -42,6 +81,8 @@ export function Manifesto() {
             gsap.from(cards, {
               y: 60,
               opacity: 0,
+              scale: 0.9,
+              rotateY: 15,
               stagger: 0.12,
               duration: 0.8,
               ease: 'power3.out',
@@ -52,9 +93,43 @@ export function Manifesto() {
       },
       { threshold: 0.15 }
     );
-
     observer.observe(gridRef.current);
-    return () => observer.disconnect();
+
+    // 3D tilt on each card
+    const cleanups: Array<() => void> = [];
+    cards.forEach((card) => {
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotX = (0.5 - y) * 10;
+        const rotY = (x - 0.5) * 10;
+        gsap.to(card, {
+          rotateX: rotX,
+          rotateY: rotY,
+          transformPerspective: 800,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+        // Update CSS variable for spotlight position
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+      };
+      const onLeave = () => {
+        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      cleanups.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+
+    return () => {
+      observer.disconnect();
+      cleanups.forEach((c) => c());
+    };
   }, []);
 
   const copy: Record<string, string> = {
@@ -66,10 +141,8 @@ export function Manifesto() {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.heading}>
-        <span className={styles.headingAccent}>四</span>种语言
-        <br />
-        <span className={styles.headingAccent}>四十</span>种节奏
+      <h2 ref={headingRef} className={styles.heading}>
+        四种语言四十种节奏
       </h2>
       <div className={styles.grid} ref={gridRef}>
         {items.map((c, i) => {
@@ -81,7 +154,7 @@ export function Manifesto() {
               style={{
                 '--cat-color': theme.color,
                 '--cat-bg': theme.bg,
-                animationDelay: `${i * 0.1}s`,
+                background: theme.bg,
               } as React.CSSProperties}
             >
               <div className={styles.cardIcon}>{theme.icon}</div>

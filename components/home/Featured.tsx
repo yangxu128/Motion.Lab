@@ -1,4 +1,7 @@
+'use client';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { gsap } from 'gsap';
 import styles from './Featured.module.css';
 import { EFFECTS } from '@/data/effects';
 
@@ -14,17 +17,69 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export function Featured() {
+  const sectionRef = useRef<HTMLElement>(null);
   const items = PICKS.map((id) => EFFECTS.find((x) => x.id === id)!);
   // Duplicate for seamless infinite marquee
   const allItems = [...items, ...items];
 
+  // Pause marquee on hover, resume on leave
+  const trackRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const inner = track.querySelector(`.${styles.marqueeInner}`);
+    if (!inner) return;
+    const handleEnter = () => gsap.to(inner, { animationPlayState: 'paused', duration: 0 });
+    const handleLeave = () => gsap.to(inner, { animationPlayState: 'running', duration: 0 });
+    track.addEventListener('mouseenter', handleEnter);
+    track.addEventListener('mouseleave', handleLeave);
+    return () => {
+      track.removeEventListener('mouseenter', handleEnter);
+      track.removeEventListener('mouseleave', handleLeave);
+    };
+  }, []);
+
+  // Mouse-following spotlight + tilt on each card
+  useEffect(() => {
+    const cards = document.querySelectorAll<HTMLElement>(`.${styles.item}`);
+    const cleanups: Array<() => void> = [];
+    cards.forEach((card) => {
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+        const rotX = (0.5 - y) * 6;
+        const rotY = (x - 0.5) * 6;
+        gsap.to(card, {
+          rotateX: rotX,
+          rotateY: rotY,
+          transformPerspective: 1000,
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      };
+      const onLeave = () => {
+        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      cleanups.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+    return () => cleanups.forEach((c) => c());
+  }, []);
+
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       <div className={styles.headingWrap}>
         <h2 className={styles.heading}>精选</h2>
         <span className={styles.headingLine} />
       </div>
-      <div className={styles.track}>
+      <div className={styles.track} ref={trackRef}>
         <div className={styles.marqueeInner}>
           {allItems.map((e, idx) => {
             const originalIdx = idx % items.length;
@@ -45,6 +100,9 @@ export function Featured() {
                   } as React.CSSProperties
                 }
               >
+                {/* Mouse-following spotlight */}
+                <div className={styles.spotlight} />
+
                 {/* Animated element inside card */}
                 <div className={styles.cardAnim}>
                   <div className={styles.animRing} />
@@ -54,6 +112,8 @@ export function Featured() {
                 <span className={styles.catTag}>{catLabel}</span>
                 <span className={styles.itemName}>{e.name}</span>
                 <span className={styles.itemEnglish}>{e.englishName}</span>
+
+                <span className={styles.arrow}>→</span>
               </Link>
             );
           })}
