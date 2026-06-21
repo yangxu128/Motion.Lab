@@ -1,0 +1,11 @@
+.btn {
+  padding: 16px 32px;
+  background: hsl(280 90% 60%);
+  color: white;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}

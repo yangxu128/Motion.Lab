@@ -1,0 +1,26 @@
+.btn {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 40px;
+  background: hsl(220 90% 60%);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleAnim var(--duration, 0.6s) ease-out forwards;
+}
+@keyframes rippleAnim {
+  to {
+    transform: translate(-50%, -50%) scale(8);
+    opacity: 0;
+  }
+}
