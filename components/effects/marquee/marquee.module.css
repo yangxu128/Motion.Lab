@@ -1,0 +1,4 @@
+.marquee { display: flex; gap: 32px; animation: marquee var(--duration, 12s) linear infinite; white-space: nowrap; font-size: 24px; font-weight: 700; }
+.marquee span { display: inline-block; }
+.marquee[data-direction='right'] { animation-direction: reverse; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

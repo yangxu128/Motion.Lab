@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(320 90% 60%); color: white; border-radius: 12px; font-weight: 700; animation: slideRight var(--duration, 0.6s) ease-out both; }
+@keyframes slideRight { from { transform: translateX(100%); } to { transform: translateX(0); } }

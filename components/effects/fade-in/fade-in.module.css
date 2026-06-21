@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(280 90% 60%); color: white; border-radius: 12px; font-weight: 700; animation: fadeIn var(--duration, 0.8s) ease-out var(--delay, 0s) both; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

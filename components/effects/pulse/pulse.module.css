@@ -1,0 +1,2 @@
+.box { width: 64px; height: 64px; border-radius: 50%; background: hsl(280 90% 60%); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 700; animation: pulse var(--duration, 1.5s) ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(calc(1 + var(--intensity, 0.15))); } }

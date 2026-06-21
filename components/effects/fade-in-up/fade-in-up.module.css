@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(20 90% 60%); color: white; border-radius: 12px; font-weight: 700; animation: fadeInUp var(--duration, 0.8s) ease-out both; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(var(--distance, 20px)); } to { opacity: 1; transform: translateY(0); } }

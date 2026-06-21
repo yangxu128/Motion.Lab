@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(220 90% 60%); color: white; border-radius: 12px; font-weight: 700; font-size: 24px; transform-origin: center; animation: flipX var(--duration, 0.8s) ease-out both; }
+@keyframes flipX { from { transform: perspective(600px) rotateX(-90deg); opacity: 0; } to { transform: perspective(600px) rotateX(0); opacity: 1; } }
