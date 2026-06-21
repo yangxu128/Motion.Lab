@@ -1,0 +1,22 @@
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(250 60% 12%), hsl(280 50% 15%));
+  overflow: hidden;
+}
+.long-shadow {
+  font-size: 64px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  margin: 0;
+  position: relative;
+  color: hsl(0 0% 100%);
+  text-shadow: 1px 1px 0 hsl(280 60% 40%), 2px 2px 0 hsl(280 60% 38%), 3px 3px 0 hsl(280 60% 36%), 4px 4px 0 hsl(280 60% 34%), 5px 5px 0 hsl(280 60% 32%), 6px 6px 0 hsl(280 60% 30%), 7px 7px 0 hsl(280 60% 28%), 8px 8px 0 hsl(280 60% 26%), 9px 9px 0 hsl(280 60% 24%), 10px 10px 12px hsl(280 80% 10%);
+}

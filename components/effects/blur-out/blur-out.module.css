@@ -1,0 +1,21 @@
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(200 90% 60%));
+  color: hsl(0 0% 100%);
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  box-shadow: 0 8px 24px hsl(280 40% 30% / 0.3);
+}
+.blur-out {
+  animation: blurOut var(--duration, 2.4s) ease-in-out infinite;
+}
+@keyframes blurOut { 0%, 100% { filter: blur(0); opacity: 1; } 50% { filter: blur(var(--blur, 8px)); opacity: 0.6; } }

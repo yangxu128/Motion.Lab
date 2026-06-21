@@ -1,0 +1,3 @@
+.wrap { position: relative; width: 100%; height: 100%; }
+.follow-zone { position: relative; width: 100%; height: 100%; cursor: none; }
+.dot { position: absolute; width: 24px; height: 24px; border-radius: 50%; background: hsl(280 90% 60%); pointer-events: none; transform: translate(-50%, -50%); box-shadow: 0 0 20px hsl(280 90% 60%); }

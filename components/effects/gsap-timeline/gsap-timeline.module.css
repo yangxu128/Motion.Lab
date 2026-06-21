@@ -1,0 +1,5 @@
+.container { display: flex; flex-direction: column; gap: 8px; width: 100%; height: 100%; align-items: flex-start; justify-content: center; padding: 24px; box-sizing: border-box; }
+.b1, .b2, .b3 { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; }
+.b1 { background: hsl(280 90% 60%); }
+.b2 { background: hsl(200 90% 60%); }
+.b3 { background: hsl(320 90% 60%); }

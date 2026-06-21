@@ -1,0 +1,6 @@
+.wrap { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.scroll-parallax { position: relative; width: 100%; height: 100%; }
+.layer { position: absolute; left: 50%; transform: translateX(-50%); padding: 16px 32px; border-radius: 8px; color: white; font-weight: 800; font-size: 18px; white-space: nowrap; transition: transform 0.1s; }
+.layer:nth-child(1) { top: 10%; background: hsl(280 90% 60% / 0.7); }
+.layer:nth-child(2) { top: 40%; background: hsl(200 90% 60% / 0.7); }
+.layer:nth-child(3) { top: 70%; background: hsl(320 90% 60% / 0.7); }

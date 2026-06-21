@@ -1,0 +1,4 @@
+.wrap { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.img-zoom { overflow: hidden; width: 200px; height: 120px; border-radius: 12px; cursor: pointer; }
+.img { width: 100%; height: 100%; background: linear-gradient(135deg, hsl(280 90% 60%), hsl(200 90% 60%)); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.img-zoom:hover .img { transform: scale(var(--scale, 1.3)); }

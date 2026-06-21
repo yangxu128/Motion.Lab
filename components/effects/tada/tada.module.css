@@ -1,0 +1,23 @@
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 32px 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(200 90% 60%));
+  color: hsl(0 0% 100%);
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  box-shadow: 0 8px 24px hsl(280 40% 30% / 0.3);
+}
+.tada {
+  display: inline-block;
+  animation: tada var(--duration, 1s) ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes tada { 0%, 100% { transform: scale(1) rotate(0); } 10%, 20% { transform: scale(0.9) rotate(-3deg); } 30%, 50%, 70%, 90% { transform: scale(1.15) rotate(3deg); } 40%, 60%, 80% { transform: scale(1.15) rotate(-3deg); } }
