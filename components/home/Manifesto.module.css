@@ -1,7 +1,105 @@
-.section { padding: 120px 48px; }
-.heading { font-size: clamp(48px, 8vw, 120px); margin-bottom: 80px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
-.card { padding: 32px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
-.card h3 { font-size: 48px; margin-bottom: 16px; }
-.card p { color: var(--muted); line-height: 1.5; }
-.num { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.section {
+  padding: 120px 48px;
+}
+
+/* Heading with accent numbers */
+.heading {
+  font-size: clamp(48px, 8vw, 120px);
+  margin-bottom: 80px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.headingAccent {
+  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 80% 55%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 900;
+}
+
+/* Grid layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+/* Colorful cards */
+.card {
+  position: relative;
+  padding: 36px 32px 32px;
+  background: var(--card, white);
+  border-radius: var(--radius-card, 20px);
+  border-top: 4px solid var(--cat-color);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    circle at 50% 0%,
+    color-mix(in srgb, var(--cat-color) 8%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 48px color-mix(in srgb, var(--cat-color) 18%, transparent),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Decorative icon in card */
+.cardIcon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  opacity: 0.15;
+  color: var(--cat-color);
+  line-height: 1;
+}
+
+/* Card number in category color */
+.num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cat-color);
+}
+
+/* Card title */
+.card h3 {
+  font-size: 40px;
+  margin-bottom: 14px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: hsl(220 15% 18%);
+}
+
+/* Card description */
+.card p {
+  color: hsl(220 10% 45%);
+  line-height: 1.6;
+  font-size: 15px;
+}

@@ -1,6 +1,171 @@
-.section { padding: 80px 0; overflow: hidden; }
-.heading { font-size: clamp(40px, 6vw, 80px); padding: 0 48px; margin-bottom: 48px; }
-.track { display: flex; gap: 24px; padding: 0 48px; overflow-x: auto; scrollbar-width: none; cursor: grab; }
-.track::-webkit-scrollbar { display: none; }
-.item { flex: 0 0 320px; height: 200px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; font-size: 64px; box-shadow: var(--shadow-card); transition: transform 0.2s; }
-.item:hover { transform: translateY(-4px); }
+.section {
+  padding: 100px 0;
+  overflow: hidden;
+}
+
+/* Heading with accent line */
+.headingWrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 48px;
+  margin-bottom: 48px;
+}
+
+.heading {
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: hsl(220 12% 15%);
+}
+
+.headingLine {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    hsl(280 70% 60%),
+    hsl(340 70% 55%),
+    hsl(30 75% 55%),
+    transparent
+  );
+}
+
+/* Track container */
+.track {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Marquee inner - duplicated items for seamless loop */
+.marqueeInner {
+  display: flex;
+  gap: 24px;
+  padding: 0 48px;
+  animation: marqueeScroll 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Showcase cards */
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 0 0 300px;
+  height: 240px;
+  padding: 28px;
+  border-radius: var(--radius-card, 20px);
+  background: linear-gradient(
+    160deg,
+    var(--card-bg-start),
+    var(--card-bg-end)
+  );
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.item:hover {
+  transform: scale(1.03) translateY(-6px);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.1),
+    0 8px 24px color-mix(in srgb, var(--card-accent) 14%, transparent);
+}
+
+/* Animated elements inside card */
+.cardAnim {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+}
+
+.animRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--card-accent);
+  opacity: 0.25;
+  animation: spinRing 4s linear infinite;
+}
+
+.animDot {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes spinRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+/* Category tag */
+.catTag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  background: var(--card-accent);
+  color: white;
+}
+
+/* Effect name */
+.itemName {
+  display: block;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: hsl(220 12% 18%);
+  line-height: 1.15;
+}
+
+/* English name */
+.itemEnglish {
+  display: block;
+  font-size: 13px;
+  color: hsl(220 8% 50%);
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
