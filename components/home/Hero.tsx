@@ -15,56 +15,67 @@ export function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const badgeRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // Title character entrance animation
+  // Title character entrance — use fromTo with explicit autoAlpha to avoid stuck state
   useEffect(() => {
     if (!titleRef.current) return;
     const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
-    // Set initial hidden state immediately, then animate to visible
-    gsap.set(chars, { y: 100, opacity: 0 });
-    gsap.to(chars, {
-      y: 0,
-      opacity: 1,
-      stagger: 0.04,
-      duration: 1.0,
-      delay: 0.1,
-      ease: 'power4.out',
-      overwrite: 'auto',
-    });
+    gsap.fromTo(
+      chars,
+      { y: 100, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        stagger: 0.04,
+        duration: 1.0,
+        delay: 0.1,
+        ease: 'power4.out',
+        overwrite: 'auto',
+        clearProps: 'transform',
+      }
+    );
   }, []);
 
   // Subtitle word-by-word fade-in
   useEffect(() => {
     if (!subtitleRef.current) return;
     const words = subtitleRef.current.querySelectorAll<HTMLElement>('[data-word]');
-    gsap.set(words, { y: 20, opacity: 0 });
-    gsap.to(words, {
-      y: 0,
-      opacity: 1,
-      stagger: 0.08,
-      duration: 0.6,
-      delay: 0.6,
-      ease: 'power2.out',
-      overwrite: 'auto',
-    });
+    gsap.fromTo(
+      words,
+      { y: 20, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        stagger: 0.08,
+        duration: 0.6,
+        delay: 0.6,
+        ease: 'power2.out',
+        overwrite: 'auto',
+        clearProps: 'transform',
+      }
+    );
   }, []);
 
   // Badge stagger entrance
   useEffect(() => {
     const targets = badgeRefs.current.filter((el): el is HTMLSpanElement => el !== null);
     if (targets.length === 0) return;
-    gsap.set(targets, { y: 30, opacity: 0 });
-    gsap.to(targets, {
-      y: 0,
-      opacity: 1,
-      stagger: 0.1,
-      duration: 0.6,
-      delay: 1.1,
-      ease: 'back.out(1.4)',
-      overwrite: 'auto',
-    });
+    gsap.fromTo(
+      targets,
+      { y: 30, autoAlpha: 0 },
+      {
+        y: 0,
+        autoAlpha: 1,
+        stagger: 0.1,
+        duration: 0.6,
+        delay: 1.1,
+        ease: 'back.out(1.4)',
+        overwrite: 'auto',
+        clearProps: 'transform',
+      }
+    );
   }, []);
 
-  // Char hover bounce — attach after entrance completes
+  // Char hover bounce
   useEffect(() => {
     if (!titleRef.current) return;
     const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
@@ -100,6 +111,7 @@ export function Hero() {
           y: -y * factor,
           duration: 1.2,
           ease: 'power2.out',
+          overwrite: 'auto',
         });
       });
     };
