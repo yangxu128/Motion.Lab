@@ -17,7 +17,7 @@ const PARTICLES = [
 
 // Animated stats with count-up
 const STATS: Array<{ value: number; suffix: string; label: string }> = [
-  { value: 40, suffix: '', label: '动效' },
+  { value: 160, suffix: '', label: '动效' },
   { value: 4, suffix: '', label: '分类' },
   { value: 100, suffix: '%', label: '开源' },
 ];

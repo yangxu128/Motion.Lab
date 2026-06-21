@@ -1,11 +1,11 @@
 # Motion.Lab — 动效实验室
 
-> 40 个常用动效的交互式展示、可调参数与源码复制 —— 一个属于前端开发者的动效手册。
-> An interactive playground of 40 curated UI motion effects with live params and copy-to-clipboard code.
+> 160 个常用动效的交互式展示、可调参数与源码复制 —— 一个属于前端开发者的动效手册。
+> An interactive playground of 160 curated UI motion effects with live params and copy-to-clipboard code.
 
 ## ✨ 特性 / Features
 
-- **40 个动效** 覆盖基础、文字、交互、高级四大类
+- **160 个动效** 覆盖基础、文字、交互、高级四大类
 - **搜索 & 筛选** 按名称、标签、难度快速定位
 - **参数面板** 实时调节，参数走 URL state，可分享
 - **代码复制** HTML / CSS / JS 拆分高亮，一键 Copy
@@ -53,7 +53,7 @@ app/                    # Next.js App Router (pages, layouts)
   page.tsx              # 首页
   lab/                  # 动效实验室（列表 + 详情）
 components/
-  effects/              # 40 个动效实现（每个一个文件夹）
+  effects/              # 160 个动效实现（每个一个文件夹）
   home/                 # 首页区块
   lab/                  # 实验室 UI（Drawer / ParamPanel / CodePanel …）
   site/                 # 全局 Header / Footer / 背景

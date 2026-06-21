@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import styles from './Hero.module.css';
 
 const BADGES = [
-  { label: '40 Effects', color: 'hsl(280 85% 60%)' },
+  { label: '160 Effects', color: 'hsl(280 85% 60%)' },
   { label: '参数可调', color: 'hsl(210 85% 55%)' },
   { label: '一键复制', color: 'hsl(340 85% 55%)' },
 ];
@@ -123,7 +123,7 @@ export function Hero() {
 
   const text = '动效实验室';
   const subLines = [
-    ['40', '个精选动效，', '可调参数，', '可复制代码。'],
+    ['160', '个精选动效，', '可调参数，', '可复制代码。'],
     ['为', '中文开发者打造', '的动效参考站。'],
   ];
 

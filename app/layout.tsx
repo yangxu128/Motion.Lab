@@ -11,7 +11,7 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
   title: 'Motion.Lab — 动效实验室',
-  description: '40 个精选动效的中文参考站,支持调参与代码复制',
+  description: '160 个精选动效的中文参考站,支持调参与代码复制',
   metadataBase: new URL('https://motion-lab.vercel.app'),
 };
 
