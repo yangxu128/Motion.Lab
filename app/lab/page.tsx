@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/lab/EmptyState';
 import { Drawer } from '@/components/lab/Drawer';
 import { ParamPanel } from '@/components/lab/ParamPanel';
 import { CodePanel } from '@/components/lab/CodePanel';
+import { getAllLikes } from '@/lib/likes';
 
 export default function LabPage() {
   return (
@@ -22,21 +23,39 @@ function LabContent() {
   const router = useRouter();
   const q = (params.get('q') || '').toLowerCase();
   const cat = params.get('cat') || 'all';
+  const sort = params.get('sort') || 'default';
   const openId = params.get('open');
   const panel = params.get('panel') as 'code' | 'params' | null;
 
+  const [likeMap, setLikeMap] = useState<Record<string, number>>({});
   const [, setTick] = useState(0);
   useEffect(() => {
+    setLikeMap(getAllLikes());
     const h = () => setTick((t) => t + 1);
+    const onLikes = () => setLikeMap(getAllLikes());
     window.addEventListener('popstate', h);
-    return () => window.removeEventListener('popstate', h);
+    window.addEventListener('likes-updated', onLikes);
+    return () => {
+      window.removeEventListener('popstate', h);
+      window.removeEventListener('likes-updated', onLikes);
+    };
   }, []);
 
-  const filtered = useMemo(() => EFFECTS.filter((e) => {
-    if (cat !== 'all' && e.category !== cat) return false;
-    if (q && !`${e.name} ${e.englishName} ${e.tags.join(' ')}`.toLowerCase().includes(q)) return false;
-    return true;
-  }), [q, cat]);
+  const filtered = useMemo(() => {
+    const list = EFFECTS.filter((e) => {
+      if (cat !== 'all' && e.category !== cat) return false;
+      if (q && !`${e.name} ${e.englishName} ${e.tags.join(' ')}`.toLowerCase().includes(q)) return false;
+      return true;
+    });
+    if (sort === 'likes') {
+      // 按点赞数降序；0 排最后（不是排最前）；相同点赞数按原顺序
+      return list
+        .map((e, i) => ({ e, i, likes: likeMap[e.id] ?? 0 }))
+        .sort((a, b) => b.likes - a.likes || a.i - b.i)
+        .map((x) => x.e);
+    }
+    return list;
+  }, [q, cat, sort, likeMap]);
 
   const open = openId ? EFFECTS.find((e) => e.id === openId) : null;
   const close = () => {

@@ -30,3 +30,69 @@
   50% { transform: scale(1.15); }
   100% { transform: scale(1); opacity: 1; }
 }
+
+.sortGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+}
+.sortLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 0 8px 0 10px;
+  letter-spacing: 0.05em;
+}
+.sortBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+.sortBtn:hover {
+  color: var(--fg);
+  background: rgba(0, 0, 0, 0.04);
+}
+.sortBtn:active {
+  transform: scale(0.96);
+}
+.sortBtn.sortActive {
+  background: hsl(280 80% 60%);
+  color: #fff;
+  box-shadow: 0 2px 8px hsl(280 80% 60% / 0.35);
+}
+.sortBtn.sortActive:hover {
+  background: hsl(280 80% 55%);
+  color: #fff;
+}
+.sortIcon {
+  font-size: 13px;
+  line-height: 1;
+  color: hsl(340 85% 60%);
+  transition: transform 0.2s ease;
+}
+.sortBtn.sortActive .sortIcon {
+  color: #fff;
+  animation: heartBeat 1.2s ease-in-out infinite;
+}
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.15); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.1); }
+  80% { transform: scale(1); }
+}

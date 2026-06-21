@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/Button';
 import type { Effect } from '@/data/effects';
+import { getAllLikes, like } from '@/lib/likes';
 import styles from './EffectCard.module.css';
 
 export function EffectCard({ effect }: { effect: Effect }) {
@@ -12,7 +13,26 @@ export function EffectCard({ effect }: { effect: Effect }) {
   });
   const [key, setKey] = useState(0);
   const [lastReplay, setLastReplay] = useState(0);
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [bouncing, setBouncing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const m = getAllLikes();
+    setLikes(m[effect.id] ?? 0);
+    setLiked(!!m[effect.id]);
+    const onUpdate = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { id: string; count: number };
+      if (detail.id === effect.id) {
+        setLikes(detail.count);
+        setBouncing(true);
+        setTimeout(() => setBouncing(false), 500);
+      }
+    };
+    window.addEventListener('likes-updated', onUpdate);
+    return () => window.removeEventListener('likes-updated', onUpdate);
+  }, [effect.id]);
 
   const Preview = dynamic(effect.preview, { ssr: false, loading: () => <div style={{ opacity: 0.3 }}>…</div> });
   const replay = () => {
@@ -24,6 +44,27 @@ export function EffectCard({ effect }: { effect: Effect }) {
     url.searchParams.set('open', effect.id); url.searchParams.set('panel', panel);
     window.history.pushState({}, '', url);
     window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (liked) return;
+    setLiked(true);
+    like(effect.id);
+    // 触发飞心动画
+    if (cardRef.current) {
+      const btn = cardRef.current.querySelector(`.${styles.likeBtn}`) as HTMLElement | null;
+      if (btn) {
+        const rect = btn.getBoundingClientRect();
+        const cRect = cardRef.current.getBoundingClientRect();
+        const heart = document.createElement('span');
+        heart.className = styles.flyHeart;
+        heart.textContent = '❤';
+        heart.style.left = `${rect.left - cRect.left + rect.width / 2}px`;
+        heart.style.top = `${rect.top - cRect.top + rect.height / 2}px`;
+        cardRef.current.appendChild(heart);
+        setTimeout(() => heart.remove(), 1000);
+      }
+    }
   };
 
   useEffect(() => {
@@ -62,6 +103,15 @@ export function EffectCard({ effect }: { effect: Effect }) {
 
   return (
     <div className={styles.card} ref={cardRef} data-category={effect.category}>
+      <button
+        className={`${styles.likeBtn} ${liked ? styles.liked : ''} ${bouncing ? styles.bouncing : ''}`}
+        onClick={handleLike}
+        aria-label={liked ? '已点赞' : '点赞'}
+        title={liked ? '已点赞' : '点赞'}
+      >
+        <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
+        <span className={styles.likeCount}>{likes}</span>
+      </button>
       <div className={styles.preview} onMouseEnter={replay}><Preview key={key} params={params} /></div>
       <div className={styles.body}>
         <div>

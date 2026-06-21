@@ -10,6 +10,7 @@ export function Toolbar({ count }: { count: number }) {
   const params = useSearchParams();
   const cat = (params.get('cat') as any) || 'all';
   const q = params.get('q') || '';
+  const sort = (params.get('sort') as any) || 'default';
   const [displayCount, setDisplayCount] = useState(count);
 
   const setParam = useCallback((key: string, value: string | null) => {
@@ -43,6 +44,24 @@ export function Toolbar({ count }: { count: number }) {
       </div>
       <div className={styles.row}>
         <Tabs items={CATEGORIES.map((c) => ({ value: c.id, label: c.name }))} value={cat} onChange={(v) => setParam('cat', v === 'all' ? null : v)} />
+        <div className={styles.sortGroup}>
+          <span className={styles.sortLabel}>排序</span>
+          <button
+            className={`${styles.sortBtn} ${sort === 'default' ? styles.sortActive : ''}`}
+            onClick={() => setParam('sort', null)}
+            aria-label="默认排序"
+          >
+            默认
+          </button>
+          <button
+            className={`${styles.sortBtn} ${sort === 'likes' ? styles.sortActive : ''}`}
+            onClick={() => setParam('sort', 'likes')}
+            aria-label="按点赞数排序"
+          >
+            <span className={styles.sortIcon}>♥</span>
+            点赞
+          </button>
+        </div>
       </div>
     </div>
   );

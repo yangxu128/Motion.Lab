@@ -99,3 +99,101 @@
 @keyframes rippleExpand {
   to { transform: translate(-50%, -50%) scale(40); opacity: 0; }
 }
+
+/* 点赞按钮（卡片右上角悬浮） */
+.likeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.likeBtn:hover {
+  transform: scale(1.08);
+  color: hsl(340 85% 55%);
+  border-color: hsl(340 85% 65%);
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(220, 50, 90, 0.18);
+}
+.likeBtn:active {
+  transform: scale(0.95);
+}
+.likeBtn.liked {
+  color: hsl(340 85% 55%);
+  border-color: hsl(340 85% 65%);
+  background: hsl(340 85% 96%);
+  cursor: default;
+}
+.likeBtn.liked:hover {
+  transform: none;
+}
+.heartIcon {
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.likeBtn:hover .heartIcon {
+  transform: scale(1.15);
+}
+.likeBtn.liked .heartIcon {
+  animation: heartPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.likeCount {
+  min-width: 1ch;
+  display: inline-block;
+  text-align: left;
+}
+.likeBtn.bouncing .likeCount {
+  animation: numberBump 0.5s ease-out;
+}
+@keyframes heartPop {
+  0% { transform: scale(0.6); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+@keyframes numberBump {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-4px) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* 飞心动画 */
+.flyHeart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  font-size: 18px;
+  color: hsl(340 85% 55%);
+  transform: translate(-50%, -50%);
+  animation: heartFly 0.95s ease-out forwards;
+}
+@keyframes heartFly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -80%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -240%) scale(1.6);
+  }
+}
