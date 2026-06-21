@@ -39,6 +39,19 @@ const EXAMPLES = [
 const TITLE = '让 AI 调用动效';
 const KICKER = 'AI Agent Skill · 2026';
 
+// 解析 YAML frontmatter + body — 避免 frontmatter 被 react-markdown 当成标题渲染
+function parseFrontmatter(md: string): { frontmatter: { key: string; value: string }[]; body: string } {
+  const match = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { frontmatter: [], body: md };
+  const [, yaml, body] = match;
+  const frontmatter = yaml.split('\n').filter(Boolean).map((line) => {
+    const idx = line.indexOf(':');
+    if (idx === -1) return { key: line.trim(), value: '' };
+    return { key: line.slice(0, idx).trim(), value: line.slice(idx + 1).trim() };
+  });
+  return { frontmatter, body };
+}
+
 // 演示对话 — 在 Hero 右侧循环播放
 const DEMO_SCRIPT = [
   { type: 'user' as const, text: '帮我给按钮加点击波纹' },
@@ -492,7 +505,28 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
             <div className={styles.terminalBody}>
               {previewMode === 'rendered' ? (
                 <div className={styles.markdown}>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{skillMd}</ReactMarkdown>
+                  {(() => {
+                    const { frontmatter, body } = parseFrontmatter(skillMd);
+                    return (
+                      <>
+                        {frontmatter.length > 0 && (
+                          <div className={styles.frontmatter}>
+                            <div className={styles.frontmatterHeader}>
+                              <span className={styles.frontmatterBadge}>YAML</span>
+                              <span className={styles.frontmatterTitle}>Frontmatter</span>
+                            </div>
+                            {frontmatter.map((f) => (
+                              <div key={f.key} className={styles.frontmatterRow}>
+                                <span className={styles.frontmatterKey}>{f.key}</span>
+                                <span className={styles.frontmatterValue}>{f.value}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                      </>
+                    );
+                  })()}
                 </div>
               ) : (
                 <pre className={styles.terminalSource}><code>{skillMd}</code></pre>

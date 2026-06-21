@@ -893,6 +893,66 @@
   line-height: 1.7;
 }
 
+/* Frontmatter 卡片 — 单独渲染 YAML 元数据 */
+.frontmatter {
+  margin: 0 0 32px;
+  background: hsl(220 15% 10%);
+  border: 1px solid hsl(220 15% 22%);
+  border-left: 3px solid hsl(280 85% 60%);
+  border-radius: 8px;
+  padding: 16px 20px;
+  position: relative;
+}
+
+.frontmatterHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed hsl(220 15% 22%);
+}
+
+.frontmatterBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 85% 60%));
+  color: white;
+  letter-spacing: 0.06em;
+}
+
+.frontmatterTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: hsl(220 10% 60%);
+  letter-spacing: 0.04em;
+}
+
+.frontmatterRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.frontmatterKey {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: hsl(280 90% 75%);
+  letter-spacing: 0.04em;
+}
+
+.frontmatterValue {
+  color: hsl(30 70% 75%);
+  line-height: 1.5;
+}
+
 .markdown h1, .markdown h2, .markdown h3, .markdown h4 {
   color: #f0f6fc;
   font-weight: 800;
