@@ -1,0 +1,8 @@
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.preview { aspect-ratio: 4 / 3; border-bottom: 1px solid var(--border); position: relative; }
+.body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.title { font-size: 20px; font-weight: 700; }
+.desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; background: rgba(0,0,0,0.05); border-radius: 999px; }

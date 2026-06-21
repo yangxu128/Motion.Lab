@@ -1,0 +1,4 @@
+.toolbar { position: sticky; top: 56px; z-index: 40; padding: 24px 48px; background: rgba(250,250,250,0.85); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+.row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.search { flex: 1; min-width: 200px; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--card); font-size: 14px; outline: none; }
+.count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }

@@ -1,0 +1,3 @@
+.empty { padding: 120px 48px; text-align: center; }
+.empty h2 { font-size: 48px; margin-bottom: 16px; }
+.empty p { color: var(--muted); margin-bottom: 32px; }

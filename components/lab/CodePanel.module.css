@@ -1,0 +1,4 @@
+.panel { display: flex; flex-direction: column; gap: 16px; }
+.tabs { display: flex; justify-content: space-between; align-items: center; }
+.code { background: #0a0a0a; color: #fafafa; padding: 16px; border-radius: 12px; font-family: var(--font-mono); font-size: 13px; line-height: 1.5; overflow-x: auto; max-height: 60vh; }
+.code pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
