@@ -84,48 +84,35 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
     return () => { cancelled = true; clearTimeout(startTimer); };
   }, []);
 
-  // Hero: char-by-char entrance (consistent with Home/Hero)
+  // Hero: 标题用纯 CSS 动画（避免 GSAP 起始态在某些情况下卡住）
   useEffect(() => {
-    if (!titleRef.current) return;
-    const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
-    // 关键：动画前先强制可见，避免 autoAlpha 起始态在某些情况下卡住
-    gsap.set(chars, { autoAlpha: 1 });
-    gsap.fromTo(
-      chars,
-      { y: 60, rotateX: -90 },
-      { y: 0, rotateX: 0, stagger: 0.04, duration: 0.9, ease: 'power4.out' }
-    );
-  }, []);
-
-  // Hero: subtitle + actions fade in after chars
-  useEffect(() => {
-    gsap.set([subtitleRef.current, actionsRef.current, statsRef.current, demoRef.current].filter(Boolean), { autoAlpha: 1 });
+    // 只对副标题、按钮、stats、demo 容器做 GSAP 入场
     if (subtitleRef.current) {
       gsap.fromTo(
         subtitleRef.current,
         { y: 24 },
-        { y: 0, duration: 0.7, delay: 0.5, ease: 'power2.out' }
+        { y: 0, duration: 0.7, delay: 0.3, ease: 'power2.out', clearProps: 'transform' }
       );
     }
     if (actionsRef.current) {
       gsap.fromTo(
         actionsRef.current.children,
         { y: 20 },
-        { y: 0, stagger: 0.1, duration: 0.5, delay: 0.8, ease: 'power2.out' }
+        { y: 0, stagger: 0.1, duration: 0.5, delay: 0.5, ease: 'power2.out', clearProps: 'transform' }
       );
     }
     if (statsRef.current) {
       gsap.fromTo(
         statsRef.current.children,
         { y: 16 },
-        { y: 0, stagger: 0.08, duration: 0.5, delay: 1.0, ease: 'power2.out' }
+        { y: 0, stagger: 0.08, duration: 0.5, delay: 0.7, ease: 'power2.out', clearProps: 'transform' }
       );
     }
     if (demoRef.current) {
       gsap.fromTo(
         demoRef.current,
         { y: 40, scale: 0.96 },
-        { y: 0, scale: 1, duration: 0.9, delay: 0.6, ease: 'power3.out' }
+        { y: 0, scale: 1, duration: 0.9, delay: 0.4, ease: 'power3.out', clearProps: 'transform' }
       );
     }
   }, []);
@@ -355,7 +342,7 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
             </div>
           </div>
 
-          {/* 右栏：演示对话窗口 */}
+          {/* 右栏：演示对话窗口 + 代码片段 */}
           <div ref={demoRef} className={styles.heroRight}>
             <div className={styles.demo}>
               <div className={styles.demoBar}>
@@ -389,15 +376,21 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
                 <span className={styles.demoStatus}>已加载 SKILL.md · {effectsCount} effects</span>
               </div>
             </div>
-            <div className={styles.floatTag} style={{ top: '-20px', right: '40px', background: 'hsl(280 85% 60%)' }}>
-              <span>自然语言</span>
+
+            {/* 代码片段卡 — 填满右栏下方的空白 */}
+            <div className={styles.snippetCard}>
+              <div className={styles.snippetLabel}>// SKILL.md · 片段</div>
+              <pre className={styles.snippetCode}>
+<span className={styles.snippetCmt}>{'# 帮我给按钮加个点击波纹效果\n'}</span><span className={styles.snippetKey}>推荐</span> <span className={styles.snippetStr}>click-ripple-material</span>{'\n'}
+<span className={styles.snippetCmt}>{'# 首页标题想要打字机效果\n'}</span><span className={styles.snippetKey}>推荐</span> <span className={styles.snippetStr}>text-typewriter-multi</span>{'\n'}
+<span className={styles.snippetCmt}>{'# 做个粒子背景\n'}</span><span className={styles.snippetKey}>推荐</span> <span className={styles.snippetStr}>flow-field / particle-galaxy</span>
+              </pre>
             </div>
-            <div className={styles.floatTag} style={{ bottom: '-16px', left: '20px', background: 'hsl(340 85% 60%)' }}>
-              <span>一键复制</span>
-            </div>
-            <div className={styles.floatTag} style={{ top: '40%', right: '-24px', background: 'hsl(30 95% 55%)' }}>
-              <span>160 动效</span>
-            </div>
+
+            {/* 浮动标签 — 锚定在 demo 容器边界内 */}
+            <div className={styles.floatTag} style={{ top: '12%', right: '-12px', background: 'hsl(280 85% 60%)' }}>自然语言</div>
+            <div className={styles.floatTag} style={{ top: '48%', left: '-12px', background: 'hsl(340 85% 60%)' }}>一键复制</div>
+            <div className={styles.floatTag} style={{ bottom: '28%', right: '-18px', background: 'hsl(30 95% 55%)' }}>160 动效</div>
           </div>
         </div>
 
