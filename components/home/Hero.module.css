@@ -75,6 +75,8 @@
   color: transparent;
   background-size: 200% 200%;
   animation: gradientShift 6s ease-in-out infinite;
+  /* Fallback for users with background-clip:text not supported or for SSR */
+  -webkit-text-fill-color: transparent;
 }
 
 @keyframes gradientShift {
@@ -86,7 +88,11 @@
   }
 }
 
-.title span {
+.char {
+  display: inline-block;
+}
+
+.word {
   display: inline-block;
 }
 
