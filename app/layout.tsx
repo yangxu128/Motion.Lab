@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import { HSLBackground } from '@/components/site/HSLBackground';
 import { DotGrid } from '@/components/site/DotGrid';
+import { SiteHeader } from '@/components/site/SiteHeader';
+import { SiteFooter } from '@/components/site/SiteFooter';
 import './globals.css';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" className={`${geist.variable} ${mono.variable}`}>
-      <body><HSLBackground /><DotGrid />{children}</body>
+      <body><HSLBackground /><DotGrid /><SiteHeader />{children}<SiteFooter /></body>
     </html>
   );
 }

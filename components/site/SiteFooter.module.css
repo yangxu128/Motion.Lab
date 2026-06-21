@@ -1,0 +1,3 @@
+/* SiteFooter.module.css */
+.footer { padding: 48px 32px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); flex-wrap: wrap; gap: 16px; }
+.footer a { text-decoration: underline; }
