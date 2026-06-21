@@ -1,13 +1,14 @@
 .section {
   position: relative;
-  padding: 180px 48px;
+  padding: 160px 48px;
   text-align: center;
   overflow: hidden;
   background: linear-gradient(
-    165deg,
-    hsl(260 55% 14%) 0%,
-    hsl(265 50% 10%) 50%,
-    hsl(270 45% 8%) 100%
+    180deg,
+    hsl(220 20% 99%) 0%,
+    hsl(280 50% 96%) 30%,
+    hsl(330 55% 95%) 70%,
+    hsl(20 80% 95%) 100%
   );
 }
 
@@ -16,22 +17,22 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.3;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 0;
   animation: orbPulse 10s ease-in-out infinite;
 }
 
 @keyframes orbPulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.15); opacity: 0.5; }
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.15); opacity: 0.6; }
 }
 
 /* Floating particles */
 .particle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.7;
+  opacity: 0.85;
   z-index: 0;
   animation: particleFloat 6s ease-in-out infinite;
   pointer-events: none;
@@ -41,11 +42,11 @@
 @keyframes particleFloat {
   0%, 100% {
     transform: translateY(0px) scale(1);
-    opacity: 0.7;
+    opacity: 0.85;
   }
   50% {
     transform: translateY(-30px) scale(1.4);
-    opacity: 0.35;
+    opacity: 0.45;
   }
 }
 
@@ -72,7 +73,7 @@
 }
 
 .statSep {
-  color: hsl(260 30% 40%);
+  color: hsl(280 20% 55%);
   font-size: 18px;
 }
 
@@ -86,7 +87,7 @@
   font-family: var(--font-display);
   font-size: 32px;
   font-weight: 900;
-  background: linear-gradient(135deg, hsl(280 85% 70%), hsl(340 85% 65%));
+  background: linear-gradient(135deg, hsl(280 85% 55%), hsl(340 85% 55%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -96,7 +97,7 @@
 .statLabel {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: hsl(220 12% 65%);
+  color: hsl(220 12% 40%);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -107,7 +108,7 @@
   margin-bottom: 24px;
   line-height: 0.9;
   letter-spacing: -0.04em;
-  color: white;
+  color: hsl(260 60% 18%);
   font-weight: 900;
   position: relative;
   display: inline-block;
@@ -116,9 +117,9 @@
 .bigAccent {
   background: linear-gradient(
     135deg,
-    hsl(280 85% 70%) 0%,
-    hsl(340 85% 65%) 50%,
-    hsl(30 95% 60%) 100%
+    hsl(280 85% 55%) 0%,
+    hsl(340 85% 55%) 50%,
+    hsl(20 95% 55%) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -134,7 +135,7 @@
 
 .lead {
   font-size: clamp(16px, 1.6vw, 20px);
-  color: hsl(220 10% 70%);
+  color: hsl(220 15% 30%);
   margin-bottom: 40px;
   max-width: 480px;
   margin-left: auto;
@@ -162,7 +163,7 @@
 
 .ctaBtn:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 32px hsl(280 70% 30% / 0.6);
+  box-shadow: 0 12px 32px hsl(280 70% 50% / 0.35);
 }
 
 /* Click ripple */

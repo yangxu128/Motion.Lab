@@ -96,9 +96,9 @@ export function CTA() {
   return (
     <section ref={sectionRef} className={styles.section}>
       {/* Background glow orbs */}
-      <div className={styles.glowOrb} style={{ top: '10%', left: '20%', width: 400, height: 400, background: 'hsl(260 70% 40%)' }} />
-      <div className={styles.glowOrb} style={{ bottom: '10%', right: '15%', width: 350, height: 350, background: 'hsl(280 65% 35%)' }} />
-      <div className={styles.glowOrb} style={{ top: '50%', left: '50%', width: 300, height: 300, background: 'hsl(300 60% 30%)', transform: 'translate(-50%, -50%)' }} />
+      <div className={styles.glowOrb} style={{ top: '10%', left: '15%', width: 360, height: 360, background: 'hsl(280 75% 70%)' }} />
+      <div className={styles.glowOrb} style={{ bottom: '5%', right: '10%', width: 320, height: 320, background: 'hsl(330 80% 68%)' }} />
+      <div className={styles.glowOrb} style={{ top: '45%', left: '50%', width: 280, height: 280, background: 'hsl(30 90% 65%)', transform: 'translate(-50%, -50%)' }} />
 
       {/* Floating particles */}
       {PARTICLES.map((p, i) => (
