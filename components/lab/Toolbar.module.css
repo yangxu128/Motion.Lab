@@ -1,4 +1,32 @@
 .toolbar { position: sticky; top: 56px; z-index: 40; padding: 24px 48px; background: rgba(250,250,250,0.85); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
 .row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.search { flex: 1; min-width: 200px; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--card); font-size: 14px; outline: none; }
-.count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.search {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--card);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.search:focus {
+  border-color: hsl(280 80% 60%);
+  box-shadow: 0 0 0 4px hsl(280 80% 60% / 0.15);
+  background: #fff;
+}
+.count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 2px; }
+.countNumber {
+  display: inline-block;
+  min-width: 1.5ch;
+  text-align: right;
+  color: hsl(280 80% 60%);
+  font-weight: 600;
+  animation: countPulse 0.4s ease-out;
+}
+@keyframes countPulse {
+  0% { transform: scale(0.7); opacity: 0; }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}

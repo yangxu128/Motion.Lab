@@ -1,8 +1,101 @@
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  will-change: transform;
+  --card-accent: hsl(280 85% 60%);
+  border-top: 3px solid var(--card-accent);
+}
+.card[data-category="basic"] { --card-accent: hsl(210 90% 55%); }
+.card[data-category="text"] { --card-accent: hsl(280 85% 60%); }
+.card[data-category="interaction"] { --card-accent: hsl(340 85% 60%); }
+.card[data-category="advanced"] { --card-accent: hsl(30 95% 55%); }
+
 .card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
-.preview { aspect-ratio: 4 / 3; border-bottom: 1px solid var(--border); position: relative; }
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--card-accent, hsl(280 85% 60%)) 15%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.card:hover::before { opacity: 1; }
+.card > * { position: relative; z-index: 1; }
+
+.preview {
+  aspect-ratio: 4 / 3;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+.card:hover .preview::after {
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
 .body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 .title { font-size: 20px; font-weight: 700; }
 .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
 .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-.tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; background: rgba(0,0,0,0.05); border-radius: 999px; }
+.actions :global(button) { position: relative; overflow: hidden; }
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 999px;
+  transition: all 0.3s ease;
+}
+.card:hover .tag {
+  background: color-mix(in srgb, var(--card-accent, hsl(280 85% 60%)) 12%, transparent);
+  color: var(--card-accent, hsl(280 85% 60%));
+}
+
+.ripple {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: rippleExpand 0.6s ease-out forwards;
+}
+@keyframes rippleExpand {
+  to { transform: translate(-50%, -50%) scale(40); opacity: 0; }
+}
