@@ -37,43 +37,95 @@ const EXAMPLES = [
 const TITLE = '让 AI 调用动效';
 const KICKER = 'AI Agent Skill · 2026';
 
+// 演示对话 — 在 Hero 右侧循环播放
+const DEMO_SCRIPT = [
+  { type: 'user' as const, text: '帮我给按钮加点击波纹' },
+  { type: 'agent' as const, text: '推荐 click-ripple-material' },
+  { type: 'user' as const, text: '首页标题想要打字机效果' },
+  { type: 'agent' as const, text: '推荐 text-typewriter-multi' },
+];
+
 export function SkillPage({ skillMd, effectsCount }: Props) {
   const [copied, setCopied] = useState(false);
+  const [demoStep, setDemoStep] = useState(0);
+  const [typed, setTyped] = useState('');
 
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const demoRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
   const examplesRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionHeadingsRef = useRef<HTMLHeadingElement[]>([]);
 
+  // Hero 演示对话 — 循环打字机效果
+  useEffect(() => {
+    let cancelled = false;
+    const runStep = (i: number) => {
+      if (cancelled) return;
+      setDemoStep(i);
+      setTyped('');
+      const msg = DEMO_SCRIPT[i];
+      let idx = 0;
+      const typeTimer = setInterval(() => {
+        if (cancelled) { clearInterval(typeTimer); return; }
+        idx += 1;
+        setTyped(msg.text.slice(0, idx));
+        if (idx >= msg.text.length) {
+          clearInterval(typeTimer);
+          setTimeout(() => runStep((i + 1) % DEMO_SCRIPT.length), 1600);
+        }
+      }, 60);
+    };
+    const startTimer = setTimeout(() => runStep(0), 1200);
+    return () => { cancelled = true; clearTimeout(startTimer); };
+  }, []);
+
   // Hero: char-by-char entrance (consistent with Home/Hero)
   useEffect(() => {
     if (!titleRef.current) return;
     const chars = titleRef.current.querySelectorAll<HTMLElement>('[data-char]');
+    // 关键：动画前先强制可见，避免 autoAlpha 起始态在某些情况下卡住
+    gsap.set(chars, { autoAlpha: 1 });
     gsap.fromTo(
       chars,
-      { y: 80, autoAlpha: 0, rotateX: -90 },
-      { y: 0, autoAlpha: 1, rotateX: 0, stagger: 0.04, duration: 0.9, ease: 'power4.out' }
+      { y: 60, rotateX: -90 },
+      { y: 0, rotateX: 0, stagger: 0.04, duration: 0.9, ease: 'power4.out' }
     );
   }, []);
 
   // Hero: subtitle + actions fade in after chars
   useEffect(() => {
+    gsap.set([subtitleRef.current, actionsRef.current, statsRef.current, demoRef.current].filter(Boolean), { autoAlpha: 1 });
     if (subtitleRef.current) {
       gsap.fromTo(
         subtitleRef.current,
-        { y: 24, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.7, delay: 0.5, ease: 'power2.out' }
+        { y: 24 },
+        { y: 0, duration: 0.7, delay: 0.5, ease: 'power2.out' }
       );
     }
     if (actionsRef.current) {
       gsap.fromTo(
         actionsRef.current.children,
-        { y: 20, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.5, delay: 0.8, ease: 'power2.out' }
+        { y: 20 },
+        { y: 0, stagger: 0.1, duration: 0.5, delay: 0.8, ease: 'power2.out' }
+      );
+    }
+    if (statsRef.current) {
+      gsap.fromTo(
+        statsRef.current.children,
+        { y: 16 },
+        { y: 0, stagger: 0.08, duration: 0.5, delay: 1.0, ease: 'power2.out' }
+      );
+    }
+    if (demoRef.current) {
+      gsap.fromTo(
+        demoRef.current,
+        { y: 40, scale: 0.96 },
+        { y: 0, scale: 1, duration: 0.9, delay: 0.6, ease: 'power3.out' }
       );
     }
   }, []);
@@ -253,33 +305,99 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
         <div className={styles.blob} style={{ bottom: '10%', left: '25%', width: 260, height: 260, background: 'hsl(180 90% 50%)', animationDelay: '-4s' }} />
         <div className={styles.blob} style={{ top: '25%', right: '22%', width: 220, height: 220, background: 'hsl(30 95% 55%)', animationDelay: '-6s' }} />
 
-        <div className={styles.heroContent}>
-          <div className={styles.kicker}>{KICKER}</div>
-          <h1 ref={titleRef} className={styles.heroTitle}>
-            {TITLE.split('').map((c, i) => (
-              <span key={i} data-char className={styles.heroChar}>
-                {c === ' ' ? '\u00A0' : c}
-              </span>
-            ))}
-          </h1>
-          <p ref={subtitleRef} className={styles.heroSubtitle}>
-            把 Motion.Lab 的 <strong className={styles.heroStrong}>{effectsCount}</strong> 个动效打包成 SKILL.md，
-            <br />安装到任意 AI Agent，用自然语言获取可复制的动效源码。
-          </p>
-          <div ref={actionsRef} className={styles.heroActions}>
-            <button className={styles.btnPrimary} onClick={handleDownload}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-              </svg>
-              <span>下载 SKILL.md</span>
-            </button>
-            <button className={styles.btnSecondary} onClick={handleCopy}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>
-              <span>{copied ? '已复制 ✓' : '复制内容'}</span>
-            </button>
+        <div className={styles.heroGrid}>
+          {/* 左栏：标题/副标题/统计/CTA */}
+          <div className={styles.heroLeft}>
+            <div className={styles.kicker}>{KICKER}</div>
+            <h1 ref={titleRef} className={styles.heroTitle}>
+              {TITLE.split('').map((c, i) => (
+                <span key={i} data-char className={styles.heroChar}>
+                  {c === ' ' ? '\u00A0' : c}
+                </span>
+              ))}
+            </h1>
+            <p ref={subtitleRef} className={styles.heroSubtitle}>
+              把 Motion.Lab 的 <strong className={styles.heroStrong}>{effectsCount}</strong> 个动效打包成 SKILL.md，
+              <br />安装到任意 AI Agent，用自然语言获取可复制的动效源码。
+            </p>
+
+            <div ref={statsRef} className={styles.stats}>
+              <div className={styles.statItem}>
+                <span className={styles.statValue}>{effectsCount}</span>
+                <span className={styles.statLabel}>动效</span>
+              </div>
+              <span className={styles.statSep}>·</span>
+              <div className={styles.statItem}>
+                <span className={styles.statValue}>4</span>
+                <span className={styles.statLabel}>分类</span>
+              </div>
+              <span className={styles.statSep}>·</span>
+              <div className={styles.statItem}>
+                <span className={styles.statValue}>100<span className={styles.statUnit}>%</span></span>
+                <span className={styles.statLabel}>开源</span>
+              </div>
+            </div>
+
+            <div ref={actionsRef} className={styles.heroActions}>
+              <button className={styles.btnPrimary} onClick={handleDownload}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                <span>下载 SKILL.md</span>
+              </button>
+              <button className={styles.btnSecondary} onClick={handleCopy}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                <span>{copied ? '已复制 ✓' : '复制内容'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 右栏：演示对话窗口 */}
+          <div ref={demoRef} className={styles.heroRight}>
+            <div className={styles.demo}>
+              <div className={styles.demoBar}>
+                <span className={styles.demoDot} style={{ background: '#ff5f57' }} />
+                <span className={styles.demoDot} style={{ background: '#febc2e' }} />
+                <span className={styles.demoDot} style={{ background: '#28c840' }} />
+                <span className={styles.demoName}>Motion.Lab Agent</span>
+                <span className={styles.demoLive}>
+                  <span className={styles.liveDot} />
+                  LIVE
+                </span>
+              </div>
+              <div className={styles.demoBody}>
+                {DEMO_SCRIPT.slice(0, demoStep).map((m, i) => (
+                  <div key={i} className={`${styles.demoMsg} ${m.type === 'user' ? styles.demoUser : styles.demoAgent}`}>
+                    <span className={styles.demoBadge}>{m.type === 'user' ? '你' : 'AI'}</span>
+                    <span className={styles.demoText}>{m.text}</span>
+                  </div>
+                ))}
+                {demoStep < DEMO_SCRIPT.length && (
+                  <div className={`${styles.demoMsg} ${DEMO_SCRIPT[demoStep].type === 'user' ? styles.demoUser : styles.demoAgent}`}>
+                    <span className={styles.demoBadge}>{DEMO_SCRIPT[demoStep].type === 'user' ? '你' : 'AI'}</span>
+                    <span className={styles.demoText}>
+                      {typed}
+                      <span className={styles.cursor} />
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className={styles.demoFooter}>
+                <span className={styles.demoStatus}>已加载 SKILL.md · {effectsCount} effects</span>
+              </div>
+            </div>
+            <div className={styles.floatTag} style={{ top: '-20px', right: '40px', background: 'hsl(280 85% 60%)' }}>
+              <span>自然语言</span>
+            </div>
+            <div className={styles.floatTag} style={{ bottom: '-16px', left: '20px', background: 'hsl(340 85% 60%)' }}>
+              <span>一键复制</span>
+            </div>
+            <div className={styles.floatTag} style={{ top: '40%', right: '-24px', background: 'hsl(30 95% 55%)' }}>
+              <span>160 动效</span>
+            </div>
           </div>
         </div>
 
