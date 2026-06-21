@@ -5,3 +5,9 @@
 .nav { display: flex; gap: 24px; font-size: 14px; font-weight: 500; }
 .nav a { opacity: 0.6; transition: opacity 0.2s; }
 .nav a:hover, .nav a[data-active='true'] { opacity: 1; }
+
+@media (max-width: 640px) {
+  .header { padding: 12px 16px; }
+  .logo { font-size: 17px; }
+  .nav { gap: 16px; font-size: 13px; }
+}

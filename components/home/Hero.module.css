@@ -8,6 +8,10 @@
   overflow: hidden;
 }
 
+@media (max-width: 640px) {
+  .hero { padding: 100px 20px 60px; min-height: 92vh; }
+}
+
 /* Floating blobs */
 .blob {
   position: absolute;
@@ -131,6 +135,22 @@
   letter-spacing: 0.02em;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: badgeShimmer 4s ease-in-out infinite;
+}
+
+@keyframes badgeShimmer {
+  0%, 60% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
 }
 
 .badge:hover {
