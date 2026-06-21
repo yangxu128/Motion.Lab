@@ -100,35 +100,28 @@
   to { transform: translate(-50%, -50%) scale(40); opacity: 0; }
 }
 
-/* 点赞按钮（卡片右上角悬浮） */
+/* 点赞按钮（与重播/调参/代码同行，靠右） */
 .likeBtn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 5;
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border-radius: 8px;
+  background: var(--card);
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
   color: var(--muted);
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 .likeBtn:hover {
-  transform: scale(1.08);
+  transform: scale(1.05);
   color: hsl(340 85% 55%);
   border-color: hsl(340 85% 65%);
-  background: #fff;
-  box-shadow: 0 4px 14px rgba(220, 50, 90, 0.18);
+  background: hsl(340 85% 97%);
 }
 .likeBtn:active {
   transform: scale(0.95);
@@ -136,7 +129,7 @@
 .likeBtn.liked {
   color: hsl(340 85% 55%);
   border-color: hsl(340 85% 65%);
-  background: hsl(340 85% 96%);
+  background: hsl(340 85% 95%);
   cursor: default;
 }
 .likeBtn.liked:hover {

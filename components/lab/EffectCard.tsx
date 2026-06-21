@@ -103,15 +103,6 @@ export function EffectCard({ effect }: { effect: Effect }) {
 
   return (
     <div className={styles.card} ref={cardRef} data-category={effect.category}>
-      <button
-        className={`${styles.likeBtn} ${liked ? styles.liked : ''} ${bouncing ? styles.bouncing : ''}`}
-        onClick={handleLike}
-        aria-label={liked ? '已点赞' : '点赞'}
-        title={liked ? '已点赞' : '点赞'}
-      >
-        <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
-        <span className={styles.likeCount}>{likes}</span>
-      </button>
       <div className={styles.preview} onMouseEnter={replay}><Preview key={key} params={params} /></div>
       <div className={styles.body}>
         <div>
@@ -124,7 +115,16 @@ export function EffectCard({ effect }: { effect: Effect }) {
         <div className={styles.actions}>
           <Button onClick={(e: any) => handleButtonClick(e, replay)}>▶ 重播</Button>
           <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('params'))}>⚙ 调参</Button>
-          <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('code'))}>{'</>'} 代码</Button>
+          <Button onClick={(e: any) => handleButtonClick(e, () => openPanel('code'))}>{'< / >'} 代码</Button>
+          <button
+            className={`${styles.likeBtn} ${liked ? styles.liked : ''} ${bouncing ? styles.bouncing : ''}`}
+            onClick={handleLike}
+            aria-label={liked ? '已点赞' : '点赞'}
+            title={liked ? '已点赞' : '点赞'}
+          >
+            <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
+            <span className={styles.likeCount}>{likes}</span>
+          </button>
         </div>
       </div>
     </div>
