@@ -882,4 +882,905 @@ ctx.stroke(); t += 0.05; requestAnimationFrame(draw); } draw();`,
     },
     preview: lz('sine-wave'),
   },
+  {
+    id: 'slide-up',
+    name: '上滑入场',
+    englishName: 'Slide Up',
+    category: 'basic',
+    tags: ['slide', 'basic'],
+    description: '元素从下往上滑入并淡入,通用入场动画。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.2, max: 2, step: 0.1, default: 0.6, unit: 's' },
+      { kind: 'range', key: 'distance', label: '距离', min: 20, max: 120, step: 5, default: 40, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="slide-up">Slide Up</div>`,
+      css: `.slide-up { animation: slideUp var(--duration, 0.6s) ease-out both; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(var(--distance, 40px)); } to { opacity: 1; transform: translateY(0); } }`,
+      js: ``,
+    },
+    preview: lz('slide-up'),
+  },
+  {
+    id: 'slide-down',
+    name: '下滑入场',
+    englishName: 'Slide Down',
+    category: 'basic',
+    tags: ['slide', 'basic'],
+    description: '元素从上往下滑入,适合顶部 banner。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.2, max: 2, step: 0.1, default: 0.6, unit: 's' },
+      { kind: 'range', key: 'distance', label: '距离', min: 20, max: 120, step: 5, default: 40, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="slide-down">Slide Down</div>`,
+      css: `.slide-down { animation: slideDown var(--duration, 0.6s) ease-out both; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(calc(var(--distance, 40px) * -1)); } to { opacity: 1; transform: translateY(0); } }`,
+      js: ``,
+    },
+    preview: lz('slide-down'),
+  },
+  {
+    id: 'bounce-in',
+    name: '弹跳入场',
+    englishName: 'Bounce In',
+    category: 'basic',
+    tags: ['bounce', 'basic'],
+    description: '元素入场时多次反弹,有节奏感。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.5, max: 2, step: 0.1, default: 1, unit: 's' }
+    ],
+    code: {
+      html: `<div class="bounce-in">Bounce</div>`,
+      css: `.bounce-in { animation: bounceIn var(--duration, 1s) both; }
+@keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); opacity: 1; } 70% { transform: scale(0.9); } 85% { transform: scale(1.05); } 100% { transform: scale(1); } }`,
+      js: ``,
+    },
+    preview: lz('bounce-in'),
+  },
+  {
+    id: 'elastic-in',
+    name: '弹性入场',
+    englishName: 'Elastic In',
+    category: 'basic',
+    tags: ['elastic', 'basic'],
+    description: '入场时带有明显弹性回弹,生动有趣。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.5, max: 2.5, step: 0.1, default: 1.2, unit: 's' }
+    ],
+    code: {
+      html: `<div class="elastic-in">Elastic</div>`,
+      css: `.elastic-in { animation: elasticIn var(--duration, 1.2s) cubic-bezier(0.68, -0.55, 0.265, 1.55) both; }
+@keyframes elasticIn { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }`,
+      js: ``,
+    },
+    preview: lz('elastic-in'),
+  },
+  {
+    id: 'fade-out',
+    name: '淡出消失',
+    englishName: 'Fade Out',
+    category: 'basic',
+    tags: ['fade', 'basic'],
+    description: '元素持续淡出后回弹,适合循环演示。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1, max: 5, step: 0.1, default: 2, unit: 's' }
+    ],
+    code: {
+      html: `<div class="fade-out">Fade Out</div>`,
+      css: `.fade-out { animation: fadeOut var(--duration, 2s) ease-in-out infinite alternate; }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }`,
+      js: ``,
+    },
+    preview: lz('fade-out'),
+  },
+  {
+    id: 'scale-pulse',
+    name: '缩放呼吸',
+    englishName: 'Scale Pulse',
+    category: 'basic',
+    tags: ['scale', 'basic'],
+    description: '元素持续缩放形成呼吸效果,比 pulse 更夸张。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 0.6, max: 3, step: 0.1, default: 1.4, unit: 's' },
+      { kind: 'range', key: 'min', label: '最小', min: 0.4, max: 0.95, step: 0.05, default: 0.7 },
+      { kind: 'range', key: 'max', label: '最大', min: 1.05, max: 1.6, step: 0.05, default: 1.15 }
+    ],
+    code: {
+      html: `<div class="scale-pulse">●</div>`,
+      css: `.scale-pulse { animation: sp var(--duration, 1.4s) ease-in-out infinite; }
+@keyframes sp { 0%, 100% { transform: scale(var(--min, 0.7)); } 50% { transform: scale(var(--max, 1.15)); } }`,
+      js: ``,
+    },
+    preview: lz('scale-pulse'),
+  },
+  {
+    id: 'rotate-360',
+    name: '持续旋转',
+    englishName: 'Rotate 360',
+    category: 'basic',
+    tags: ['rotate', 'basic'],
+    description: '元素持续 360 度旋转,无限循环。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 0.5, max: 6, step: 0.1, default: 2, unit: 's' }
+    ],
+    code: {
+      html: `<div class="rotate-360">⟳</div>`,
+      css: `.rotate-360 { display: inline-block; animation: rot360 var(--duration, 2s) linear infinite; }
+@keyframes rot360 { to { transform: rotate(360deg); } }`,
+      js: ``,
+    },
+    preview: lz('rotate-360'),
+  },
+  {
+    id: 'swing',
+    name: '钟摆',
+    englishName: 'Swing',
+    category: 'basic',
+    tags: ['swing', 'basic'],
+    description: '顶部固定,左右摆动,像钟摆一样。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 0.8, max: 3, step: 0.1, default: 1.6, unit: 's' }
+    ],
+    code: {
+      html: `<div class="swing">⏰</div>`,
+      css: `.swing { display: inline-block; transform-origin: top center; animation: swing var(--duration, 1.6s) ease-in-out infinite; }
+@keyframes swing { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } }`,
+      js: ``,
+    },
+    preview: lz('swing'),
+  },
+  {
+    id: 'jello',
+    name: '果冻',
+    englishName: 'Jello',
+    category: 'basic',
+    tags: ['jello', 'basic'],
+    description: '元素呈现果冻般的扭曲抖动,俏皮可爱。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.6, max: 1.5, step: 0.1, default: 0.9, unit: 's' }
+    ],
+    code: {
+      html: `<div class="jello">JELLO</div>`,
+      css: `.jello { display: inline-block; animation: jello var(--duration, 0.9s) ease-in-out infinite; transform-origin: center; }
+@keyframes jello { 0%, 100% { transform: scale3d(1, 1, 1); } 30% { transform: scale3d(1.25, 0.75, 1); } 40% { transform: scale3d(0.75, 1.25, 1); } 50% { transform: scale3d(1.15, 0.85, 1); } 65% { transform: scale3d(0.95, 1.05, 1); } 75% { transform: scale3d(1.05, 0.95, 1); } }`,
+      js: ``,
+    },
+    preview: lz('jello'),
+  },
+  {
+    id: 'flash',
+    name: '闪烁',
+    englishName: 'Flash',
+    category: 'basic',
+    tags: ['flash', 'basic'],
+    description: '元素透明度快速闪烁,适合新消息/警告提示。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 0.4, max: 2, step: 0.1, default: 0.8, unit: 's' },
+      { kind: 'select', key: 'color', label: '颜色', options: ["red","yellow","blue","green"], default: 'red' }
+    ],
+    code: {
+      html: `<div class="flash">NOTICE</div>`,
+      css: `.flash { animation: flash var(--duration, 0.8s) ease-in-out infinite; padding: 12px 20px; background: hsl(0 90% 55%); color: white; border-radius: 8px; font-weight: 700; }
+@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }`,
+      js: ``,
+    },
+    preview: lz('flash'),
+  },
+  {
+    id: 'text-shadow-shift',
+    name: '阴影偏移',
+    englishName: 'Shadow Shift',
+    category: 'text',
+    tags: ['shadow', 'text'],
+    description: '文字阴影循环偏移,产生霓虹闪烁感。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1, max: 4, step: 0.1, default: 2, unit: 's' },
+      { kind: 'range', key: 'intensity', label: '强度', min: 2, max: 12, step: 1, default: 6, unit: 'px' }
+    ],
+    code: {
+      html: `<h1 class="tss">SHADOW</h1>`,
+      css: `.tss { font-size: 36px; font-weight: 900; color: white; text-shadow: var(--intensity, 6px) 0 hsl(320 90% 60%); animation: tss var(--duration, 2s) ease-in-out infinite alternate; }
+@keyframes tss { from { text-shadow: var(--intensity, 6px) 0 hsl(320 90% 60%); } to { text-shadow: calc(var(--intensity, 6px) * -1) 0 hsl(180 90% 60%); } }`,
+      js: ``,
+    },
+    preview: lz('text-shadow-shift'),
+  },
+  {
+    id: 'text-3d',
+    name: '3D 文字',
+    englishName: '3D Text',
+    category: 'text',
+    tags: ['3d', 'text'],
+    description: '多层文字堆叠形成 3D 立体透视效果。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'layers', label: '层数', min: 3, max: 12, step: 1, default: 6 },
+      { kind: 'range', key: 'depth', label: '深度', min: 1, max: 4, step: 1, default: 2, unit: 'px' }
+    ],
+    code: {
+      html: `<h1 class="t3d" data-text="3D">3D</h1>`,
+      css: `.t3d { position: relative; font-size: 56px; font-weight: 900; color: white; }
+.t3d::before, .t3d::after { content: attr(data-text); position: absolute; inset: 0; }
+.t3d::before { color: hsl(320 90% 60%); transform: translate(var(--depth, 2px), var(--depth, 2px)); }
+.t3d::after { color: hsl(200 90% 60%); transform: translate(calc(var(--depth, 2px) * -1), calc(var(--depth, 2px) * -1)); }`,
+      js: ``,
+    },
+    preview: lz('text-3d'),
+  },
+  {
+    id: 'text-rotate-in',
+    name: '字符旋转',
+    englishName: 'Char Rotate',
+    category: 'text',
+    tags: ['char', 'text'],
+    description: '每个字符依次旋转入场,强调感强。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '单项时长', min: 0.3, max: 1.2, step: 0.1, default: 0.6, unit: 's' },
+      { kind: 'range', key: 'stagger', label: '间隔', min: 0.05, max: 0.4, step: 0.05, default: 0.1, unit: 's' }
+    ],
+    code: {
+      html: `<h1 class="tri">ROTATE</h1>`,
+      css: `.tri span { display: inline-block; opacity: 0; animation: tri var(--duration, 0.6s) ease-out forwards; }
+.tri span:nth-child(1) { animation-delay: 0s; }
+.tri span:nth-child(2) { animation-delay: var(--stagger, 0.1s); }
+.tri span:nth-child(3) { animation-delay: calc(var(--stagger, 0.1s) * 2); }
+@keyframes tri { from { opacity: 0; transform: rotateY(180deg); } to { opacity: 1; transform: rotateY(0); } }`,
+      js: `[...document.querySelector('.tri').textContent].forEach(c => { const s = document.createElement('span'); s.textContent = c; c.replaceWith(s); });`,
+    },
+    preview: lz('text-rotate-in'),
+  },
+  {
+    id: 'letter-spacing-wave',
+    name: '字距呼吸',
+    englishName: 'Letter Spacing',
+    category: 'text',
+    tags: ['letter', 'text'],
+    description: '字间距循环变化,产生呼吸节奏。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1, max: 5, step: 0.1, default: 2.5, unit: 's' },
+      { kind: 'range', key: 'max', label: '最大间距', min: 4, max: 24, step: 1, default: 12, unit: 'px' }
+    ],
+    code: {
+      html: `<h1 class="lsw">BREATHE</h1>`,
+      css: `.lsw { font-size: 32px; font-weight: 900; letter-spacing: 0; animation: lsw var(--duration, 2.5s) ease-in-out infinite; }
+@keyframes lsw { 0%, 100% { letter-spacing: 0; } 50% { letter-spacing: var(--max, 12px); } }`,
+      js: ``,
+    },
+    preview: lz('letter-spacing-wave'),
+  },
+  {
+    id: 'underline-draw',
+    name: '下划线',
+    englishName: 'Underline Draw',
+    category: 'text',
+    tags: ['underline', 'text'],
+    description: '下划线从左到右逐段画出,适合链接。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.4, max: 2, step: 0.1, default: 0.8, unit: 's' }
+    ],
+    code: {
+      html: `<a class="ul-draw">HOVER LINK</a>`,
+      css: `.ul-draw { position: relative; font-size: 28px; font-weight: 700; color: inherit; text-decoration: none; }
+.ul-draw::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 3px; width: 0; background: currentColor; animation: ulDraw var(--duration, 0.8s) ease-out forwards; }
+@keyframes ulDraw { to { width: 100%; } }`,
+      js: ``,
+    },
+    preview: lz('underline-draw'),
+  },
+  {
+    id: 'highlight-sweep',
+    name: '高亮扫过',
+    englishName: 'Highlight Sweep',
+    category: 'text',
+    tags: ['highlight', 'text'],
+    description: '高亮条从左到右扫过文字,常用于强调。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1.5, max: 4, step: 0.1, default: 2.5, unit: 's' }
+    ],
+    code: {
+      html: `<h1 class="hl-sweep">SWEEP</h1>`,
+      css: `.hl-sweep { position: relative; display: inline-block; font-size: 36px; font-weight: 900; }
+.hl-sweep::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, hsl(50 100% 60%), transparent); transform: translateX(-100%); animation: sweep var(--duration, 2.5s) ease-in-out infinite; mix-blend-mode: multiply; }
+@keyframes sweep { 50% { transform: translateX(100%); } }`,
+      js: ``,
+    },
+    preview: lz('highlight-sweep'),
+  },
+  {
+    id: 'text-blink-cursor',
+    name: '闪烁光标',
+    englishName: 'Blink Cursor',
+    category: 'text',
+    tags: ['blink', 'text'],
+    description: '模拟终端的闪烁光标,极简风格。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'speed', label: '速度', min: 0.3, max: 1.5, step: 0.1, default: 0.8, unit: 's' }
+    ],
+    code: {
+      html: `<span class="cursor-t">输入中</span>`,
+      css: `.cursor-t { font-family: monospace; font-size: 24px; font-weight: 700; }
+.cursor-t::after { content: "_"; margin-left: 2px; animation: blink var(--speed, 0.8s) step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }`,
+      js: ``,
+    },
+    preview: lz('text-blink-cursor'),
+  },
+  {
+    id: 'rainbow-text',
+    name: '彩虹文字',
+    englishName: 'Rainbow Text',
+    category: 'text',
+    tags: ['rainbow', 'text'],
+    description: '文字颜色按彩虹色循环变化。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1, max: 6, step: 0.1, default: 3, unit: 's' }
+    ],
+    code: {
+      html: `<h1 class="rainbow">RAINBOW</h1>`,
+      css: `.rainbow { font-size: 40px; font-weight: 900; background: linear-gradient(90deg, hsl(0 90% 60%), hsl(60 90% 60%), hsl(120 90% 60%), hsl(180 90% 60%), hsl(240 90% 60%), hsl(300 90% 60%), hsl(360 90% 60%)); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rb var(--duration, 3s) linear infinite; }
+@keyframes rb { to { background-position: 200% 0; } }`,
+      js: ``,
+    },
+    preview: lz('rainbow-text'),
+  },
+  {
+    id: 'text-flip-3d',
+    name: '3D 翻面',
+    englishName: 'Flip 3D',
+    category: 'text',
+    tags: ['flip', 'text'],
+    description: '文字整体绕 Y 轴 360 度翻转,类似卡片。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 1, max: 4, step: 0.1, default: 2, unit: 's' }
+    ],
+    code: {
+      html: `<div class="flip3d-wrap"><h1 class="flip3d">FLIP</h1></div>`,
+      css: `.flip3d-wrap { perspective: 600px; }
+.flip3d { font-size: 40px; font-weight: 900; display: inline-block; animation: flip3d var(--duration, 2s) ease-in-out infinite; transform-style: preserve-3d; }
+@keyframes flip3d { 0% { transform: rotateY(0); } 50% { transform: rotateY(360deg); } 100% { transform: rotateY(360deg); } }`,
+      js: ``,
+    },
+    preview: lz('text-flip-3d'),
+  },
+  {
+    id: 'number-marquee',
+    name: '数字翻牌',
+    englishName: 'Number Marquee',
+    category: 'text',
+    tags: ['number', 'text'],
+    description: '类似时钟翻页的数字滚动效果。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'speed', label: '速度', min: 200, max: 1500, step: 100, default: 600, unit: 'ms' }
+    ],
+    code: {
+      html: `<div class="nmarquee"><span class="num" data-num="0"></span></div>`,
+      css: `.nmarquee { display: flex; gap: 8px; font-family: monospace; font-size: 48px; font-weight: 900; height: 60px; overflow: hidden; }
+.nmarquee .num { position: relative; height: 60px; min-width: 40px; text-align: center; }
+.nmarquee .num-track { position: absolute; left: 0; right: 0; transition: transform 0.5s ease; }`,
+      js: `const numEl = document.querySelector('.num');
+let cur = 0;
+function render() {
+  let track = '';
+  for (let i = 0; i < 10; i++) track += \`<div>\${i}</div>\`;
+  numEl.innerHTML = \`<div class="num-track" style="transform:translateY(-\${cur * 60}px)">\${track}</div>\`;
+  cur = (cur + 1) % 10;
+}
+render();
+setInterval(render, params.speed);`,
+    },
+    preview: lz('number-marquee'),
+  },
+  {
+    id: 'button-press',
+    name: '按钮按下',
+    englishName: 'Button Press',
+    category: 'interaction',
+    tags: ['button', 'interaction'],
+    description: '鼠标按下时按钮缩放反馈,有手感。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'scale', label: '缩放', min: 0.85, max: 0.98, step: 0.01, default: 0.92 }
+    ],
+    code: {
+      html: `<button class="press">CLICK</button>`,
+      css: `.press { padding: 14px 28px; border: none; background: hsl(280 90% 60%); color: white; font-weight: 700; font-size: 18px; border-radius: 10px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; box-shadow: 0 6px 0 hsl(280 90% 35%); }
+.press:active { transform: scale(var(--scale, 0.92)) translateY(4px); box-shadow: 0 2px 0 hsl(280 90% 35%); }`,
+      js: ``,
+    },
+    preview: lz('button-press'),
+  },
+  {
+    id: 'hover-lift',
+    name: '悬停上浮',
+    englishName: 'Hover Lift',
+    category: 'interaction',
+    tags: ['hover', 'interaction'],
+    description: 'hover 时元素上浮并加深阴影。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'lift', label: '上浮', min: 2, max: 20, step: 1, default: 8, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="lift">HOVER ME</div>`,
+      css: `.lift { padding: 24px 32px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; font-weight: 700; }
+.lift:hover { transform: translateY(calc(var(--lift, 8px) * -1)); box-shadow: 0 16px 32px rgba(0,0,0,0.18); }`,
+      js: ``,
+    },
+    preview: lz('hover-lift'),
+  },
+  {
+    id: 'tilt-card-strong',
+    name: '强倾斜',
+    englishName: 'Strong Tilt',
+    category: 'interaction',
+    tags: ['strong', 'interaction'],
+    description: '比 3D Tilt 更夸张的倾斜效果,带光斑。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'max', label: '最大角度', min: 10, max: 45, step: 1, default: 25, unit: '°' }
+    ],
+    code: {
+      html: `<div class="tilt-s">STRONG TILT</div>`,
+      css: `.tilt-s { width: 240px; height: 160px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, hsl(280 90% 65%), hsl(200 90% 60%)); color: white; font-weight: 900; font-size: 24px; border-radius: 16px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.15s; }`,
+      js: `const el = document.querySelector('.tilt-s');
+el.addEventListener('mousemove', (e) => {
+  const r = el.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  el.style.transform = \`perspective(800px) rotateY(\${x * params.max * 2}deg) rotateX(\${-y * params.max * 2}deg)\`;
+});
+el.addEventListener('mouseleave', () => el.style.transform = '');`,
+    },
+    preview: lz('tilt-card-strong'),
+  },
+  {
+    id: 'spotlight-follow',
+    name: '跟随聚光',
+    englishName: 'Spotlight',
+    category: 'interaction',
+    tags: ['spotlight', 'interaction'],
+    description: '鼠标位置形成 spotlight 高亮,其余区域变暗。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'size', label: '光圈', min: 100, max: 400, step: 20, default: 220, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="spot"><div class="spot-inner">SPOTLIGHT</div></div>`,
+      css: `.spot { position: relative; width: 100%; height: 100%; background: #111; border-radius: 12px; cursor: crosshair; }
+.spot-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 900; letter-spacing: 0.1em; }`,
+      js: `const spot = document.querySelector('.spot');
+spot.addEventListener('mousemove', (e) => {
+  const r = spot.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  spot.style.background = \`radial-gradient(circle \${params.size}px at \${x}px \${y}px, rgba(255,255,255,0.25), #111 70%)\`;
+});
+spot.addEventListener('mouseleave', () => spot.style.background = '#111');`,
+    },
+    preview: lz('spotlight-follow'),
+  },
+  {
+    id: 'mouse-trail',
+    name: '鼠标拖尾',
+    englishName: 'Mouse Trail',
+    category: 'interaction',
+    tags: ['mouse', 'interaction'],
+    description: '鼠标移动时留下一串彩色粒子拖尾。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'count', label: '粒子数', min: 6, max: 30, step: 1, default: 12 },
+      { kind: 'range', key: 'size', label: '尺寸', min: 4, max: 16, step: 1, default: 8, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="trail-zone"></div>`,
+      css: `.trail-zone { position: relative; width: 100%; height: 100%; cursor: crosshair; }
+.trail-dot { position: absolute; border-radius: 50%; pointer-events: none; }`,
+      js: `const zone = document.querySelector('.trail-zone');
+let dots = [];
+for (let i = 0; i < params.count; i++) { const d = document.createElement('div'); d.className = 'trail-dot'; d.style.width = d.style.height = params.size + 'px'; d.style.background = \`hsl(\${i * 30} 90% 60%)\`; zone.appendChild(d); dots.push(d); }
+let history = [];
+zone.addEventListener('mousemove', (e) => { const r = zone.getBoundingClientRect(); history.unshift({ x: e.clientX - r.left, y: e.clientY - r.top }); if (history.length > params.count) history.pop(); dots.forEach((d, i) => { const p = history[i] || history[history.length - 1]; if (!p) return; d.style.left = (p.x - params.size/2) + 'px'; d.style.top = (p.y - params.size/2) + 'px'; d.style.opacity = String(1 - i / params.count); }); });`,
+    },
+    preview: lz('mouse-trail'),
+  },
+  {
+    id: 'click-burst',
+    name: '点击爆开',
+    englishName: 'Click Burst',
+    category: 'interaction',
+    tags: ['click', 'interaction'],
+    description: '点击位置爆开一圈彩色粒子。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'count', label: '粒子数', min: 8, max: 40, step: 2, default: 20 }
+    ],
+    code: {
+      html: `<div class="burst">CLICK ANYWHERE</div>`,
+      css: `.burst { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #222; color: white; font-weight: 700; border-radius: 12px; cursor: pointer; }`,
+      js: `const burst = document.querySelector('.burst');
+burst.addEventListener('click', (e) => {
+  const r = burst.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  for (let i = 0; i < params.count; i++) {
+    const p = document.createElement('span');
+    const ang = (i / params.count) * Math.PI * 2;
+    const dist = 40 + Math.random() * 30;
+    p.style.cssText = \`position:absolute;left:\${x}px;top:\${y}px;width:8px;height:8px;border-radius:50%;background:hsl(\${Math.random()*360} 90% 60%);transition:all 0.6s cubic-bezier(0.2,0.8,0.2,1);\`;
+    burst.appendChild(p);
+    requestAnimationFrame(() => { p.style.transform = \`translate(\${Math.cos(ang) * dist}px, \${Math.sin(ang) * dist}px) scale(0)\`; p.style.opacity = '0'; });
+    setTimeout(() => p.remove(), 700);
+  }
+});`,
+    },
+    preview: lz('click-burst'),
+  },
+  {
+    id: 'hover-icon-spin',
+    name: '悬停旋转',
+    englishName: 'Icon Spin',
+    category: 'interaction',
+    tags: ['icon', 'interaction'],
+    description: 'hover 时图标旋转一周。',
+    difficulty: 1,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.3, max: 1.5, step: 0.1, default: 0.6, unit: 's' }
+    ],
+    code: {
+      html: `<button class="spin-icon"><span>⚙</span></button>`,
+      css: `.spin-icon { padding: 12px 16px; border: 2px solid currentColor; background: transparent; border-radius: 10px; cursor: pointer; font-size: 18px; color: inherit; }
+.spin-icon span { display: inline-block; transition: transform var(--duration, 0.6s) ease; }
+.spin-icon:hover span { transform: rotate(360deg); }`,
+      js: ``,
+    },
+    preview: lz('hover-icon-spin'),
+  },
+  {
+    id: 'toggle-flip',
+    name: '滑动开关',
+    englishName: 'Toggle Flip',
+    category: 'interaction',
+    tags: ['toggle', 'interaction'],
+    description: '可点击切换的左右滑动 toggle。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '滑动时长', min: 0.2, max: 0.8, step: 0.05, default: 0.35, unit: 's' }
+    ],
+    code: {
+      html: `<div class="toggle" data-on="false"><div class="knob"></div></div>`,
+      css: `.toggle { position: relative; width: 64px; height: 32px; background: #ccc; border-radius: 999px; cursor: pointer; transition: background var(--duration, 0.35s); }
+.toggle .knob { position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; background: white; border-radius: 50%; transition: transform var(--duration, 0.35s) cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.toggle.on { background: hsl(140 80% 50%); }
+.toggle.on .knob { transform: translateX(32px); }`,
+      js: `const tg = document.querySelector('.toggle');
+tg.addEventListener('click', () => { const on = tg.classList.toggle('on'); tg.dataset.on = String(on); });`,
+    },
+    preview: lz('toggle-flip'),
+  },
+  {
+    id: 'accordion-smooth',
+    name: '手风琴',
+    englishName: 'Accordion',
+    category: 'interaction',
+    tags: ['accordion', 'interaction'],
+    description: '点击展开/收起内容,平滑过渡。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '时长', min: 0.2, max: 1, step: 0.05, default: 0.4, unit: 's' }
+    ],
+    code: {
+      html: `<div class="acc"><button class="acc-h">Q: 什么是动效？</button><div class="acc-b"><p>动效是界面元素的运动,引导注意力,增强反馈。</p></div></div>`,
+      css: `.acc { width: 280px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.acc-h { width: 100%; padding: 14px 18px; background: hsl(280 90% 60%); color: white; border: none; text-align: left; font-weight: 700; cursor: pointer; font-size: 15px; }
+.acc-b { max-height: 0; overflow: hidden; transition: max-height var(--duration, 0.4s) ease; }
+.acc-b p { padding: 14px 18px; margin: 0; font-size: 14px; line-height: 1.6; color: #444; }`,
+      js: `const h = document.querySelector('.acc-h'); const b = document.querySelector('.acc-b');
+h.addEventListener('click', () => { if (b.style.maxHeight) { b.style.maxHeight = null; } else { b.style.maxHeight = b.scrollHeight + 'px'; } });`,
+    },
+    preview: lz('accordion-smooth'),
+  },
+  {
+    id: 'range-drag',
+    name: '滑块拖动',
+    englishName: 'Range Drag',
+    category: 'interaction',
+    tags: ['range', 'interaction'],
+    description: '可拖动的圆形滑块,显示当前值。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'max', label: '最大值', min: 50, max: 500, step: 10, default: 200 }
+    ],
+    code: {
+      html: `<div class="range"><div class="track"><div class="fill"></div><div class="knob"></div></div><div class="val">0</div></div>`,
+      css: `.range { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 240px; }
+.range .track { position: relative; width: 200px; height: 6px; background: rgba(0,0,0,0.1); border-radius: 999px; cursor: pointer; }
+.range .fill { position: absolute; left: 0; top: 0; height: 100%; background: hsl(280 90% 60%); border-radius: 999px; width: 50%; }
+.range .knob { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: white; border: 3px solid hsl(280 90% 60%); border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.2); cursor: grab; }
+.range .val { font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums; }`,
+      js: `const track = document.querySelector('.track'); const fill = document.querySelector('.fill'); const knob = document.querySelector('.knob'); const val = document.querySelector('.val');
+let dragging = false;
+const update = (clientX) => { const r = track.getBoundingClientRect(); let pct = (clientX - r.left) / r.width; pct = Math.max(0, Math.min(1, pct)); fill.style.width = (pct * 100) + '%'; knob.style.left = (pct * 100) + '%'; val.textContent = Math.round(pct * params.max); };
+track.addEventListener('mousedown', (e) => { dragging = true; update(e.clientX); });
+window.addEventListener('mousemove', (e) => { if (dragging) update(e.clientX); });
+window.addEventListener('mouseup', () => dragging = false);`,
+    },
+    preview: lz('range-drag'),
+  },
+  {
+    id: 'audio-wave',
+    name: '音频条',
+    englishName: 'Audio Wave',
+    category: 'advanced',
+    tags: ['audio', 'advanced'],
+    description: '模拟音频可视化的跳动条形。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'bars', label: '条数', min: 16, max: 64, step: 4, default: 32 },
+      { kind: 'range', key: 'speed', label: '速度', min: 0.05, max: 0.3, step: 0.01, default: 0.12 }
+    ],
+    code: {
+      html: `<div class="audio"></div>`,
+      css: `.audio { display: flex; align-items: center; justify-content: center; gap: 3px; width: 100%; height: 100%; }
+.audio .bar { width: 6px; background: linear-gradient(180deg, hsl(280 90% 60%), hsl(200 90% 60%)); border-radius: 3px; }`,
+      js: `const wrap = document.querySelector('.audio');
+const bars = [];
+for (let i = 0; i < params.bars; i++) { const b = document.createElement('div'); b.className = 'bar'; wrap.appendChild(b); bars.push(b); }
+let t = 0;
+function tick() { t += params.speed; bars.forEach((b, i) => { const h = 30 + Math.abs(Math.sin(t + i * 0.4)) * 70; b.style.height = h + '%'; }); requestAnimationFrame(tick); } tick();`,
+    },
+    preview: lz('audio-wave'),
+  },
+  {
+    id: 'fractal-tree',
+    name: '分形树',
+    englishName: 'Fractal Tree',
+    category: 'advanced',
+    tags: ['fractal', 'advanced'],
+    description: '递归绘制的分形树动画。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'depth', label: '深度', min: 5, max: 11, step: 1, default: 8 },
+      { kind: 'range', key: 'angle', label: '分支角度', min: 15, max: 35, step: 1, default: 22, unit: '°' }
+    ],
+    code: {
+      html: `<canvas class="ftree"></canvas>`,
+      css: `.ftree { width: 100%; height: 100%; }`,
+      js: `const c = document.querySelector('.ftree'); const ctx = c.getContext('2d');
+const resize = () => { c.width = c.offsetWidth * 2; c.height = c.offsetHeight * 2; };
+resize();
+window.addEventListener('resize', resize);
+let t = 0;
+function branch(x, y, len, ang, d) { if (d <= 0 || len < 2) return; const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2, y2); ctx.strokeStyle = \`hsl(\${(10 - d) * 20} 70% 50%)\`; ctx.lineWidth = d; ctx.stroke(); branch(x2, y2, len * 0.75, ang - params.angle * Math.PI / 180, d - 1); branch(x2, y2, len * 0.75, ang + params.angle * Math.PI / 180, d - 1); }
+let raf = 0;
+function draw() { ctx.clearRect(0, 0, c.width, c.height); t += 0.01; ctx.save(); ctx.translate(c.width / 2, c.height); branch(0, 0, 200, -Math.PI / 2 + Math.sin(t) * 0.05, params.depth); ctx.restore(); raf = requestAnimationFrame(draw); }
+draw();
+return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };`,
+    },
+    preview: lz('fractal-tree'),
+  },
+  {
+    id: 'noise-flow',
+    name: '噪声流动',
+    englishName: 'Noise Flow',
+    category: 'advanced',
+    tags: ['noise', 'advanced'],
+    description: '基于 value-noise 的 2D 流动场。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'speed', label: '速度', min: 0.001, max: 0.02, step: 0.001, default: 0.005 },
+      { kind: 'range', key: 'scale', label: '尺度', min: 0.005, max: 0.05, step: 0.005, default: 0.02 }
+    ],
+    code: {
+      html: `<canvas class="nf"></canvas>`,
+      css: `.nf { width: 100%; height: 100%; }`,
+      js: `const c = document.querySelector('.nf'); const ctx = c.getContext('2d');
+const resize = () => { c.width = c.offsetWidth; c.height = c.offsetHeight; };
+resize();
+window.addEventListener('resize', resize);
+const grad = ctx.createLinearGradient(0, 0, 0, c.height);
+grad.addColorStop(0, '#ff00aa'); grad.addColorStop(1, '#00ddff');
+function noise(x, y) { const s = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return s - Math.floor(s); }
+function smoothNoise(x, y) { const ix = Math.floor(x), iy = Math.floor(y); const fx = x - ix, fy = y - iy; const a = noise(ix, iy), b = noise(ix + 1, iy), c2 = noise(ix, iy + 1), d = noise(ix + 1, iy + 1); const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy); return a + (b - a) * u + (c2 - a) * v + (a - b - c2 + d) * u * v; }
+let t = 0; let raf = 0;
+function draw() { const img = ctx.createImageData(c.width, c.height); const d = img.data; for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) { const n = smoothNoise(x * params.scale + t, y * params.scale - t); const idx = (y * c.width + x) * 4; const v = Math.floor(n * 255); d[idx] = v < 128 ? 255 - v * 2 : 0; d[idx + 1] = v; d[idx + 2] = 255 - v; d[idx + 3] = 255; } ctx.putImageData(img, 0, 0); t += params.speed * 10; raf = requestAnimationFrame(draw); }
+draw();
+return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };`,
+    },
+    preview: lz('noise-flow'),
+  },
+  {
+    id: 'metaball',
+    name: '粘性球',
+    englishName: 'Metaball',
+    category: 'advanced',
+    tags: ['metaball', 'advanced'],
+    description: '模糊叠加形成粘性 metaball 效果。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'count', label: '球数', min: 3, max: 10, step: 1, default: 6 },
+      { kind: 'range', key: 'blur', label: '模糊', min: 10, max: 60, step: 2, default: 28, unit: 'px' }
+    ],
+    code: {
+      html: `<div class="mb"></div>`,
+      css: `.mb { position: relative; width: 100%; height: 100%; background: #0a0a1a; }
+.mb .ball { position: absolute; border-radius: 50%; filter: blur(var(--blur, 28px)); will-change: transform; }`,
+      js: `const mb = document.querySelector('.mb');
+const balls = [];
+for (let i = 0; i < params.count; i++) { const b = document.createElement('div'); b.className = 'ball'; b.style.width = b.style.height = (60 + Math.random() * 40) + 'px'; b.style.background = i % 2 ? 'hsl(280 90% 60%)' : 'hsl(180 90% 55%)'; mb.appendChild(b); balls.push({ el: b, x: 0, y: 0, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2 }); }
+let raf = 0;
+const w = () => mb.offsetWidth, h = () => mb.offsetHeight;
+function tick() { balls.forEach(b => { b.x += b.vx; b.y += b.vy; if (b.x < 0 || b.x > w() - 80) b.vx *= -1; if (b.y < 0 || b.y > h() - 80) b.vy *= -1; b.el.style.transform = \`translate(\${b.x}px, \${b.y}px)\`; }); raf = requestAnimationFrame(tick); }
+tick();
+return () => cancelAnimationFrame(raf);`,
+    },
+    preview: lz('metaball'),
+  },
+  {
+    id: 'physics-spring',
+    name: '弹簧物理',
+    englishName: 'Spring Physics',
+    category: 'advanced',
+    tags: ['spring', 'advanced'],
+    description: '弹簧物理仿真,拖动后回弹。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'stiffness', label: '刚度', min: 0.02, max: 0.3, step: 0.01, default: 0.12 },
+      { kind: 'range', key: 'damping', label: '阻尼', min: 0.7, max: 0.98, step: 0.01, default: 0.88 }
+    ],
+    code: {
+      html: `<div class="spring-zone"><div class="ball-s"></div></div>`,
+      css: `.spring-zone { position: relative; width: 100%; height: 100%; background: #f0f0f0; border-radius: 12px; cursor: grab; overflow: hidden; }
+.spring-zone .ball-s { position: absolute; width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, hsl(20 90% 60%), hsl(0 80% 40%)); box-shadow: 0 8px 16px rgba(0,0,0,0.2); top: 50%; left: 50%; transform: translate(-50%, -50%); }`,
+      js: `const zone = document.querySelector('.spring-zone'); const ball = document.querySelector('.ball-s');
+let px = zone.offsetWidth / 2, py = zone.offsetHeight / 2, vx = 0, vy = 0, dragging = false;
+let offX = 0, offY = 0;
+zone.addEventListener('mousedown', (e) => { dragging = true; const r = ball.getBoundingClientRect(); offX = e.clientX - (r.left + 24); offY = e.clientY - (r.top + 24); });
+window.addEventListener('mousemove', (e) => { if (!dragging) return; const r = zone.getBoundingClientRect(); px = e.clientX - r.left - offX; py = e.clientY - r.top - offY; });
+window.addEventListener('mouseup', () => dragging = false);
+let raf = 0;
+const cx = () => zone.offsetWidth / 2, cy = () => zone.offsetHeight / 2;
+function tick() { if (!dragging) { const dx = cx() - px, dy = cy() - py; vx += dx * params.stiffness; vy += dy * params.stiffness; vx *= params.damping; vy *= params.damping; px += vx; py += vy; } ball.style.left = (px - 24) + 'px'; ball.style.top = (py - 24) + 'px'; raf = requestAnimationFrame(tick); } tick();
+return () => { cancelAnimationFrame(raf); };`,
+    },
+    preview: lz('physics-spring'),
+  },
+  {
+    id: 'trajectory-path',
+    name: '路径运动',
+    englishName: 'Trajectory',
+    category: 'advanced',
+    tags: ['trajectory', 'advanced'],
+    description: '元素沿 SVG 路径平滑运动。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 2, max: 8, step: 0.2, default: 4, unit: 's' }
+    ],
+    code: {
+      html: `<svg class="traj" viewBox="0 0 200 100"><path class="p" d="M10,80 C40,10 70,90 100,40 S160,90 190,30" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="2" stroke-dasharray="4 4"/><circle class="dot" r="5" fill="hsl(280 90% 60%)"/></svg>`,
+      css: `.traj { width: 100%; height: 100%; }`,
+      js: `const path = document.querySelector('.p'); const dot = document.querySelector('.dot');
+const len = path.getTotalLength();
+let t = 0; let raf = 0;
+function tick() { t += 16 / (params.duration * 1000); if (t > 1) t = 0; const p = path.getPointAtLength(t * len); dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y); raf = requestAnimationFrame(tick); } tick();
+return () => cancelAnimationFrame(raf);`,
+    },
+    preview: lz('trajectory-path'),
+  },
+  {
+    id: '3d-cube-rotate',
+    name: '立方体',
+    englishName: '3D Cube',
+    category: 'advanced',
+    tags: ['3d', 'advanced'],
+    description: '纯 CSS 3D 立方体持续旋转。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '周期', min: 2, max: 10, step: 0.5, default: 5, unit: 's' }
+    ],
+    code: {
+      html: `<div class="cube-wrap"><div class="cube"><div class="face f1">1</div><div class="face f2">2</div><div class="face f3">3</div><div class="face f4">4</div><div class="face f5">5</div><div class="face f6">6</div></div></div>`,
+      css: `.cube-wrap { perspective: 600px; width: 100px; height: 100px; }
+.cube { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: cubeRot var(--duration, 5s) linear infinite; }
+.cube .face { position: absolute; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; color: white; background: hsl(280 90% 60%); border: 2px solid white; box-sizing: border-box; opacity: 0.85; }
+.cube .f2 { transform: rotateY(180deg); background: hsl(0 90% 60%); }
+.cube .f3 { transform: rotateY(90deg) translateZ(50px); background: hsl(60 90% 60%); }
+.cube .f4 { transform: rotateY(-90deg) translateZ(50px); background: hsl(120 80% 55%); }
+.cube .f5 { transform: rotateX(90deg) translateZ(50px); background: hsl(200 90% 60%); }
+.cube .f6 { transform: rotateX(-90deg) translateZ(50px); background: hsl(320 80% 60%); }
+.cube .f1 { transform: translateZ(50px); }
+@keyframes cubeRot { to { transform: rotateY(360deg) rotateX(360deg); } }`,
+      js: ``,
+    },
+    preview: lz('3d-cube-rotate'),
+  },
+  {
+    id: 'matrix-rain',
+    name: '数字雨',
+    englishName: 'Matrix Rain',
+    category: 'advanced',
+    tags: ['matrix', 'advanced'],
+    description: 'Matrix 风格绿色字符雨。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'speed', label: '速度', min: 1, max: 6, step: 1, default: 3 },
+      { kind: 'range', key: 'density', label: '密度', min: 0.3, max: 1, step: 0.1, default: 0.7 }
+    ],
+    code: {
+      html: `<canvas class="mr"></canvas>`,
+      css: `.mr { width: 100%; height: 100%; background: #000; }`,
+      js: `const c = document.querySelector('.mr'); const ctx = c.getContext('2d');
+const resize = () => { c.width = c.offsetWidth; c.height = c.offsetHeight; };
+resize();
+window.addEventListener('resize', resize);
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
+const fontSize = 14;
+let cols = Math.floor(c.width / fontSize * params.density);
+let drops = new Array(cols).fill(0);
+let raf = 0;
+function draw() { ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0, 0, c.width, c.height); ctx.fillStyle = '#0f0'; ctx.font = fontSize + 'px monospace'; for (let i = 0; i < drops.length; i++) { const ch = chars[Math.floor(Math.random() * chars.length)]; ctx.fillText(ch, i * fontSize, drops[i] * fontSize); if (drops[i] * fontSize > c.height && Math.random() > 0.975) drops[i] = 0; drops[i] += params.speed / 3; } raf = requestAnimationFrame(draw); }
+draw();
+return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };`,
+    },
+    preview: lz('matrix-rain'),
+  },
+  {
+    id: 'ripple-water',
+    name: '水波涟漪',
+    englishName: 'Water Ripple',
+    category: 'advanced',
+    tags: ['water', 'advanced'],
+    description: '点击产生水波涟漪,实时衰减。',
+    difficulty: 2,
+    params: [
+      { kind: 'range', key: 'duration', label: '衰减时长', min: 1, max: 4, step: 0.2, default: 2, unit: 's' },
+      { kind: 'range', key: 'count', label: '波纹数', min: 2, max: 6, step: 1, default: 3 }
+    ],
+    code: {
+      html: `<div class="water"><span class="hint">CLICK</span></div>`,
+      css: `.water { position: relative; width: 100%; height: 100%; background: hsl(200 80% 50%); border-radius: 12px; cursor: pointer; overflow: hidden; }
+.water .hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 24px; letter-spacing: 0.2em; pointer-events: none; }
+.water .ring { position: absolute; border-radius: 50%; border: 3px solid white; transform: translate(-50%, -50%); pointer-events: none; }`,
+      js: `const water = document.querySelector('.water');
+water.addEventListener('click', (e) => { const r = water.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top; for (let i = 0; i < params.count; i++) { const ring = document.createElement('div'); ring.className = 'ring'; ring.style.left = x + 'px'; ring.style.top = y + 'px'; ring.style.width = ring.style.height = '20px'; ring.style.transition = \`all \${params.duration}s ease-out \${i * 0.2}s\`; water.appendChild(ring); requestAnimationFrame(() => { ring.style.width = ring.style.height = (200 + i * 80) + 'px'; ring.style.opacity = '0'; }); setTimeout(() => ring.remove(), (params.duration + i * 0.2) * 1000 + 200); } });`,
+    },
+    preview: lz('ripple-water'),
+  },
+  {
+    id: 'fluid-distort',
+    name: '流体畸变',
+    englishName: 'Fluid Distort',
+    category: 'advanced',
+    tags: ['fluid', 'advanced'],
+    description: '使用 feTurbulence + feDisplacementMap 实现流体畸变。',
+    difficulty: 3,
+    params: [
+      { kind: 'range', key: 'amount', label: '畸变强度', min: 0, max: 60, step: 2, default: 24 },
+      { kind: 'range', key: 'speed', label: '速度', min: 0, max: 1, step: 0.05, default: 0.3 }
+    ],
+    code: {
+      html: `<svg width="0" height="0"><filter id="fd"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3"><animate attributeName="baseFrequency" dur="6s" values="0.02;0.04;0.02" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="24" /></filter></svg><div class="fluid">FLUID</div>`,
+      css: `.fluid { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 900; color: white; background: linear-gradient(135deg, hsl(280 90% 60%), hsl(200 90% 60%)); border-radius: 12px; filter: url(#fd); }`,
+      js: ``,
+    },
+    preview: lz('fluid-distort'),
+  },
 ];

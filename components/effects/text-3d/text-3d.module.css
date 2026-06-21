@@ -1,0 +1,4 @@
+.t { position: relative; font-size: 72px; font-weight: 900; color: white; margin: 0; line-height: 1; }
+.t::before, .t::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none; }
+.t::before { color: hsl(320 90% 60%); transform: translate(var(--depth, 2px), var(--depth, 2px)); }
+.t::after { color: hsl(200 90% 60%); transform: translate(calc(var(--depth, 2px) * -1), calc(var(--depth, 2px) * -1)); }

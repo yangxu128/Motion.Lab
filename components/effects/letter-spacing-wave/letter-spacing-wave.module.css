@@ -1,0 +1,2 @@
+.t { font-size: 40px; font-weight: 900; color: white; margin: 0; letter-spacing: 0; animation: lsw var(--duration, 2.5s) ease-in-out infinite; }
+@keyframes lsw { 0%, 100% { letter-spacing: 0; } 50% { letter-spacing: var(--max, 12px); } }

@@ -1,0 +1,2 @@
+.dot { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, hsl(280 90% 60%), hsl(320 90% 50%)); box-shadow: 0 0 40px hsl(280 90% 60% / 0.5); animation: sp var(--duration, 1.4s) ease-in-out infinite; }
+@keyframes sp { 0%, 100% { transform: scale(var(--min, 0.7)); } 50% { transform: scale(var(--max, 1.15)); } }

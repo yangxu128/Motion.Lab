@@ -1,0 +1,2 @@
+.t { font-size: 52px; font-weight: 900; margin: 0; background: linear-gradient(90deg, hsl(0 90% 60%), hsl(60 90% 60%), hsl(120 90% 60%), hsl(180 90% 60%), hsl(240 90% 60%), hsl(300 90% 60%), hsl(360 90% 60%)); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rb var(--duration, 3s) linear infinite; }
+@keyframes rb { to { background-position: 200% 0; } }

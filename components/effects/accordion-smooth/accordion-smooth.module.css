@@ -1,0 +1,4 @@
+.acc { width: 320px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.h { width: 100%; padding: 14px 18px; background: hsl(280 90% 60%); color: white; border: none; text-align: left; font-weight: 700; cursor: pointer; font-size: 15px; }
+.b { max-height: 0; overflow: hidden; transition: max-height var(--duration, 0.4s) ease; }
+.b p { padding: 14px 18px; margin: 0; font-size: 14px; line-height: 1.6; color: #444; }

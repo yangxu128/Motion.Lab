@@ -1,0 +1,2 @@
+.spot { position: relative; width: 100%; height: 100%; background: #111; border-radius: 12px; cursor: crosshair; overflow: hidden; }
+.inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 900; letter-spacing: 0.15em; }

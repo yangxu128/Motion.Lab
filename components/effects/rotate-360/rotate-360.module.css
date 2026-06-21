@@ -1,0 +1,2 @@
+.icon { font-size: 80px; line-height: 1; color: hsl(280 90% 60%); display: inline-block; animation: rot360 var(--duration, 2s) linear infinite; font-weight: 700; }
+@keyframes rot360 { to { transform: rotate(360deg); } }

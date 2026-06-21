@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(40 90% 55%); color: white; border-radius: 12px; font-weight: 700; animation: bounceIn var(--duration, 1s) both; }
+@keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); opacity: 1; } 70% { transform: scale(0.9); } 85% { transform: scale(1.05); } 100% { transform: scale(1); } }

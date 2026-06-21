@@ -1,0 +1,1 @@
+.card { width: 260px; height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, hsl(280 90% 65%), hsl(200 90% 60%)); color: white; font-weight: 900; font-size: 24px; border-radius: 16px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.15s; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }

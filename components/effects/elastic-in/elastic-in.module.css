@@ -1,0 +1,2 @@
+.box { padding: 24px 32px; background: hsl(320 80% 55%); color: white; border-radius: 12px; font-weight: 700; animation: elasticIn var(--duration, 1.2s) cubic-bezier(0.68, -0.55, 0.265, 1.55) both; }
+@keyframes elasticIn { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }

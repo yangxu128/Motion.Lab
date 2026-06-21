@@ -1,0 +1,11 @@
+.t { font-size: 40px; font-weight: 900; color: white; margin: 0; perspective: 400px; }
+.t span { display: inline-block; opacity: 0; animation: tri var(--duration, 0.6s) ease-out forwards; }
+.t span:nth-child(1) { animation-delay: 0s; }
+.t span:nth-child(2) { animation-delay: var(--stagger, 0.1s); }
+.t span:nth-child(3) { animation-delay: calc(var(--stagger, 0.1s) * 2); }
+.t span:nth-child(4) { animation-delay: calc(var(--stagger, 0.1s) * 3); }
+.t span:nth-child(5) { animation-delay: calc(var(--stagger, 0.1s) * 4); }
+.t span:nth-child(6) { animation-delay: calc(var(--stagger, 0.1s) * 5); }
+.t span:nth-child(7) { animation-delay: calc(var(--stagger, 0.1s) * 6); }
+.t span:nth-child(8) { animation-delay: calc(var(--stagger, 0.1s) * 7); }
+@keyframes tri { from { opacity: 0; transform: rotateY(180deg); } to { opacity: 1; transform: rotateY(0); } }

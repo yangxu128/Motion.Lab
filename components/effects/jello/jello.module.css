@@ -1,0 +1,2 @@
+.box { padding: 24px 36px; background: hsl(80 80% 55%); color: white; border-radius: 12px; font-weight: 900; font-size: 24px; display: inline-block; animation: jello var(--duration, 0.9s) ease-in-out infinite; transform-origin: center; }
+@keyframes jello { 0%, 100% { transform: scale3d(1, 1, 1); } 30% { transform: scale3d(1.25, 0.75, 1); } 40% { transform: scale3d(0.75, 1.25, 1); } 50% { transform: scale3d(1.15, 0.85, 1); } 65% { transform: scale3d(0.95, 1.05, 1); } 75% { transform: scale3d(1.05, 0.95, 1); } }
