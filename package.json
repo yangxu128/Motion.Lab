@@ -13,31 +13,33 @@
     "test:e2e:install": "playwright install --with-deps chromium"
   },
   "dependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.6.0",
+    "@studio-freight/lenis": "^1.0.42",
+    "framer-motion": "^11.18.0",
+    "gsap": "^3.13.0",
+    "lottie-react": "^2.4.1",
     "next": "^15.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "gsap": "^3.13.0",
-    "framer-motion": "^11.18.0",
-    "@studio-freight/lenis": "^1.0.42",
-    "three": "^0.171.0",
-    "@react-three/fiber": "^9.6.0",
-    "@react-three/drei": "^10.0.0",
-    "lottie-react": "^2.4.1",
-    "shiki": "^1.26.0"
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^1.26.0",
+    "three": "^0.171.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.171.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9",
     "eslint-config-next": "^15.5.0",
-    "typescript": "^5",
-    "vitest": "^2.1.8",
-    "@vitejs/plugin-react": "^4.3.4",
-    "@testing-library/react": "^16.1.0",
-    "@testing-library/jest-dom": "^6.6.3",
     "jsdom": "^25.0.1",
-    "@playwright/test": "^1.49.0"
+    "typescript": "^5",
+    "vitest": "^2.1.8"
   }
 }

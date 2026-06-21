@@ -827,15 +827,56 @@
   letter-spacing: 0.04em;
 }
 
+/* 模式切换 tab（渲染 / 源码） */
+.modeTabs {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 12px;
+  background: hsl(220 15% 18%);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.modeTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: hsl(220 10% 65%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.modeTab:hover { color: hsl(220 10% 90%); }
+
+.modeTabActive {
+  background: hsl(280 85% 60%);
+  color: white;
+}
+
+.modeTabActive:hover { color: white; }
+
 .terminalBody {
   margin: 0;
-  padding: 28px;
+  padding: 0;
   max-height: 640px;
   overflow: auto;
   background: #0d1117;
 }
 
-.terminalBody code {
+.terminalSource {
+  margin: 0;
+  padding: 28px;
+}
+
+.terminalSource code {
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.75;
@@ -843,6 +884,102 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* Markdown 渲染区 */
+.markdown {
+  padding: 32px 40px;
+  color: #c9d1d9;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.markdown h1, .markdown h2, .markdown h3, .markdown h4 {
+  color: #f0f6fc;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 1.6em 0 0.6em;
+  line-height: 1.25;
+}
+
+.markdown h1:first-child, .markdown h2:first-child { margin-top: 0; }
+.markdown h1 { font-size: 28px; padding-bottom: 8px; border-bottom: 1px solid hsl(220 15% 22%); }
+.markdown h2 { font-size: 22px; padding-bottom: 6px; border-bottom: 1px solid hsl(220 15% 22%); }
+.markdown h3 { font-size: 18px; }
+.markdown h4 { font-size: 15px; color: hsl(220 10% 75%); }
+
+.markdown p { margin: 0.8em 0; }
+.markdown a { color: hsl(280 90% 75%); text-decoration: none; border-bottom: 1px solid hsl(280 60% 40% / 0.5); transition: border-color 0.2s; }
+.markdown a:hover { border-color: hsl(280 90% 75%); }
+
+.markdown ul, .markdown ol { padding-left: 1.8em; margin: 0.8em 0; }
+.markdown li { margin: 0.3em 0; }
+.markdown li::marker { color: hsl(220 10% 50%); }
+
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: hsl(220 15% 18%);
+  color: hsl(30 90% 75%);
+  word-break: break-word;
+}
+
+.markdown pre {
+  background: hsl(220 15% 8%);
+  border: 1px solid hsl(220 15% 22%);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown pre code {
+  background: transparent;
+  color: #c9d1d9;
+  padding: 0;
+  font-size: 12.5px;
+  line-height: 1.65;
+  display: block;
+  white-space: pre;
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2em 0;
+  font-size: 13px;
+  display: block;
+  overflow-x: auto;
+}
+
+.markdown thead { background: hsl(220 15% 18%); }
+.markdown th, .markdown td { padding: 8px 12px; text-align: left; border: 1px solid hsl(220 15% 22%); }
+.markdown th { font-weight: 700; color: #f0f6fc; }
+.markdown td { color: hsl(220 10% 80%); }
+.markdown tbody tr:nth-child(2n) { background: hsl(220 15% 14%); }
+
+.markdown blockquote {
+  margin: 1em 0;
+  padding: 8px 16px;
+  border-left: 3px solid hsl(280 85% 60%);
+  background: hsl(280 30% 15%);
+  color: hsl(220 10% 80%);
+  border-radius: 0 6px 6px 0;
+}
+
+.markdown blockquote p { margin: 0.4em 0; }
+
+.markdown hr {
+  border: none;
+  border-top: 1px solid hsl(220 15% 22%);
+  margin: 2em 0;
+}
+
+.markdown img { max-width: 100%; border-radius: 8px; }
+
+.markdown strong { color: #f0f6fc; font-weight: 700; }
+.markdown em { color: hsl(30 90% 75%); font-style: italic; }
 
 /* Custom scrollbar for terminal */
 .terminalBody::-webkit-scrollbar { width: 10px; height: 10px; }

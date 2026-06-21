@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './SkillPage.module.css';
 
 interface Props {
@@ -49,6 +51,7 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
   const [copied, setCopied] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
   const [typed, setTyped] = useState('');
+  const [previewMode, setPreviewMode] = useState<'rendered' | 'source'>('rendered');
 
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -450,7 +453,7 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
         </div>
       </section>
 
-      {/* SKILL.md 预览 — 仿终端风格：带 mac 红绿灯 + toolbar + 等宽 */}
+      {/* SKILL.md 预览 — 支持 Markdown 渲染 + 源代码切换 */}
       <section className={styles.section}>
         <div className={styles.headingWrap}>
           <h2 ref={setHeadingRef(2)} className={styles.heading}>SKILL.md 预览</h2>
@@ -464,8 +467,37 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
               <span className={styles.terminalDot} style={{ background: '#28c840' }} />
               <span className={styles.terminalName}>SKILL.md</span>
               <span className={styles.terminalMeta}>{(skillMd.length / 1024).toFixed(1)} KB · {effectsCount} effects</span>
+              {/* 模式切换 */}
+              <div className={styles.modeTabs}>
+                <button
+                  className={`${styles.modeTab} ${previewMode === 'rendered' ? styles.modeTabActive : ''}`}
+                  onClick={() => setPreviewMode('rendered')}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
+                  </svg>
+                  预览
+                </button>
+                <button
+                  className={`${styles.modeTab} ${previewMode === 'source' ? styles.modeTabActive : ''}`}
+                  onClick={() => setPreviewMode('source')}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
+                  </svg>
+                  源码
+                </button>
+              </div>
             </div>
-            <pre className={styles.terminalBody}><code>{skillMd}</code></pre>
+            <div className={styles.terminalBody}>
+              {previewMode === 'rendered' ? (
+                <div className={styles.markdown}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{skillMd}</ReactMarkdown>
+                </div>
+              ) : (
+                <pre className={styles.terminalSource}><code>{skillMd}</code></pre>
+              )}
+            </div>
           </div>
           <div className={styles.previewActions}>
             <button className={styles.btnPrimary} onClick={handleDownload}>
