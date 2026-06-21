@@ -1,0 +1,2 @@
+.btn { padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--card); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn[data-done='true'] { background: hsl(140 80% 45%); color: white; border-color: transparent; }
