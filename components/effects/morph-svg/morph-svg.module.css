@@ -1,0 +1,11 @@
+.svg {
+  width: 80%;
+  height: 80%;
+  max-width: 240px;
+  max-height: 240px;
+  color: hsl(280 90% 60%);
+  transition: d 0.3s;
+}
+.path {
+  transition: d 0.4s ease-in-out;
+}
