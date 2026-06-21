@@ -5,12 +5,21 @@ import { Tabs } from '@/components/ui/Tabs';
 import { CATEGORIES } from '@/data/effects';
 import styles from './Toolbar.module.css';
 
-export function Toolbar({ count }: { count: number }) {
+type SortMode = 'default' | 'likes';
+
+export function Toolbar({
+  count,
+  sort,
+  onSortChange,
+}: {
+  count: number;
+  sort: SortMode;
+  onSortChange: (v: SortMode) => void;
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const cat = (params.get('cat') as any) || 'all';
   const q = params.get('q') || '';
-  const sort = (params.get('sort') as any) || 'default';
   const [displayCount, setDisplayCount] = useState(count);
 
   const setParam = useCallback((key: string, value: string | null) => {
@@ -48,14 +57,14 @@ export function Toolbar({ count }: { count: number }) {
           <span className={styles.sortLabel}>排序</span>
           <button
             className={`${styles.sortBtn} ${sort === 'default' ? styles.sortActive : ''}`}
-            onClick={() => setParam('sort', null)}
+            onClick={() => onSortChange('default')}
             aria-label="默认排序"
           >
             默认
           </button>
           <button
             className={`${styles.sortBtn} ${sort === 'likes' ? styles.sortActive : ''}`}
-            onClick={() => setParam('sort', 'likes')}
+            onClick={() => onSortChange('likes')}
             aria-label="按点赞数排序"
           >
             <span className={styles.sortIcon}>♥</span>

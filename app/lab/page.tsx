@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useMemo, useEffect, useState, Suspense } from 'react';
+import { useMemo, useEffect, useState, Suspense, useCallback } from 'react';
 import { EFFECTS } from '@/data/effects';
 import { Toolbar } from '@/components/lab/Toolbar';
 import { EffectGrid } from '@/components/lab/EffectGrid';
@@ -9,6 +9,19 @@ import { Drawer } from '@/components/lab/Drawer';
 import { ParamPanel } from '@/components/lab/ParamPanel';
 import { CodePanel } from '@/components/lab/CodePanel';
 import { getAllLikes } from '@/lib/likes';
+
+const SORT_KEY = 'motionlab:sort';
+type SortMode = 'default' | 'likes';
+
+function readSort(): SortMode {
+  if (typeof window === 'undefined') return 'default';
+  try {
+    const v = sessionStorage.getItem(SORT_KEY);
+    return v === 'likes' ? 'likes' : 'default';
+  } catch {
+    return 'default';
+  }
+}
 
 export default function LabPage() {
   return (
@@ -23,9 +36,18 @@ function LabContent() {
   const router = useRouter();
   const q = (params.get('q') || '').toLowerCase();
   const cat = params.get('cat') || 'all';
-  const sort = params.get('sort') || 'default';
   const openId = params.get('open');
   const panel = params.get('panel') as 'code' | 'params' | null;
+
+  // 排序改用本地 state + sessionStorage，避开 URL → 路由重渲染
+  const [sort, setSort] = useState<SortMode>('default');
+  useEffect(() => {
+    setSort(readSort());
+  }, []);
+  const updateSort = useCallback((v: SortMode) => {
+    setSort(v);
+    try { sessionStorage.setItem(SORT_KEY, v); } catch { /* noop */ }
+  }, []);
 
   const [likeMap, setLikeMap] = useState<Record<string, number>>({});
   const [, setTick] = useState(0);
@@ -66,7 +88,7 @@ function LabContent() {
 
   return (
     <main>
-      <Toolbar count={filtered.length} />
+      <Toolbar count={filtered.length} sort={sort} onSortChange={updateSort} />
       {filtered.length === 0 ? <EmptyState /> : <EffectGrid effects={filtered} />}
       <Drawer open={!!open} onClose={close} title={open ? `${open.name} · ${open.englishName}` : ''}>
         {open && panel === 'code' && <CodePanel effect={open} />}
