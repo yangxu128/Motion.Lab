@@ -1,0 +1,283 @@
+/* Login template */
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #faf7ff 0%, #f0eaff 50%, #e6f0ff 100%);
+  overflow: hidden;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.blobA, .blobB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.blobA {
+  width: 480px; height: 480px;
+  top: -150px; right: -100px;
+  background: hsla(280, 90%, 65%, 0.35);
+}
+.blobB {
+  width: 460px; height: 460px;
+  bottom: -150px; left: -100px;
+  background: hsla(200, 90%, 60%, 0.3);
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 36px 36px 32px;
+  box-shadow: 0 20px 60px rgba(80, 30, 130, 0.12);
+  animation: cardIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.brandDot {
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(330 90% 60%));
+  box-shadow: 0 4px 10px hsla(280, 90%, 60%, 0.4);
+}
+
+.tabs {
+  position: relative;
+  display: flex;
+  background: #f4f4f8;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.tab {
+  flex: 1;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: color 0.2s;
+  z-index: 1;
+}
+.tab[data-active="true"] { color: #0a0a0a; }
+.indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: white;
+  border-radius: 7px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.indicator[data-pos="signup"] { transform: translateX(100%); }
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px;
+  animation: titleIn 0.5s ease both;
+}
+.lede {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px;
+  animation: titleIn 0.5s ease 0.1s both;
+}
+@keyframes titleIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: shake 0.4s ease;
+}
+.form:nth-of-type(1) { animation: none; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  letter-spacing: 0.02em;
+}
+.input {
+  font: inherit;
+  font-size: 14px;
+  padding: 11px 14px;
+  background: white;
+  border: 1.5px solid #e8e8ee;
+  border-radius: 10px;
+  color: #0a0a0a;
+  outline: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.input::placeholder { color: #aaa; }
+.input:focus {
+  border-color: hsl(280 90% 60%);
+  box-shadow: 0 0 0 4px hsla(280, 90%, 60%, 0.12);
+}
+.pwdWrap { position: relative; }
+.pwdWrap .input { width: 100%; padding-right: 40px; }
+.eye {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.6;
+}
+.eye:hover { opacity: 1; }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+.check { display: flex; align-items: center; gap: 6px; color: #555; cursor: pointer; }
+.check input { accent-color: hsl(280 90% 60%); }
+.forgot { color: hsl(280 90% 50%); font-weight: 500; }
+
+.submitArrow { transition: transform 0.2s; }
+.submit:hover .submitArrow { transform: translateX(4px); }
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 24px 0 16px;
+  font-size: 12px;
+  color: #999;
+}
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 1px;
+  background: #e8e8ee;
+  z-index: 0;
+}
+.divider span {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0 12px;
+}
+.socials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.social {
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: 500;
+  background: white;
+  border: 1.5px solid #e8e8ee;
+  border-radius: 10px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.social:hover { border-color: hsl(280 90% 60%); background: #faf7ff; }
+
+.foot {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  margin: 24px 0 0;
+}
+.foot button {
+  background: none;
+  border: none;
+  font: inherit;
+  color: hsl(280 90% 50%);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+/* Ripple button */
+.rippleBtn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(330 90% 60%));
+  border: none;
+  padding: 12px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px hsla(280, 90%, 60%, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  width: 100%;
+}
+.rippleBtn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px hsla(280, 90%, 60%, 0.4); }
+.rippleBtn:active { transform: translateY(0); }
+.ripple {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.7s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple {
+  to { transform: translate(-50%, -50%) scale(30); opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
