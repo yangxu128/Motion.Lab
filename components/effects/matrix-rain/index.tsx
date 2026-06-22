@@ -4,7 +4,7 @@ import { useCanvas2D } from '@/lib/use-canvas-2d';
 import { PreviewFrame } from '../_shared/PreviewFrame';
 import styles from './matrix-rain.module.css';
 
-const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 export default function MatrixRain({ params }: { params: { speed: number; density: number } }) {
   const ref = useRef<HTMLCanvasElement>(null);
