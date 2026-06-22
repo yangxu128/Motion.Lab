@@ -6,6 +6,8 @@ import styles from './template-detail.module.css';
 
 const CATEGORY_LABEL: Record<string, string> = {
   marketing: '营销', product: '产品', auth: '认证', commerce: '电商', creative: '创意',
+  brutalism: '新粗野', neumorphism: '拟物', cyberpunk: '赛博', y2k: 'Y2K',
+  terminal: '终端', spatial: '空间', swiss: '瑞士', memphis: '孟菲斯',
 };
 
 type Meta = Omit<Template, 'preview'>;

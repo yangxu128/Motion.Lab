@@ -1,7 +1,9 @@
 // data/templates.ts — 整页模板（每个用多种动效组合的完整页面 demo）
 import type { ComponentType } from 'react';
 
-export type TemplateCategory = 'marketing' | 'product' | 'auth' | 'commerce' | 'creative';
+export type TemplateCategory =
+  | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
+  | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis';
 
 export interface Template {
   id: string;
@@ -12,6 +14,8 @@ export interface Template {
   tags: string[];
   /** 使用的动效 id 列表（用于展示 badge） */
   effects: string[];
+  /** 视觉风格标签（用于筛选） */
+  style?: string;
   preview: () => Promise<{ default: ComponentType }>;
 }
 
@@ -22,6 +26,14 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'auth', name: '认证', english: 'Auth' },
   { id: 'commerce', name: '电商', english: 'Commerce' },
   { id: 'creative', name: '创意', english: 'Creative' },
+  { id: 'brutalism', name: '新粗野', english: 'Brutalism' },
+  { id: 'neumorphism', name: '拟物', english: 'Neumorphism' },
+  { id: 'cyberpunk', name: '赛博', english: 'Cyberpunk' },
+  { id: 'y2k', name: 'Y2K', english: 'Y2K' },
+  { id: 'terminal', name: '终端', english: 'Terminal' },
+  { id: 'spatial', name: '空间', english: 'Spatial' },
+  { id: 'swiss', name: '瑞士', english: 'Swiss' },
+  { id: 'memphis', name: '孟菲斯', english: 'Memphis' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -76,5 +88,95 @@ export const TEMPLATES: Template[] = [
     tags: ['portfolio', 'grid', 'showcase', 'personal'],
     effects: ['grid-magnetic', 'mask-reveal', 'hover-follow-cursor', 'text-split-reveal', 'three-d-tilt', 'image-zoom'],
     preview: lz('portfolio'),
+  },
+
+  // ==== 风格系列 ====
+  {
+    id: 'brutalism',
+    name: '新粗野主义',
+    englishName: 'Neo-Brutalism',
+    description: '硬边粗框、明黄对比、夸张投影、原始网格。宣言感、搞怪、让人一眼记住。',
+    category: 'brutalism',
+    style: 'brutalism',
+    tags: ['brutalism', 'bold', 'y2k', 'editorial'],
+    effects: ['text-marquee', 'hover-press', 'hover-tilt', 'color-cycle', 'magnetic-button', 'scroll-reveal'],
+    preview: lz('brutalism'),
+  },
+  {
+    id: 'neumorphism',
+    name: '拟物软 UI',
+    englishName: 'Neumorphism',
+    description: '同色系背景 + 内外阴影 + 按压感按钮 + 软圆角，触感优先、温和、治愈。',
+    category: 'neumorphism',
+    style: 'neumorphism',
+    tags: ['soft-ui', 'monochrome', 'control', 'iot'],
+    effects: ['hover-press', 'toggle-flip', 'progress-ring', 'count-up', 'wave-bar', 'ripple-click'],
+    preview: lz('neumorphism'),
+  },
+  {
+    id: 'cyberpunk',
+    name: '赛博朋克',
+    englishName: 'Cyberpunk',
+    description: '深色 + 霓虹青/紫/粉 + 扫描线 + 故障风文字 + 数据流。黑客感、夜店、反抗。',
+    category: 'cyberpunk',
+    style: 'cyberpunk',
+    tags: ['cyberpunk', 'neon', 'dark', 'gaming'],
+    effects: ['glitch-text', 'marquee', 'scan-lines', 'gradient-text', 'pulse-glow', 'hover-glow'],
+    preview: lz('cyberpunk'),
+  },
+  {
+    id: 'y2k',
+    name: 'Y2K 复古',
+    englishName: 'Y2K Retro',
+    description: '黑黄棋盘格、镭射渐变、DotWeb、星球、Disco 球。千禧年、华丽、Disco 复古。',
+    category: 'y2k',
+    style: 'y2k',
+    tags: ['y2k', 'retro', 'fashion', 'music'],
+    effects: ['text-marquee', 'chrome-text', 'hover-press', 'color-cycle', 'magnetic-button', 'hover-tilt'],
+    preview: lz('y2k'),
+  },
+  {
+    id: 'terminal',
+    name: '终端命令行',
+    englishName: 'Terminal CLI',
+    description: '绿底 + 黑白字 + ASCII 艺术 + 命令提示符 + 闪烁光标。极客感、代码即美学。',
+    category: 'terminal',
+    style: 'terminal',
+    tags: ['cli', 'dev', 'ascii', 'monospace'],
+    effects: ['typewriter', 'blink-cursor', 'ascii-art', 'text-marquee', 'count-up', 'scroll-reveal'],
+    preview: lz('terminal'),
+  },
+  {
+    id: 'vision-pro',
+    name: '空间计算',
+    englishName: 'Spatial / Vision Pro',
+    description: '玻璃拟态 + 巨大字号 + 模糊光圈 + 高级质感。Apple 范儿、spatial、premium。',
+    category: 'spatial',
+    style: 'spatial',
+    tags: ['spatial', 'apple', 'glassmorphism', 'premium'],
+    effects: ['glass-blur', 'gradient-text', 'magnetic-button', 'scroll-parallax', 'hover-glow', 'text-marquee'],
+    preview: lz('vision-pro'),
+  },
+  {
+    id: 'swiss',
+    name: '瑞士国际主义',
+    englishName: 'Swiss Minimalism',
+    description: '黑红配色、十二网格、Helvetica 风、几何元素、严格排版。克制、理性、高级。',
+    category: 'swiss',
+    style: 'swiss',
+    tags: ['swiss', 'editorial', 'minimal', 'magazine'],
+    effects: ['scroll-reveal', 'number-counter', 'text-marquee', 'hover-tilt', 'magnetic-button', 'wave-bar'],
+    preview: lz('swiss'),
+  },
+  {
+    id: 'memphis',
+    name: '孟菲斯设计',
+    englishName: 'Memphis Design',
+    description: '80s 几何 + 点阵网格 + 卷曲线 + 三角圆点 + 撞色配色。欢快、活泼、年轻。',
+    category: 'memphis',
+    style: 'memphis',
+    tags: ['memphis', '80s', 'geometric', 'playful'],
+    effects: ['hover-tilt', 'text-marquee', 'color-cycle', 'magnetic-button', 'hover-press', 'scroll-reveal'],
+    preview: lz('memphis'),
   },
 ];
