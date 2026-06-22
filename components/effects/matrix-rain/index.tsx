@@ -1,49 +1,53 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { useCanvas2D } from '@/lib/use-canvas-2d';
 import { PreviewFrame } from '../_shared/PreviewFrame';
 import styles from './matrix-rain.module.css';
+
+const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
+
 export default function MatrixRain({ params }: { params: { speed: number; density: number } }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    if (!ctx) return;
-    const resize = () => {
-      c.width = Math.floor(c.offsetWidth);
-      c.height = Math.floor(c.offsetHeight);
+  useCanvas2D(
+    ref,
+    () => {
       const fontSize = 14;
-      const cols = Math.max(1, Math.floor(c.width / fontSize * params.density));
-      drops.length = cols;
-      for (let i = 0; i < cols; i++) drops[i] = Math.random() * c.height / 14;
-    };
-    const drops: number[] = [];
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789';
-    const fontSize = 14;
-    resize();
-    window.addEventListener('resize', resize);
-    let raf = 0;
-    const draw = () => {
-      ctx.fillStyle = 'rgba(0,0,0,0.06)';
-      ctx.fillRect(0, 0, c.width, c.height);
-      ctx.fillStyle = '#0f0';
-      ctx.font = fontSize + 'px monospace';
-      for (let i = 0; i < drops.length; i++) {
-        const ch = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > c.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i] += params.speed / 3;
-      }
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-    };
-  }, [params.speed, params.density]);
+      let drops: number[] = [];
+      let initW = 0;
+      let initH = 0;
+      return {
+        onTick: ({ ctx, w, h }) => {
+          // 容器尺寸变化 → 重新排布列
+          if (initW !== w || initH !== h) {
+            initW = w;
+            initH = h;
+            const cols = Math.max(1, Math.floor((w / fontSize) * params.density));
+            drops = new Array(cols);
+            for (let i = 0; i < cols; i++) drops[i] = Math.random() * h / fontSize;
+          }
+          // 拖尾
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+          ctx.fillRect(0, 0, w, h);
+          ctx.font = `${fontSize}px monospace`;
+          for (let i = 0; i < drops.length; i++) {
+            const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
+            // 头部亮白，尾部绿色
+            const y = drops[i] * fontSize;
+            ctx.fillStyle = 'rgba(180, 255, 200, 0.95)';
+            ctx.fillText(ch, i * fontSize, y);
+            // 拖尾的字符（随机褪色）
+            ctx.fillStyle = `hsla(140, 100%, ${50 + Math.random() * 25}%, ${0.5 + Math.random() * 0.3})`;
+            ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * fontSize, y - fontSize);
+            if (y > h && Math.random() > 0.975) drops[i] = 0;
+            drops[i] += params.speed / 3;
+          }
+        },
+      };
+    },
+    { pauseOffscreen: true, maxDpr: 1 }
+  );
   return (
-    <PreviewFrame>
+    <PreviewFrame category="advanced">
       <canvas ref={ref} className={styles.canvas} />
     </PreviewFrame>
   );

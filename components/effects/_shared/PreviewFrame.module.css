@@ -6,8 +6,102 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, hsl(220 20% 97%), hsl(260 30% 95%));
+  background:
+    radial-gradient(ellipse at top, hsl(220 20% 99%) 0%, hsl(220 18% 96%) 70%),
+    linear-gradient(180deg, hsl(220 20% 99%), hsl(260 25% 97%));
   border-radius: 16px;
   overflow: hidden;
   isolation: isolate;
+  contain: paint;
 }
+
+/* 细密点阵网格 — 给所有动效一个精致的"画布"质感 */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, hsl(220 15% 70% / 0.18) 1px, transparent 1px);
+  background-size: 14px 14px;
+  background-position: 0 0;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
+}
+
+/* 顶部柔光 + 底部暗角 */
+.lights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.lightTop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 60%;
+  background: radial-gradient(ellipse at top, hsla(var(--accent-h, 280), 90%, 70%, 0.08) 0%, transparent 60%);
+}
+.lightBottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 50%;
+  background: radial-gradient(ellipse at bottom, hsla(220, 30%, 50%, 0.06) 0%, transparent 60%);
+}
+
+/* 角落分类标签 */
+.cornerLabel {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: hsl(220 10% 55%);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+.frame[data-category="basic"] .cornerLabel { color: hsl(210 80% 55%); }
+.frame[data-category="text"] .cornerLabel { color: hsl(280 80% 60%); }
+.frame[data-category="interaction"] .cornerLabel { color: hsl(340 80% 60%); }
+.frame[data-category="advanced"] .cornerLabel { color: hsl(30 90% 55%); }
+
+/* 底部提示 */
+.bottomHint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: hsl(220 10% 50%);
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* 实际内容 — 浮在 grid 之上 */
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.content > * { pointer-events: auto; }
