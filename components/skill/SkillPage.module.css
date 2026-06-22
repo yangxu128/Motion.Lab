@@ -20,17 +20,19 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.32;
-  animation: float 8s ease-in-out infinite;
+  filter: blur(60px);
+  opacity: 0.28;
+  animation: float 10s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
   will-change: transform;
+  /* 触发 GPU 合成层 */
+  transform: translate3d(0, 0, 0);
 }
 
 @keyframes float {
-  0%, 100% { margin-top: 0px; }
-  50% { margin-top: -35px; }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -28px, 0); }
 }
 
 /* Hero 2-column grid */
@@ -516,6 +518,9 @@
 .section {
   padding: 120px 48px;
   position: relative;
+  /* 跳过离屏内容的渲染（480 个 <pre> 代码块的最大优化点） */
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
 }
 
 @media (max-width: 640px) {
@@ -579,10 +584,10 @@
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
-  transform-style: preserve-3d;
-  will-change: transform;
+  contain: paint;
+  /* 默认不进入 3D 层 — 鼠标进入时再通过 JS 启用 */
+  will-change: auto;
 }
 
 .stepCard:nth-child(1) { --cat-color: hsl(280 85% 60%); }
@@ -685,10 +690,9 @@
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
-  transform-style: preserve-3d;
-  will-change: transform;
+  contain: paint;
+  will-change: auto;
 }
 
 .exampleCard:hover {
@@ -1040,6 +1044,46 @@
 
 .markdown strong { color: #f0f6fc; font-weight: 700; }
 .markdown em { color: hsl(30 90% 75%); font-style: italic; }
+
+/* 截断提示卡片 */
+.truncatedNotice {
+  margin-top: 24px;
+}
+
+.truncatedDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(220 15% 25%), transparent);
+  margin-bottom: 20px;
+}
+
+.truncatedInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, hsl(280 30% 14%), hsl(340 30% 14%));
+  border: 1px dashed hsl(280 50% 40%);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.truncatedBadge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 85% 60%));
+  color: white;
+  letter-spacing: 0.04em;
+}
+
+.truncatedText {
+  font-size: 13px;
+  color: hsl(220 10% 65%);
+  line-height: 1.5;
+}
 
 /* Custom scrollbar for terminal */
 .terminalBody::-webkit-scrollbar { width: 10px; height: 10px; }

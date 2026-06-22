@@ -52,6 +52,25 @@ function parseFrontmatter(md: string): { frontmatter: { key: string; value: stri
   return { frontmatter, body };
 }
 
+// 截取预览用的 markdown — 保留 frontmatter + 简介 + 第一个分类示例，避免渲染 480 个 <pre>
+function truncateForPreview(md: string, maxBytes = 10_000): { preview: string; totalBytes: number; isTruncated: boolean } {
+  const total = md.length;
+  if (total <= maxBytes) return { preview: md, totalBytes: total, isTruncated: false };
+  // 找到第三个 ---（包含到第一个分类的源码）之前的部分
+  let cut = maxBytes;
+  const markers: number[] = [];
+  const re = /\n---\n/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(md)) !== null) {
+    markers.push(m.index);
+    if (markers.length >= 4) break;
+  }
+  if (markers.length >= 4) cut = Math.max(maxBytes, markers[3] + 4);
+  // 在最近的一个换行处截断，避免切到代码块中间
+  const lastNewline = md.lastIndexOf('\n', cut);
+  return { preview: md.slice(0, lastNewline > 0 ? lastNewline : cut), totalBytes: total, isTruncated: true };
+}
+
 // 演示对话 — 在 Hero 右侧循环播放
 const DEMO_SCRIPT = [
   { type: 'user' as const, text: '帮我给按钮加点击波纹' },
@@ -77,27 +96,68 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionHeadingsRef = useRef<HTMLHeadingElement[]>([]);
 
-  // Hero 演示对话 — 循环打字机效果
+  // Hero 演示对话 — 循环打字机效果，hero 离屏时暂停避免持续重渲染
   useEffect(() => {
     let cancelled = false;
-    const runStep = (i: number) => {
-      if (cancelled) return;
-      setDemoStep(i);
-      setTyped('');
-      const msg = DEMO_SCRIPT[i];
-      let idx = 0;
-      const typeTimer = setInterval(() => {
-        if (cancelled) { clearInterval(typeTimer); return; }
-        idx += 1;
-        setTyped(msg.text.slice(0, idx));
-        if (idx >= msg.text.length) {
-          clearInterval(typeTimer);
-          setTimeout(() => runStep((i + 1) % DEMO_SCRIPT.length), 1600);
-        }
-      }, 60);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+    let intervals: ReturnType<typeof setInterval>[] = [];
+    let io: IntersectionObserver | null = null;
+    let isVisible = true;
+
+    const start = () => {
+      const runStep = (i: number) => {
+        if (cancelled || !isVisible) return;
+        setDemoStep(i);
+        setTyped('');
+        const msg = DEMO_SCRIPT[i];
+        let idx = 0;
+        const typeTimer = setInterval(() => {
+          if (cancelled || !isVisible) { clearInterval(typeTimer); return; }
+          idx += 1;
+          setTyped(msg.text.slice(0, idx));
+          if (idx >= msg.text.length) {
+            clearInterval(typeTimer);
+            const next = setTimeout(() => runStep((i + 1) % DEMO_SCRIPT.length), 1600);
+            timeouts.push(next);
+          }
+        }, 60);
+        intervals.push(typeTimer);
+      };
+      const startTimer = setTimeout(() => runStep(0), 1200);
+      timeouts.push(startTimer);
     };
-    const startTimer = setTimeout(() => runStep(0), 1200);
-    return () => { cancelled = true; clearTimeout(startTimer); };
+
+    if (heroRef.current && typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          const wasVisible = isVisible;
+          isVisible = entry.isIntersecting;
+          if (isVisible && !wasVisible) {
+            // 重新进入视口时重启
+            timeouts.forEach(clearTimeout);
+            intervals.forEach(clearInterval);
+            timeouts = [];
+            intervals = [];
+            start();
+          } else if (!isVisible) {
+            // 离屏时清空所有 timer，避免 setState 持续触发重渲染
+            timeouts.forEach(clearTimeout);
+            intervals.forEach(clearInterval);
+          }
+        },
+        { threshold: 0 }
+      );
+      io.observe(heroRef.current);
+    } else {
+      start();
+    }
+
+    return () => {
+      cancelled = true;
+      timeouts.forEach(clearTimeout);
+      intervals.forEach(clearInterval);
+      io?.disconnect();
+    };
   }, []);
 
   // Hero: 标题用纯 CSS 动画（避免 GSAP 起始态在某些情况下卡住）
@@ -133,30 +193,34 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
     }
   }, []);
 
-  // Hero: mouse parallax on blobs (consistent with Home/Hero)
+  // Hero: 鼠标视差 — 用 rAF 节流 + 降低 GSAP 调用频率
   useEffect(() => {
     if (!heroRef.current) return;
     let raf = 0;
+    let running = true;
+    const blobs = heroRef.current.querySelectorAll(`.${styles.blob}`);
+    if (blobs.length === 0) return;
     const handleMove = (e: MouseEvent) => {
+      if (!running) return;
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect = heroRef.current!.getBoundingClientRect();
+        if (!heroRef.current) return;
+        const rect = heroRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
-        const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
         blobs.forEach((blob, i) => {
-          const factor = (i + 1) * 10;
-          gsap.to(blob, { x: -x * factor, y: -y * factor, duration: 0.8, ease: 'power2.out' });
+          const factor = (i + 1) * 6; // 视差幅度从 10 降到 6
+          gsap.to(blob, { x: -x * factor, y: -y * factor, duration: 1.0, ease: 'power2.out', overwrite: 'auto' });
         });
       });
     };
     const handleLeave = () => {
-      const blobs = heroRef.current!.querySelectorAll(`.${styles.blob}`);
-      gsap.to(blobs, { x: 0, y: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' });
+      gsap.to(blobs, { x: 0, y: 0, duration: 1.2, ease: 'power2.out', overwrite: 'auto' });
     };
-    heroRef.current.addEventListener('mousemove', handleMove);
+    heroRef.current.addEventListener('mousemove', handleMove, { passive: true });
     heroRef.current.addEventListener('mouseleave', handleLeave);
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
       heroRef.current?.removeEventListener('mousemove', handleMove);
       heroRef.current?.removeEventListener('mouseleave', handleLeave);
@@ -506,7 +570,8 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
               {previewMode === 'rendered' ? (
                 <div className={styles.markdown}>
                   {(() => {
-                    const { frontmatter, body } = parseFrontmatter(skillMd);
+                    const { preview, isTruncated, totalBytes } = truncateForPreview(skillMd, 10_000);
+                    const { frontmatter, body } = parseFrontmatter(preview);
                     return (
                       <>
                         {frontmatter.length > 0 && (
@@ -524,6 +589,17 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
                           </div>
                         )}
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                        {isTruncated && (
+                          <div className={styles.truncatedNotice}>
+                            <div className={styles.truncatedDivider} />
+                            <div className={styles.truncatedInner}>
+                              <span className={styles.truncatedBadge}>… 仅展示前 {(preview.length / 1024).toFixed(1)} KB</span>
+                              <span className={styles.truncatedText}>
+                                完整内容 {(totalBytes / 1024).toFixed(1)} KB 含全部动效源码 — 请下载 SKILL.md
+                              </span>
+                            </div>
+                          </div>
+                        )}
                       </>
                     );
                   })()}
