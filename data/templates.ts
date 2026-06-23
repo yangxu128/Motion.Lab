@@ -5,7 +5,7 @@ export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
   | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
   | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
-  | 'showcase' | 'atmospheric' | 'painterly';
+  | 'showcase' | 'atmospheric' | 'painterly' | 'cinematic';
 
 export interface Template {
   id: string;
@@ -44,6 +44,7 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'showcase', name: '高级展示', english: 'Premium Showcase' },
   { id: 'atmospheric', name: '氛围', english: 'Atmospheric' },
   { id: 'painterly', name: '油画', english: 'Painterly' },
+  { id: 'cinematic', name: '电影', english: 'Cinematic' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -278,5 +279,16 @@ export const TEMPLATES: Template[] = [
     tags: ['painterly', 'paris', 'cafe', 'ken-burns', 'rain', 'bistro'],
     effects: ['ken-burns', 'canvas-rain', 'oil-paint-css', 'lamp-flicker', 'glass-blur', 'stagger-in'],
     preview: lz('paris-cafe'),
+  },
+  {
+    id: 'velorah',
+    name: '电影感视频',
+    englishName: 'Velorah Cinematic',
+    description: '全屏循环视频背景 + Liquid Glass 玻璃 UI + Instrument Serif 电影字 + fade-rise 入场。对标高端品牌落地页。',
+    category: 'cinematic',
+    style: 'cinematic',
+    tags: ['cinematic', 'video-bg', 'glassmorphism', 'serif', 'minimal', 'hero'],
+    effects: ['video-loop', 'liquid-glass', 'fade-rise', 'hover-scale', 'google-fonts'],
+    preview: lz('velorah'),
   },
 ];

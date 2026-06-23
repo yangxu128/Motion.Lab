@@ -12,6 +12,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   showcase: '高级展示',
   atmospheric: '氛围',
   painterly: '油画',
+  cinematic: '电影',
 };
 
 type Meta = Omit<Template, 'preview'>;
