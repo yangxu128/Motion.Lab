@@ -141,15 +141,13 @@ export default function ParisCafe() {
 
   return (
     <div className={styles.page}>
-      {/* KEN BURNS 油画背景（用 CSS 渐变模拟油彩） */}
+      {/* 印象派油画背景（真实画作 + Ken Burns + 暖色光晕 + 路灯） */}
       <div className={styles.bg}>
-        <div className={styles.bgSky} />
-        <div className={styles.bgCafe} />
+        <div className={styles.bgPainting} />
+        <div className={styles.bgWarmGlow} />
         <div className={styles.bgLampA} />
         <div className={styles.bgLampB} />
         <div className={styles.bgLampC} />
-        <div className={styles.bgStreet} />
-        <div className={styles.bgReflections} />
         {/* 笔触 overlay */}
         <div className={styles.brushOverlay} aria-hidden />
         {/* 画框暗角 */}
