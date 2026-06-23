@@ -10,6 +10,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   terminal: '终端', spatial: '空间', swiss: '瑞士', memphis: '孟菲斯',
   tech: '科技', minimal: '极简', bauhaus: '包豪斯', steampunk: '蒸汽', macaron: '马卡龙',
   showcase: '高级展示',
+  atmospheric: '氛围',
 };
 
 type Meta = Omit<Template, 'preview'>;

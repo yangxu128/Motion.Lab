@@ -5,7 +5,7 @@ export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
   | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
   | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
-  | 'showcase';
+  | 'showcase' | 'atmospheric';
 
 export interface Template {
   id: string;
@@ -42,6 +42,7 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'steampunk', name: '蒸汽', english: 'Steampunk' },
   { id: 'macaron', name: '马卡龙', english: 'Macaron' },
   { id: 'showcase', name: '高级展示', english: 'Premium Showcase' },
+  { id: 'atmospheric', name: '氛围', english: 'Atmospheric' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -254,5 +255,16 @@ export const TEMPLATES: Template[] = [
     tags: ['showcase', 'premium', 'dark', '3d', 'gradient'],
     effects: ['mouse-spotlight', 'gradient-text', '3d-card', 'scroll-reveal', 'parallax', 'color-cycle'],
     preview: lz('premium-showcase'),
+  },
+  {
+    id: 'misty-forest',
+    name: '雾气山林',
+    englishName: 'Misty Forest',
+    description: 'Ken Burns 慢呼吸背景 + Canvas 雾气粒子 + 玻璃预订卡 + 暖色小屋光晕。度假酒店/民宿范儿。',
+    category: 'atmospheric',
+    style: 'atmospheric',
+    tags: ['atmospheric', 'forest', 'lifestyle', 'ken-burns', 'particles'],
+    effects: ['ken-burns', 'canvas-particles', 'glass-blur', 'glow-flicker', 'stagger-in', 'hover-lift'],
+    preview: lz('misty-forest'),
   },
 ];
