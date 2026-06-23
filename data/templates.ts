@@ -3,7 +3,8 @@ import type { ComponentType } from 'react';
 
 export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
-  | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis';
+  | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
+  | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron';
 
 export interface Template {
   id: string;
@@ -34,6 +35,11 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'spatial', name: '空间', english: 'Spatial' },
   { id: 'swiss', name: '瑞士', english: 'Swiss' },
   { id: 'memphis', name: '孟菲斯', english: 'Memphis' },
+  { id: 'tech', name: '科技', english: 'Tech' },
+  { id: 'minimal', name: '极简', english: 'Minimal' },
+  { id: 'bauhaus', name: '包豪斯', english: 'Bauhaus' },
+  { id: 'steampunk', name: '蒸汽', english: 'Steampunk' },
+  { id: 'macaron', name: '马卡龙', english: 'Macaron' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -178,5 +184,62 @@ export const TEMPLATES: Template[] = [
     tags: ['memphis', '80s', 'geometric', 'playful'],
     effects: ['hover-tilt', 'text-marquee', 'color-cycle', 'magnetic-button', 'hover-press', 'scroll-reveal'],
     preview: lz('memphis'),
+  },
+
+  // ==== 第二批风格 ====
+  {
+    id: 'tech',
+    name: '科技风',
+    englishName: 'Tech HUD',
+    description: '深色 + 等宽数字 + 数据流 + 电路网格 + 玻璃面板。未来感、数据可视化、HUD 范儿。',
+    category: 'tech',
+    style: 'tech',
+    tags: ['tech', 'hud', 'data', 'dark'],
+    effects: ['text-marquee', 'gradient-text', 'pulse-glow', 'hover-glow', 'color-cycle', 'count-up'],
+    preview: lz('tech'),
+  },
+  {
+    id: 'minimal',
+    name: '极简风',
+    englishName: 'Minimal',
+    description: '大量留白 + 黑白灰 + 细线条 + 极简排版。安静、克制、呼吸感（与 Swiss 区分：更轻、更禅）。',
+    category: 'minimal',
+    style: 'minimal',
+    tags: ['minimal', 'whitespace', 'quiet', 'calm'],
+    effects: ['scroll-reveal', 'fade-in', 'count-up', 'hover-lift', 'text-marquee', 'accordion-smooth'],
+    preview: lz('minimal'),
+  },
+  {
+    id: 'bauhaus',
+    name: '包豪斯',
+    englishName: 'Bauhaus',
+    description: '红黄蓝三原色 + 几何形状 + 纯色块 + 先锋派。功能即美学、构成感。',
+    category: 'bauhaus',
+    style: 'bauhaus',
+    tags: ['bauhaus', 'primary-colors', 'geometric', 'constructivist'],
+    effects: ['hover-tilt', 'color-cycle', 'magnetic-button', 'text-marquee', 'scroll-reveal', 'hover-press'],
+    preview: lz('bauhaus'),
+  },
+  {
+    id: 'steampunk',
+    name: '蒸汽朋克',
+    englishName: 'Steampunk',
+    description: '铜色 + 齿轮 + 黄铜铆钉 + 维多利亚 + 复古机械。工业感、探险、蒸汽动力。',
+    category: 'steampunk',
+    style: 'steampunk',
+    tags: ['steampunk', 'victorian', 'industrial', 'retro'],
+    effects: ['hover-tilt', 'pulse-glow', 'text-marquee', 'color-cycle', 'magnetic-button', 'scroll-reveal'],
+    preview: lz('steampunk'),
+  },
+  {
+    id: 'macaron',
+    name: '马卡龙梦境',
+    englishName: 'Macaron Dream',
+    description: '粉嫩色系 + 渐变 + 棉花糖 + 云朵 + 梦幻。少女心、甜、柔软。',
+    category: 'macaron',
+    style: 'macaron',
+    tags: ['macaron', 'pastel', 'dream', 'cute'],
+    effects: ['hover-press', 'pulse-glow', 'color-cycle', 'gradient-text', 'magnetic-button', 'scroll-reveal'],
+    preview: lz('macaron'),
   },
 ];
