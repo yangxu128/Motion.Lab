@@ -5,7 +5,7 @@ export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
   | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
   | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
-  | 'showcase' | 'atmospheric';
+  | 'showcase' | 'atmospheric' | 'painterly';
 
 export interface Template {
   id: string;
@@ -43,6 +43,7 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'macaron', name: '马卡龙', english: 'Macaron' },
   { id: 'showcase', name: '高级展示', english: 'Premium Showcase' },
   { id: 'atmospheric', name: '氛围', english: 'Atmospheric' },
+  { id: 'painterly', name: '油画', english: 'Painterly' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -266,5 +267,16 @@ export const TEMPLATES: Template[] = [
     tags: ['atmospheric', 'forest', 'lifestyle', 'ken-burns', 'particles'],
     effects: ['ken-burns', 'canvas-particles', 'glass-blur', 'glow-flicker', 'stagger-in', 'hover-lift'],
     preview: lz('misty-forest'),
+  },
+  {
+    id: 'paris-cafe',
+    name: '巴黎咖啡',
+    englishName: 'Paris Café',
+    description: '印象派油画背景 + Ken Burns 慢呼吸 + Canvas 雨滴 + 暖色路灯光晕。巴黎小酒馆范儿。',
+    category: 'painterly',
+    style: 'painterly',
+    tags: ['painterly', 'paris', 'cafe', 'ken-burns', 'rain', 'bistro'],
+    effects: ['ken-burns', 'canvas-rain', 'oil-paint-css', 'lamp-flicker', 'glass-blur', 'stagger-in'],
+    preview: lz('paris-cafe'),
   },
 ];

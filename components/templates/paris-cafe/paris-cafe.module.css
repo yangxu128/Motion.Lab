@@ -1,0 +1,508 @@
+.page {
+  --bg: #1a1410;
+  --ink: #f5e8d0;
+  --mid: #c4a890;
+  --dim: #8a7860;
+  --line: rgba(245, 232, 208, 0.14);
+  --gold: #d4a04a;
+  --amber: #ffb87a;
+  --warm: #ff8a4a;
+  --rose: #b04a5a;
+  --font: 'Cormorant Garamond', 'Playfair Display', 'Times New Roman', serif;
+  background: #1a1410;
+  color: var(--ink);
+  font-family: var(--font);
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ============ 油画背景（CSS 渐变模拟油彩） ============ */
+.bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: #1a1410;
+  overflow: hidden;
+}
+
+/* 天空（冷蓝灰雨云） */
+.bgSky {
+  position: absolute; inset: -10% -5% 30% -5%;
+  background:
+    radial-gradient(ellipse at 50% 20%, #4a5a7a 0%, #3a4a6a 30%, #2a3a4a 60%, #1a2438 100%);
+  filter: blur(2px);
+  animation: kenBurns1 30s ease-in-out infinite;
+}
+
+/* 暖光（咖啡馆） */
+.bgCafe {
+  position: absolute;
+  right: 0; top: 15%;
+  width: 60%; height: 70%;
+  background:
+    radial-gradient(ellipse at 70% 50%, rgba(255, 180, 100, 0.7) 0%, rgba(220, 130, 70, 0.4) 30%, transparent 60%),
+    radial-gradient(ellipse at 85% 70%, rgba(180, 60, 60, 0.5) 0%, transparent 50%);
+  filter: blur(20px);
+  animation: kenBurns2 28s ease-in-out infinite;
+}
+
+/* 路灯 A */
+.bgLampA {
+  position: absolute;
+  top: 18%; left: 32%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.95) 0%, rgba(255, 180, 80, 0.5) 30%, transparent 60%);
+  filter: blur(10px);
+  animation: lampFlicker 4s ease-in-out infinite;
+}
+/* 路灯 B（远） */
+.bgLampB {
+  position: absolute;
+  top: 25%; left: 50%;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.7) 0%, transparent 60%);
+  filter: blur(8px);
+  animation: lampFlicker 5s ease-in-out infinite 0.5s;
+}
+/* 路灯 C（远2） */
+.bgLampC {
+  position: absolute;
+  top: 22%; left: 70%;
+  width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.5) 0%, transparent 60%);
+  filter: blur(6px);
+  animation: lampFlicker 4.5s ease-in-out infinite 1s;
+}
+@keyframes lampFlicker {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+/* 街面（湿漉漉的鹅卵石） */
+.bgStreet {
+  position: absolute;
+  left: -5%; right: -5%; bottom: -5%;
+  height: 45%;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(30, 35, 50, 0.7) 30%, #1a2030 60%, #0a1018 100%);
+  filter: blur(3px);
+  animation: kenBurns3 35s ease-in-out infinite;
+}
+
+/* 街面反光（暖色灯光在湿路面上的倒影） */
+.bgReflections {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 40%;
+  background:
+    radial-gradient(ellipse at 30% 100%, rgba(255, 180, 100, 0.5) 0%, transparent 30%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 180, 100, 0.3) 0%, transparent 30%),
+    radial-gradient(ellipse at 70% 100%, rgba(180, 60, 60, 0.4) 0%, transparent 30%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  animation: kenBurns2 30s ease-in-out infinite;
+}
+
+@keyframes kenBurns1 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.06) translate(-1%, -1%); }
+}
+@keyframes kenBurns2 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.05) translate(2%, 1%); }
+}
+@keyframes kenBurns3 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.04) translate(-1%, 1%); }
+}
+
+/* 笔触 overlay（用 SVG turbulence 模拟油画笔触） */
+.brushOverlay {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.85 0 0 0 0 0.7 0 0 0 0.18 0' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' /%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* 暗角 */
+.vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+}
+
+/* Canvas 雨 */
+.rainCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 顶部暗化 */
+.topShade {
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(10, 14, 22, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============ NAV ============ */
+.nav {
+  position: relative; z-index: 10;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 18px 40px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brandMark {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  color: #1a1410;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700;
+  font-family: var(--font);
+  box-shadow: 0 4px 16px rgba(212, 160, 74, 0.4);
+}
+.brandName { font-size: 18px; font-weight: 600; letter-spacing: 0.02em; }
+.brandSub { font-size: 11px; color: var(--mid); letter-spacing: 0.15em; }
+.navLinks { display: flex; gap: 32px; }
+.navLinks a {
+  font-size: 15px; color: var(--ink); cursor: pointer;
+  font-weight: 500; letter-spacing: 0.02em;
+  font-style: italic;
+  transition: color 0.2s;
+}
+.navLinks a:hover { color: var(--gold); }
+.navCta {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--gold);
+  padding: 10px 20px;
+  border-radius: 0;
+  font-size: 13px; font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  font-style: italic;
+  transition: all 0.2s;
+}
+.navCta:hover { background: var(--gold); color: #1a1410; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative; z-index: 5;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 40px;
+  padding: 60px 40px 100px;
+  align-items: center;
+  min-height: 540px;
+}
+.heroLeft { position: relative; }
+.heroKicker {
+  font-size: 12px; color: var(--gold);
+  letter-spacing: 0.3em; font-weight: 500;
+  margin-bottom: 24px;
+  animation: heroIn 1s ease both;
+}
+.heroTitle {
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+  color: #fff;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+}
+.heroLine { display: block; }
+.heroLine[data-a] { animation: heroIn 1s ease 0.1s both; }
+.heroLine[data-b] {
+  animation: heroIn 1s ease 0.2s both;
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 400;
+}
+.heroLine[data-c] { animation: heroIn 1s ease 0.3s both; }
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.heroLede {
+  font-size: 17px; line-height: 1.7;
+  color: var(--ink); opacity: 0.85;
+  max-width: 480px;
+  margin: 0 0 32px;
+  font-style: italic;
+  animation: heroIn 1s ease 0.5s both;
+}
+.heroBtns {
+  display: flex; gap: 12px;
+  animation: heroIn 1s ease 0.6s both;
+}
+.btnPrimary {
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  color: #1a1410;
+  border: 0; padding: 14px 28px;
+  font-size: 14px; font-weight: 600;
+  font-family: var(--font);
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+}
+.btnPrimary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212, 160, 74, 0.4); }
+.btnGhost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(245, 232, 208, 0.3);
+  padding: 14px 28px;
+  font-size: 14px; font-weight: 500;
+  font-family: var(--font);
+  font-style: italic;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnGhost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ============ RESERVE CARD ============ */
+.reserveCard {
+  background: rgba(20, 14, 10, 0.55);
+  border: 1px solid rgba(212, 160, 74, 0.3);
+  border-radius: 4px;
+  padding: 28px;
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: cardIn 1s ease 0.7s both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reserveKicker {
+  font-size: 11px; color: var(--gold);
+  letter-spacing: 0.3em; font-weight: 500;
+  margin-bottom: 20px;
+}
+.reserveRow {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+.reserveLabel { font-size: 12px; color: var(--mid); margin-bottom: 4px; font-style: italic; }
+.reserveValue { font-size: 22px; color: #fff; font-weight: 500; }
+.reserveNote {
+  font-size: 12px; color: var(--gold);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+.reserveBtn {
+  width: 100%;
+  background: var(--ink); color: var(--bg);
+  border: 0;
+  padding: 14px;
+  font-size: 14px; font-weight: 600;
+  font-family: var(--font);
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+}
+.reserveBtn:hover { background: var(--gold); }
+
+/* ============ STATS ============ */
+.stats {
+  position: relative; z-index: 5;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  max-width: 1100px; margin: 0 auto;
+  padding: 28px 40px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.stat { text-align: center; }
+.statN {
+  font-size: 36px; font-weight: 500;
+  letter-spacing: 0;
+  color: var(--gold);
+  font-style: italic;
+}
+.statL {
+  font-size: 11px; color: var(--mid);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+
+/* ============ MENU ============ */
+.menuSection {
+  position: relative; z-index: 5;
+  padding: 80px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+.menuHead {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.menuKicker {
+  font-size: 12px; color: var(--gold);
+  letter-spacing: 0.3em; font-weight: 500;
+  margin-bottom: 16px;
+}
+.menuTitle {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 16px;
+}
+.menuTitle em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+.menuLede {
+  font-size: 16px; color: var(--mid);
+  font-style: italic;
+  margin: 0;
+}
+.menuGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.menuItem {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  animation: itemIn 0.6s ease both;
+}
+@keyframes itemIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.menuItemHead {
+  display: flex; justify-content: space-between; align-items: start;
+  margin-bottom: 6px;
+}
+.menuItemCat {
+  font-size: 10px; color: var(--gold);
+  letter-spacing: 0.2em; font-weight: 500;
+  margin-bottom: 4px;
+}
+.menuItemN {
+  font-size: 24px; font-weight: 500;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.menuItemP {
+  font-size: 22px; font-weight: 500;
+  color: var(--gold);
+  font-style: italic;
+}
+.menuItemD {
+  font-size: 14px; color: var(--mid);
+  font-style: italic;
+  margin-top: 4px;
+}
+.menuItemLine { display: none; }
+
+/* ============ REVIEWS ============ */
+.reviews {
+  position: relative; z-index: 5;
+  padding: 80px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+.reviewsHead { text-align: center; margin-bottom: 40px; }
+.reviewsKicker {
+  font-size: 12px; color: var(--gold);
+  letter-spacing: 0.3em; font-weight: 500;
+  margin-bottom: 16px;
+}
+.reviewsTitle {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 500;
+  font-style: italic;
+  color: #fff;
+  margin: 0;
+}
+.reviewsGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.review {
+  background: rgba(20, 14, 10, 0.4);
+  border: 1px solid var(--line);
+  padding: 24px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.review:hover { border-color: var(--gold); background: rgba(20, 14, 10, 0.6); }
+.reviewRate { color: var(--gold); font-size: 16px; margin-bottom: 12px; }
+.reviewT {
+  font-size: 16px; color: var(--ink);
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.reviewFoot {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--mid);
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.reviewN { font-weight: 600; }
+
+/* ============ CTA ============ */
+.cta {
+  position: relative; z-index: 5;
+  text-align: center;
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(212, 160, 74, 0.06) 50%, transparent 100%);
+}
+.ctaTitle {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 20px;
+}
+.ctaTitle span { display: block; }
+.ctaTitle em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+.ctaLede {
+  font-size: 16px; color: var(--mid);
+  font-style: italic;
+  margin: 0 0 32px;
+}
+.ctaBtn {
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  color: #1a1410;
+  border: 0; padding: 16px 36px;
+  font-size: 15px; font-weight: 600;
+  font-family: var(--font);
+  font-style: italic;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ctaBtn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(212, 160, 74, 0.4); }
+
+/* ============ FOOTER ============ */
+.foot {
+  position: relative; z-index: 5;
+  display: flex; justify-content: space-between;
+  padding: 20px 40px;
+  font-size: 12px; color: var(--mid);
+  border-top: 1px solid var(--line);
+  font-style: italic;
+}

@@ -11,6 +11,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   tech: '科技', minimal: '极简', bauhaus: '包豪斯', steampunk: '蒸汽', macaron: '马卡龙',
   showcase: '高级展示',
   atmospheric: '氛围',
+  painterly: '油画',
 };
 
 // 动态加载预览组件（避开 SSR；每个卡片独立 lazy）

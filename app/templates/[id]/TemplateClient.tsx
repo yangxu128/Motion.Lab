@@ -11,6 +11,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   tech: '科技', minimal: '极简', bauhaus: '包豪斯', steampunk: '蒸汽', macaron: '马卡龙',
   showcase: '高级展示',
   atmospheric: '氛围',
+  painterly: '油画',
 };
 
 type Meta = Omit<Template, 'preview'>;
