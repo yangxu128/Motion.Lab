@@ -283,3 +283,179 @@
   font-size: 11px; color: var(--dim);
   text-transform: uppercase; letter-spacing: 0.05em;
 }
+
+/* === SWISS DISTINCTIVE ENHANCEMENTS === */
+
+/* 1. Grid Lines — 12-column overlay that subtly shows through the page */
+.gridLines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(10, 10, 10, 0.06) 0,
+      rgba(10, 10, 10, 0.06) 0.5px,
+      transparent 0.5px,
+      transparent calc(100% / 12)
+    );
+  mix-blend-mode: multiply;
+}
+.gridLines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(10, 10, 10, 0.04) 0.5px, transparent 0.5px),
+    linear-gradient(to right, transparent calc(100% / 12 - 0.5px), rgba(10, 10, 10, 0.04) calc(100% / 12 - 0.5px), rgba(10, 10, 10, 0.04) calc(100% / 12), transparent calc(100% / 12));
+  background-size: calc(100% / 12) 100%;
+  background-repeat: repeat-x;
+}
+
+/* 2. Red Bar — vertical accent using ::before pseudo */
+.redBar {
+  position: relative;
+  padding-left: 16px;
+}
+.redBar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--red);
+  transform-origin: top;
+  animation: redBarIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes redBarIn {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* 3. Marquee Kicker — horizontal scrolling INDEX marker */
+.marqueeKicker {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 10px 0;
+  background: var(--bg);
+}
+.marqueeKicker::before,
+.marqueeKicker::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marqueeKicker::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+.marqueeKicker::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+.marqueeKickerTrack {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  animation: marqueeKickerScroll 22s linear infinite;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink);
+}
+.marqueeKickerTrack span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.marqueeKickerTrack span::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+}
+@keyframes marqueeKickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 4. Figure Number — very large outlined / ghosted section numbers */
+.figureNum {
+  display: block;
+  font-family: var(--font);
+  font-size: 200px;
+  line-height: 0.85;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--dim);
+  text-stroke: 1.5px var(--dim);
+  opacity: 0.55;
+  user-select: none;
+  pointer-events: none;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5. Drop Cap — first letter 3-line height */
+.dropCap::first-letter {
+  float: left;
+  font-family: var(--font);
+  font-size: 4.2em;
+  line-height: 0.85;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  padding: 6px 12px 0 0;
+  margin: 4px 0 0 0;
+  text-transform: uppercase;
+}
+.dropCap::first-letter {
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dropCap {
+  /* Force 3-line height behavior */
+  line-height: 1.4;
+}
+.dropCap::first-letter {
+  /* Roughly 3 lines tall on a 1.4 line-height */
+  height: calc(1.4em * 3);
+}
+
+/* 6. Red Dot — small red bullet for list items */
+.redDot {
+  position: relative;
+  padding-left: 18px;
+  display: list-item;
+  list-style: none;
+}
+.redDot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+.redDot:hover::before {
+  background: var(--ink);
+  transition: background 0.2s;
+}

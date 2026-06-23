@@ -220,3 +220,170 @@
   from { opacity: 0; transform: translateX(-10px); }
   to { opacity: 1; transform: translateX(0); }
 }
+
+/* Boot-up typing effect - simulates text appearing from left to right */
+.boot {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--fg);
+  width: 0;
+  animation:
+    bootType 1.6s steps(40, end) forwards,
+    bootBlink 0.75s step-end infinite;
+}
+@keyframes bootType {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes bootBlink {
+  0%, 50% { border-color: var(--fg); }
+  50.01%, 100% { border-color: transparent; }
+}
+
+/* Moving CRT scanline - 1px horizontal line slowly drifting vertically */
+.scanlineMoving {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 127, 0.15) 20%,
+    rgba(0, 255, 127, 0.85) 50%,
+    rgba(0, 255, 127, 0.15) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(0, 255, 127, 0.6), 0 0 16px rgba(0, 255, 127, 0.3);
+  pointer-events: none;
+  z-index: 52;
+  animation: scanlineDrift 7s linear infinite;
+}
+@keyframes scanlineDrift {
+  0% { top: -2%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+
+/* Pulsing green glow for status indicator */
+.glowPulse {
+  color: var(--fg);
+  text-shadow:
+    0 0 4px rgba(0, 255, 127, 0.8),
+    0 0 8px rgba(0, 255, 127, 0.6);
+  animation: glowPulseAnim 1.6s ease-in-out infinite;
+}
+@keyframes glowPulseAnim {
+  0%, 100% {
+    text-shadow:
+      0 0 2px rgba(0, 255, 127, 0.4),
+      0 0 4px rgba(0, 255, 127, 0.3);
+    opacity: 0.85;
+  }
+  50% {
+    text-shadow:
+      0 0 6px rgba(0, 255, 127, 1),
+      0 0 14px rgba(0, 255, 127, 0.8),
+      0 0 22px rgba(0, 255, 127, 0.4);
+    opacity: 1;
+  }
+}
+
+/* Marquee - horizontally scrolling key shortcut strip */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+.marqueeInner {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeScroll 18s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marqueeInner {
+  animation-play-state: paused;
+}
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Rain drop effect for file tree - falling matrix-style character */
+.rainDrop {
+  position: relative;
+  display: inline-block;
+  color: var(--mid);
+  animation: rainFall 1.8s linear infinite;
+  text-shadow: 0 0 4px rgba(0, 255, 127, 0.6);
+}
+.rainDrop::before {
+  content: '01';
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--fg);
+  text-shadow: 0 0 6px rgba(0, 255, 127, 0.9);
+  animation: rainGlitch 1.8s steps(1) infinite;
+}
+@keyframes rainFall {
+  0% { transform: translateY(-2px); opacity: 0.2; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(6px); opacity: 0; }
+}
+@keyframes rainGlitch {
+  0%, 49% { content: '01'; }
+  50%, 100% { content: '10'; }
+}
+
+/* History row typewriter-style fade-in from the left */
+.historyFlow {
+  display: flex;
+  gap: 6px;
+  padding: 1px 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  animation: historyFlowIn 0.55s steps(20, end) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.historyFlow:nth-child(1) { animation-delay: 0.05s; }
+.historyFlow:nth-child(2) { animation-delay: 0.25s; }
+.historyFlow:nth-child(3) { animation-delay: 0.45s; }
+.historyFlow:nth-child(4) { animation-delay: 0.65s; }
+.historyFlow:nth-child(5) { animation-delay: 0.85s; }
+.historyFlow:nth-child(n+6) { animation-delay: 1.05s; }
+@keyframes historyFlowIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+    clip-path: inset(0 100% 0 0);
+  }
+  60% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}

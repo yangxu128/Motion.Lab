@@ -399,6 +399,131 @@
   border-top: 3px solid #ff3da6;
 }
 
+/* DISCO BALL — enhanced rotation */
+.discoInner {
+  animation: discoRotate 20s linear infinite;
+}
+@keyframes discoRotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* CHROME SHINE SWEEP */
+.chrome,
+.titleT[data-chrome] {
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  animation: chromeShine 3s linear infinite;
+}
+@keyframes chromeShine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* STAR BURST SPARKLE */
+.sparkle {
+  display: inline-block;
+  position: relative;
+  color: #fff9b0;
+  text-shadow: 0 0 6px #ff3da6, 0 0 12px #b0f5ff, 1px 1px 0 #0a0a0a;
+  animation: sparkleTwinkle 1.6s ease-in-out infinite;
+}
+.sparkle::before,
+.sparkle::after {
+  content: '✦';
+  position: absolute;
+  font-size: 0.5em;
+  color: #fff;
+  text-shadow: 0 0 4px #ff3da6;
+  animation: sparkleTwinkle 1.4s ease-in-out infinite;
+}
+.sparkle::before { top: -0.6em; left: -0.4em; animation-delay: 0.2s; }
+.sparkle::after  { bottom: -0.6em; right: -0.4em; animation-delay: 0.6s; }
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+  50%      { opacity: 1;   transform: scale(1.2) rotate(180deg); }
+}
+
+/* PRODUCT TAG BLINK */
+.productTag {
+  animation: productBlink 2.4s ease-in-out infinite;
+}
+@keyframes productBlink {
+  0%, 60%, 100% { opacity: 1; transform: scale(1); }
+  70%           { opacity: 0.55; transform: scale(0.94); }
+  80%           { opacity: 1;    transform: scale(1.04); }
+  90%           { opacity: 0.8;  transform: scale(0.98); }
+}
+
+/* Y2K SCREEN BLINK OVERLAY */
+.page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  animation: screenBlink 8s steps(1, end) infinite;
+}
+@keyframes screenBlink {
+  0%, 97.5%   { opacity: 0; }
+  97.6%       { opacity: 0.85; }
+  98.2%       { opacity: 0; }
+  98.4%       { opacity: 0.6; }
+  98.9%       { opacity: 0; }
+  100%        { opacity: 0; }
+}
+
+/* CD PLAYER ROTATION */
+.cdPlayer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at center, #c7e8ff 0 2px, #b0f5ff 2px 4px);
+  border: 4px solid #0a0a0a;
+  box-shadow: inset 0 0 0 6px #fff, 4px 4px 0 #ff3da6;
+  animation: cdSpin 4s linear infinite;
+}
+.cdPlayer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg,
+      rgba(255, 255, 255, 0.0) 0deg,
+      rgba(255, 255, 255, 0.55) 30deg,
+      rgba(255, 255, 255, 0.0) 80deg,
+      rgba(199, 232, 255, 0.45) 140deg,
+      rgba(255, 255, 255, 0.0) 200deg,
+      rgba(255, 217, 245, 0.4) 260deg,
+      rgba(255, 255, 255, 0.0) 330deg,
+      rgba(255, 255, 255, 0.0) 360deg);
+  mix-blend-mode: screen;
+  animation: cdShine 2.5s linear infinite;
+}
+.cdPlayer::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 22px; height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #888 60%, #0a0a0a 100%);
+  border: 2px solid #0a0a0a;
+}
+@keyframes cdSpin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes cdShine {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media (max-width: 720px) {
   .nav { padding: 12px 16px; }
   .navLinks { display: none; }
@@ -407,4 +532,5 @@
   .products { padding: 40px 16px; }
   .stats { padding: 0 16px; }
   .footer { font-size: 10px; padding: 16px; }
+  .cdPlayer { width: 80px; height: 80px; }
 }

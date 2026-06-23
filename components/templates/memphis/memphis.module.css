@@ -399,3 +399,80 @@
   letter-spacing: 0.05em;
   background: var(--ink); color: #fff;
 }
+
+/* 80S MEMPHIS ANIMATIONS */
+@keyframes wobble {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+.wobble {
+  animation: wobble 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+.floatSlow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.product:hover .productImg,
+.product.bounce:hover {
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spinSlow {
+  animation: spinSlow 12s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes rainbow {
+  0%   { background-color: var(--pink); }
+  33%  { background-color: var(--cyan); }
+  66%  { background-color: var(--yellow); }
+  100% { background-color: var(--pink); }
+}
+.rainbow {
+  animation: rainbow 4s ease-in-out infinite;
+}
+
+.zigzag {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+.zigzag::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 6px;
+  background-image: linear-gradient(
+    -45deg,
+    transparent 0%,
+    transparent 33%,
+    var(--ink) 33%,
+    var(--ink) 66%,
+    transparent 66%,
+    transparent 100%
+  );
+  background-size: 8px 6px;
+  background-repeat: repeat-x;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease-in-out;
+}
+.zigzag:hover::after {
+  transform: scaleX(1);
+}

@@ -208,3 +208,103 @@
   padding-top: 32px;
   border-top: 1px solid var(--line);
 }
+
+/* ENHANCEMENTS */
+.fadeIn {
+  animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.thinRule {
+  position: relative;
+  display: block;
+  height: 0.5px;
+  background: var(--line);
+  width: 100%;
+  overflow: hidden;
+}
+
+.thinRule::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 0.5px;
+  width: 0;
+  background: var(--ink);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-50%);
+}
+
+.thinRule:hover::after {
+  width: 100%;
+}
+
+.reveal {
+  animation: reveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes reveal {
+  from {
+    filter: blur(8px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.breath {
+  animation: breath 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes breath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+}
+
+.focus {
+  position: relative;
+  transition: outline-color 0.3s ease;
+  outline: 0.5px solid transparent;
+  outline-offset: 6px;
+}
+
+.focus:hover {
+  outline-color: var(--ink);
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.5px;
+  height: 1em;
+  background: var(--ink);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: cursorBlink 2s steps(1, end) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.01%, 100% {
+    opacity: 0;
+  }
+}

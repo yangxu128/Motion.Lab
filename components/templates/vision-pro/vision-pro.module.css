@@ -337,3 +337,134 @@
   font-size: 11px; color: var(--dim);
   border-top: 1px solid var(--line);
 }
+
+/* ============================
+   APPLE VISION PRO ENHANCEMENTS
+   ============================ */
+
+/* 1) orbsShift — colored orbs slowly drift around (translate + scale) */
+@keyframes orbsShift {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(60px, 40px) scale(1.08); }
+  50%  { transform: translate(-30px, 80px) scale(0.95); }
+  75%  { transform: translate(40px, -20px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.orbA { animation: orbsShift 22s ease-in-out infinite; }
+.orbB { animation: orbsShift 28s ease-in-out infinite reverse; }
+.orbC { animation: orbsShift 26s ease-in-out infinite; }
+
+/* 2) .float — subtle hover rocking for the heroCard (rotate -2deg ↔ +2deg) */
+@keyframes heroCardFloat {
+  0%   { transform: rotate(-2deg) translateY(0); }
+  50%  { transform: rotate(2deg)  translateY(-6px); }
+  100% { transform: rotate(-2deg) translateY(0); }
+}
+
+.float {
+  animation: heroCardFloat 6s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* 3) .glassShine — diagonal shine sweeping across glass cards */
+@keyframes glassShine {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  60%  { transform: translateX(160%)  skewX(-20deg); }
+  100% { transform: translateX(160%)  skewX(-20deg); }
+}
+
+.glassShine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.glassShine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+  transform: translateX(-120%) skewX(-20deg);
+  animation: glassShine 5.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* 4) .breathing — very subtle scale pulse for app icons */
+@keyframes breathing {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+
+.breathing {
+  animation: breathing 3.6s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* 5) .parallaxHover — cards lift and tilt slightly on hover with backdrop-filter boost */
+.parallaxHover {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              backdrop-filter 0.4s ease,
+              -webkit-backdrop-filter 0.4s ease,
+              background 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0);
+}
+
+.parallaxHover:hover {
+  transform: perspective(900px) rotateX(2deg) rotateY(-3deg) translateY(-8px) translateZ(10px);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+/* 6) .floatingOrb — small floating orbs drifting up from the bottom */
+@keyframes floatingOrb {
+  0%   { transform: translateY(0)     translateX(0)    scale(0.6); opacity: 0; }
+  10%  { opacity: 0.6; }
+  50%  { transform: translateY(-160px) translateX(20px) scale(1);   opacity: 0.7; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-320px) translateX(-10px) scale(0.4); opacity: 0; }
+}
+
+.floatingOrb {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(77, 138, 255, 0.5) 40%, transparent 70%);
+  filter: blur(2px);
+  pointer-events: none;
+  animation: floatingOrb 8s ease-in-out infinite;
+  z-index: 0;
+}
+
+.floatingOrb[data-color="pink"] {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 61, 110, 0.5) 40%, transparent 70%);
+}
+
+.floatingOrb[data-color="orange"] {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 159, 10, 0.5) 40%, transparent 70%);
+}
+
+.floatingOrb:nth-child(2) { left: 15%; animation-delay: 0s;   animation-duration: 9s;  }
+.floatingOrb:nth-child(3) { left: 35%; animation-delay: 1.5s; animation-duration: 10s; }
+.floatingOrb:nth-child(4) { left: 55%; animation-delay: 3s;   animation-duration: 8s;  }
+.floatingOrb:nth-child(5) { left: 75%; animation-delay: 4.5s; animation-duration: 11s; }
+.floatingOrb:nth-child(6) { left: 90%; animation-delay: 6s;   animation-duration: 9.5s; }

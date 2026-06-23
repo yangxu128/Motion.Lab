@@ -25,6 +25,8 @@ export default function Brutalism() {
           <span className={styles.titleRow} data-stripe>LIKE</span>
           <span className={styles.titleRow}>NO ONE.</span>
         </h1>
+        <div className={styles.handArrow} aria-hidden>↓</div>
+        <div className={styles.scribble} aria-hidden>~~</div>
         <div className={styles.heroFoot}>
           <p className={styles.heroLede}>
             A studio that makes websites <span className={styles.highlight}>too loud to ignore</span>.<br />
@@ -78,6 +80,7 @@ export default function Brutalism() {
           <h2 className={styles.sectionTitle}>FEATURED<br/>WORK</h2>
           <button className={styles.btnOutline}>ALL →</button>
         </div>
+        <div className={styles.stamp} aria-hidden>★ APPROVED ★</div>
         <div className={styles.workGrid}>
           {[
             { c: '#FFE600', t: 'CRUSH SODA', tag: 'BRANDING / WEB' },

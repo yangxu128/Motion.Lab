@@ -300,6 +300,69 @@
 .sceneIcon { font-size: 32px; }
 .sceneName { font-size: 13px; font-weight: 700; color: var(--c); }
 
+/* === Distinctive Neumorphic Visual Enhancements === */
+
+/* 1. Breathing / pulse animation for neumorphic elements */
+.breathing {
+  animation: np-breathe 3s ease-in-out infinite;
+}
+@keyframes np-breathe {
+  0%, 100% {
+    box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+  }
+  50% {
+    box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+  }
+}
+
+/* 2. Device hover — pressed-in look */
+.device:hover {
+  transform: translateY(1px);
+  box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+}
+
+/* 3. Ambient glow behind the rings section */
+.ambientGlow {
+  position: relative;
+  isolation: isolate;
+}
+.ambientGlow::before {
+  content: '';
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(circle at 50% 50%, hsla(280, 70%, 60%, 0.30), hsla(200, 80%, 60%, 0.20) 40%, transparent 70%);
+  filter: blur(50px);
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* 4. Scene button — deeper inset shadow on press */
+.sceneBtn:active {
+  box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+  transform: translateY(0) scale(0.97);
+}
+
+/* 5. Ring — subtle hue-matched glow */
+.ring {
+  box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light), 0 0 32px hsla(280, 70%, 60%, 0.12);
+}
+
+/* 6. Header status — clock-like pulse animation */
+.status {
+  animation: np-status-pulse 4s ease-in-out infinite;
+}
+@keyframes np-status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(0.985);
+  }
+}
+
 @media (max-width: 720px) {
   .shell { padding: 20px 16px; }
   .statValue { font-size: 64px; }
