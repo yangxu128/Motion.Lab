@@ -13,6 +13,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   atmospheric: '氛围',
   painterly: '油画',
   cinematic: '电影',
+  fantasy: '奇幻',
 };
 
 type Meta = Omit<Template, 'preview'>;

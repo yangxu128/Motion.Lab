@@ -13,6 +13,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   atmospheric: '氛围',
   painterly: '油画',
   cinematic: '电影',
+  fantasy: '奇幻',
 };
 
 // 动态加载预览组件（避开 SSR；每个卡片独立 lazy）

@@ -1,0 +1,438 @@
+/* ============ Faeloria — 奇幻秘境（视频 + 气泡 + 玻璃 + 童话字） ============ */
+.page {
+  --sky: #b6dcff;
+  --leaf: #4f9c5b;
+  --petal: #ff7ab2;
+  --gold: #ffd86b;
+  --ink: #2a1a3a;
+  --paper: #fff8ec;
+  --line: rgba(255, 255, 255, 0.5);
+  --font-display: 'DM Serif Display', 'Georgia', serif;
+  --font-body: 'Quicksand', system-ui, -apple-system, sans-serif;
+  position: relative;
+  background: #c9e7ff;
+  color: var(--ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* 全屏视频 */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* 顶部轻雾（让 nav 文字可读） */
+.topMist {
+  position: absolute; inset: 0 0 auto 0;
+  height: 220px;
+  background: linear-gradient(180deg, rgba(20, 30, 50, 0.35) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+/* 底部轻雾（让 footer 文字可读） */
+.bottomMist {
+  position: absolute; inset: auto 0 0 0;
+  height: 240px;
+  background: linear-gradient(0deg, rgba(20, 30, 50, 0.45) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 飘动气泡 canvas */
+.bubbleCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ============ NAV ============ */
+.nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--paper);
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+.brandIcon {
+  font-size: 1.4rem;
+  animation: spin 9s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.brandName { font-weight: 400; font-style: italic; }
+
+.navLinks {
+  display: none;
+  list-style: none; margin: 0; padding: 0;
+  gap: 2rem; align-items: center;
+}
+@media (min-width: 768px) {
+  .navLinks { display: flex; }
+}
+.navLink, .navLinkActive {
+  font-size: 0.9rem;
+  color: rgba(255, 248, 236, 0.85);
+  cursor: pointer;
+  transition: color 0.2s;
+  user-select: none;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+.navLinkActive { color: var(--paper); }
+.navLink:hover, .navLinkActive:hover { color: var(--paper); }
+
+.navCta {
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: rgba(255, 248, 236, 0.55) !important;
+  border-radius: 9999px;
+  padding: 0.55rem 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: transform 0.2s;
+}
+.navCta:hover { transform: scale(1.04); }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1.5rem 8rem;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+.heroKicker {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: fadeRise 0.8s ease-out both;
+}
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  margin: 0;
+  text-shadow: 0 4px 24px rgba(20, 30, 60, 0.45);
+}
+.heroTitle > span { display: block; }
+.heroEm {
+  font-style: italic;
+  background: linear-gradient(90deg, var(--gold), var(--petal), var(--gold));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hueShift 6s linear infinite;
+  display: block;
+}
+@keyframes hueShift {
+  to { background-position: 200% 0; }
+}
+.heroBody {
+  color: rgba(255, 248, 236, 0.92);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 36rem;
+  margin: 1.5rem 0 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+.heroBtns {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 2.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btnPrimary {
+  background: rgba(255, 248, 236, 0.6) !important;
+  color: var(--ink) !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.95rem 2.2rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: transform 0.2s;
+}
+.btnPrimary:hover { transform: scale(1.04); }
+.btnGhost {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: var(--paper) !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  padding: 0.95rem 2.2rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: transform 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+.btnGhost:hover { transform: scale(1.04); background: rgba(255, 255, 255, 0.2) !important; }
+
+/* ============ STORY 3 段 ============ */
+.storySection {
+  position: relative;
+  z-index: 5;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+@media (min-width: 768px) {
+  .storySection { grid-template-columns: repeat(3, 1fr); }
+}
+.story {
+  background: rgba(255, 248, 236, 0.18);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 18px;
+  padding: 1.6rem 1.5rem 1.8rem;
+  color: var(--paper);
+  animation: fadeRise 0.8s ease-out both;
+}
+.storyKicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+.storyTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  margin: 0 0 0.7rem;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+.storyEm {
+  font-style: italic;
+  color: var(--petal);
+}
+.storyBody {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 248, 236, 0.85);
+  margin: 0;
+}
+
+/* ============ 3 CARDS ============ */
+.cardsSection {
+  position: relative;
+  z-index: 5;
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 4rem 2rem 5rem;
+}
+.cardsHead {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--paper);
+}
+.cardsKicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.cardsTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.2rem;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .cardsGrid { grid-template-columns: repeat(3, 1fr); }
+}
+.card {
+  background: rgba(255, 248, 236, 0.18) !important;
+  border-radius: 20px !important;
+  padding: 1.6rem 1.5rem 1.8rem !important;
+  color: var(--paper);
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+  animation: fadeRise 0.8s ease-out both;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: rgba(255, 248, 236, 0.26) !important;
+}
+.cardEmoji {
+  font-size: 2.6rem;
+  line-height: 1;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+.cardN {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.cardD {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(255, 248, 236, 0.85);
+}
+.cardArrow {
+  position: absolute;
+  right: 1.4rem; top: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--gold);
+  opacity: 0.7;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.card:hover .cardArrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* ============ FINAL ============ */
+.final {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 4rem 2rem 5rem;
+  color: var(--paper);
+}
+.finalTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  margin: 0 0 1.8rem;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+.finalTitle > span { display: block; }
+.finalEm {
+  font-style: italic;
+  background: linear-gradient(90deg, var(--gold), var(--petal), var(--gold));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hueShift 6s linear infinite;
+  display: block;
+}
+.finalBtn {
+  background: rgba(255, 248, 236, 0.65) !important;
+  color: var(--ink) !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 1.1rem 2.6rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: transform 0.2s;
+}
+.finalBtn:hover { transform: scale(1.05); }
+
+/* ============ FOOT ============ */
+.foot {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2.5rem;
+  color: rgba(255, 248, 236, 0.7);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+/* ============ LIQUID GLASS ============ */
+.liquidGlass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquidGlass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ============ FADE-RISE 动画 ============ */
+@keyframes fadeRise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fadeRise { animation: fadeRise 0.8s ease-out both; }
+.fadeRiseDelay { animation: fadeRise 0.8s ease-out 0.25s both; }
+.fadeRiseDelay2 { animation: fadeRise 0.8s ease-out 0.5s both; }

@@ -5,7 +5,7 @@ export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
   | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
   | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
-  | 'showcase' | 'atmospheric' | 'painterly' | 'cinematic';
+  | 'showcase' | 'atmospheric' | 'painterly' | 'cinematic' | 'fantasy';
 
 export interface Template {
   id: string;
@@ -45,6 +45,7 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'atmospheric', name: '氛围', english: 'Atmospheric' },
   { id: 'painterly', name: '油画', english: 'Painterly' },
   { id: 'cinematic', name: '电影', english: 'Cinematic' },
+  { id: 'fantasy', name: '奇幻', english: 'Fantasy' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -290,5 +291,16 @@ export const TEMPLATES: Template[] = [
     tags: ['cinematic', 'video-bg', 'glassmorphism', 'serif', 'minimal', 'hero'],
     effects: ['video-loop', 'liquid-glass', 'fade-rise', 'hover-scale', 'google-fonts'],
     preview: lz('velorah'),
+  },
+  {
+    id: 'fantasy-realm',
+    name: '奇幻秘境',
+    englishName: 'Faeloria Fantasy',
+    description: '奇幻动漫视频背景 + 飘动 Canvas 气泡 + 玻璃卡片 + DM Serif 童话字 + 渐变 hueShift。童书/冥想/梦境范儿。',
+    category: 'fantasy',
+    style: 'fantasy',
+    tags: ['fantasy', 'storybook', 'ghibli', 'video-bg', 'bubbles', 'glass'],
+    effects: ['video-loop', 'canvas-bubbles', 'liquid-glass', 'fade-rise', 'hue-shift', 'gradient-text'],
+    preview: lz('fantasy-realm'),
   },
 ];
