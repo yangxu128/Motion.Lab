@@ -4,7 +4,8 @@ import type { ComponentType } from 'react';
 export type TemplateCategory =
   | 'marketing' | 'product' | 'auth' | 'commerce' | 'creative'
   | 'brutalism' | 'neumorphism' | 'cyberpunk' | 'y2k' | 'terminal' | 'spatial' | 'swiss' | 'memphis'
-  | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron';
+  | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
+  | 'showcase';
 
 export interface Template {
   id: string;
@@ -40,6 +41,7 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'bauhaus', name: '包豪斯', english: 'Bauhaus' },
   { id: 'steampunk', name: '蒸汽', english: 'Steampunk' },
   { id: 'macaron', name: '马卡龙', english: 'Macaron' },
+  { id: 'showcase', name: '高级展示', english: 'Premium Showcase' },
 ];
 
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
@@ -241,5 +243,16 @@ export const TEMPLATES: Template[] = [
     tags: ['macaron', 'pastel', 'dream', 'cute'],
     effects: ['hover-press', 'pulse-glow', 'color-cycle', 'gradient-text', 'magnetic-button', 'scroll-reveal'],
     preview: lz('macaron'),
+  },
+  {
+    id: 'premium-showcase',
+    name: '高级展示',
+    englishName: 'Premium Showcase',
+    description: '对标 motionsites.ai：深色 + 鼠标 spotlight + 渐变文字 + 3D 卡片 + masonry 网格 + 漂浮装饰。',
+    category: 'showcase',
+    style: 'showcase',
+    tags: ['showcase', 'premium', 'dark', '3d', 'gradient'],
+    effects: ['mouse-spotlight', 'gradient-text', '3d-card', 'scroll-reveal', 'parallax', 'color-cycle'],
+    preview: lz('premium-showcase'),
   },
 ];

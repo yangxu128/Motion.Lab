@@ -9,6 +9,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   brutalism: '新粗野', neumorphism: '拟物', cyberpunk: '赛博', y2k: 'Y2K',
   terminal: '终端', spatial: '空间', swiss: '瑞士', memphis: '孟菲斯',
   tech: '科技', minimal: '极简', bauhaus: '包豪斯', steampunk: '蒸汽', macaron: '马卡龙',
+  showcase: '高级展示',
 };
 
 // 动态加载预览组件（避开 SSR；每个卡片独立 lazy）
