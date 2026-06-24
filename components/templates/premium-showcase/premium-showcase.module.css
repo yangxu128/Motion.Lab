@@ -27,7 +27,8 @@
 /* SPOTLIGHT (mouse follow) */
 .spotlight {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  transition: background 0.2s ease;
+  /* 去掉 background 0.2s 过渡；JS 每帧直接写 background，0.2s 过渡让光晕滞后鼠标 200ms（抽搐源） */
+  will-change: background;
 }
 
 /* NOISE */
@@ -120,6 +121,7 @@
   background: radial-gradient(circle, rgba(175, 82, 222, 0.4) 0%, transparent 70%);
   filter: blur(40px);
   animation: orbDrift 20s ease-in-out infinite;
+  will-change: transform;
 }
 .heroOrbB {
   position: absolute; top: 30%; right: 5%;
@@ -127,6 +129,7 @@
   background: radial-gradient(circle, rgba(41, 151, 255, 0.3) 0%, transparent 70%);
   filter: blur(40px);
   animation: orbDrift 25s ease-in-out infinite reverse;
+  will-change: transform;
 }
 .heroOrbC {
   position: absolute; bottom: 10%; left: 30%;
@@ -134,6 +137,7 @@
   background: radial-gradient(circle, rgba(255, 55, 95, 0.25) 0%, transparent 70%);
   filter: blur(40px);
   animation: orbDrift 22s ease-in-out infinite;
+  will-change: transform;
 }
 @keyframes orbDrift {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -266,7 +270,7 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s;
+  /* 去掉 transform 过渡；JS 每帧直接写 transform，0.3s 过渡会让卡片滞后鼠标 0.3s（抽搐源） */
   will-change: transform;
 }
 .floatCard[data-pos="1"] { top: 18%; left: 4%; transform: rotate(-8deg); }

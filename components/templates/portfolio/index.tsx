@@ -35,27 +35,46 @@ function useReveal() {
 
 function WorkCard({ w, i }: { w: typeof works[number]; i: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let raf = 0;
+    let pending = false;
+    let mx = 0, my = 0, active = false;
+    const flush = () => {
+      pending = false;
+      const spot = el.querySelector('[data-spot]') as HTMLElement | null;
+      if (spot) {
+        spot.style.opacity = active ? '1' : '0';
+        spot.style.background = `radial-gradient(circle 200px at ${mx}px ${my}px, hsla(${w.hue}, 100%, 90%, 0.45), transparent 60%)`;
+      }
+    };
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
-      setSpot({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-        active: true,
-      });
+      mx = e.clientX - rect.left;
+      my = e.clientY - rect.top;
+      active = true;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
     };
-    const onLeave = () => setSpot((s) => ({ ...s, active: false }));
-    el.addEventListener('mousemove', onMove);
+    const onLeave = () => {
+      active = false;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
+    el.addEventListener('mousemove', onMove, { passive: true });
     el.addEventListener('mouseleave', onLeave);
     return () => {
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [w.hue]);
 
   return (
     <div
@@ -69,14 +88,7 @@ function WorkCard({ w, i }: { w: typeof works[number]; i: number }) {
     >
       <div className={styles.cover} style={{ background: w.color }}>
         <span className={styles.coverText}>{w.title.split(' · ')[0]}</span>
-        <div
-          className={styles.spotlight}
-          aria-hidden
-          style={{
-            opacity: spot.active ? 1 : 0,
-            background: `radial-gradient(circle 200px at ${spot.x}px ${spot.y}px, hsla(${w.hue}, 100%, 90%, 0.45), transparent 60%)`,
-          }}
-        />
+        <div data-spot className={styles.spotlight} aria-hidden />
         <div className={styles.coverNumber}>0{i + 1}</div>
       </div>
       <div className={styles.cardBody}>

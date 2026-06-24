@@ -44,7 +44,7 @@ export default function FantasyRealm() {
     let raf = 0;
     let dpr = window.devicePixelRatio || 1;
     let w = 0, h = 0;
-    type Bubble = { x: number; y: number; r: number; vy: number; drift: number; phase: number; a: number; hue: number };
+    type Bubble = { x: number; y: number; r: number; vy: number; drift: number; phase: number; a: number; hue: number; gradInner: string; gradMid: string; gradEdge: string; gradZero: string; stroke: string; highlight: string };
     let bubbles: Bubble[] = [];
     const N = 18;
 
@@ -64,6 +64,9 @@ export default function FantasyRealm() {
     const seed = () => {
       bubbles = [];
       for (let i = 0; i < N; i++) {
+        const hue = 200 + Math.random() * 40;
+        const a = 0.12 + Math.random() * 0.18;
+        // 预编译 hsla 字符串，避免每帧字符串拼接（每帧 18 × 4 = 72 次拼接受不了）
         bubbles.push({
           x: Math.random() * w,
           y: h + Math.random() * h * 0.4,
@@ -71,8 +74,14 @@ export default function FantasyRealm() {
           vy: 0.25 + Math.random() * 0.4,
           drift: 0.3 + Math.random() * 0.6,
           phase: Math.random() * Math.PI * 2,
-          a: 0.12 + Math.random() * 0.18,
-          hue: 200 + Math.random() * 40,
+          a,
+          hue,
+          gradInner: `hsla(${hue} 90% 92% / ${a * 1.2})`,
+          gradMid: `hsla(${hue} 80% 80% / ${a * 0.6})`,
+          gradEdge: `hsla(${hue} 60% 70% / ${a * 0.2})`,
+          gradZero: `hsla(${hue} 60% 70% / 0)`,
+          stroke: `hsla(0 0% 100% / ${a * 0.7})`,
+          highlight: `hsla(0 0% 100% / ${a * 1.5})`,
         });
       }
     };
@@ -89,27 +98,27 @@ export default function FantasyRealm() {
           b.y = h + b.r;
           b.x = Math.random() * w;
         }
-        // 主体：透明玻璃球
+        // 主体：透明玻璃球（用预编译字符串）
         const grad = ctx.createRadialGradient(
           b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.1,
           b.x, b.y, b.r,
         );
-        grad.addColorStop(0, `hsla(${b.hue} 90% 92% / ${b.a * 1.2})`);
-        grad.addColorStop(0.4, `hsla(${b.hue} 80% 80% / ${b.a * 0.6})`);
-        grad.addColorStop(0.85, `hsla(${b.hue} 60% 70% / ${b.a * 0.2})`);
-        grad.addColorStop(1, `hsla(${b.hue} 60% 70% / 0)`);
+        grad.addColorStop(0, b.gradInner);
+        grad.addColorStop(0.4, b.gradMid);
+        grad.addColorStop(0.85, b.gradEdge);
+        grad.addColorStop(1, b.gradZero);
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
         ctx.fill();
         // 描边
-        ctx.strokeStyle = `hsla(0 0% 100% / ${b.a * 0.7})`;
+        ctx.strokeStyle = b.stroke;
         ctx.lineWidth = 0.7;
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
         ctx.stroke();
         // 高光小点
-        ctx.fillStyle = `hsla(0 0% 100% / ${b.a * 1.5})`;
+        ctx.fillStyle = b.highlight;
         ctx.beginPath();
         ctx.arc(b.x - b.r * 0.35, b.y - b.r * 0.4, b.r * 0.18, 0, Math.PI * 2);
         ctx.fill();

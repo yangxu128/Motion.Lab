@@ -26,25 +26,69 @@ const STATS = [
   { n: '4.9★', l: 'Avg. Rating' },
 ];
 
-function useMousePos() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+// 鼠标位置 — 用 ref 存值 + 直接写 DOM style，避免 setState 触发整树重渲染
+function useMouseTracker() {
+  const xRef = useRef(0);
+  const yRef = useRef(0);
   useEffect(() => {
-    const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    let raf = 0;
+    let pending = false;
+    const flush = () => {
+      pending = false;
+      const x = xRef.current;
+      const y = yRef.current;
+      // spotlight（radial-gradient 中心点）
+      const spot = document.getElementById('ps-spotlight');
+      if (spot) spot.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(120, 119, 198, 0.15), transparent 40%)`;
+      // 3 张浮动卡（直接写 transform，绕过 React）
+      const c1 = document.getElementById('ps-card-1');
+      const c2 = document.getElementById('ps-card-2');
+      const c3 = document.getElementById('ps-card-3');
+      if (c1) c1.style.transform = `rotate(-8deg) translate(${x * 0.02}px, ${y * 0.02}px)`;
+      if (c2) c2.style.transform = `rotate(6deg) translate(${x * -0.015}px, ${y * -0.015}px)`;
+      if (c3) c3.style.transform = `rotate(-4deg) translate(${x * 0.01}px, ${y * 0.025}px)`;
+    };
+    const onMove = (e: MouseEvent) => {
+      xRef.current = e.clientX;
+      yRef.current = e.clientY;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
-  return pos;
 }
 
 export default function PremiumShowcase() {
   const [active, setActive] = useState('Mixed');
-  const mouse = useMousePos();
+  useMouseTracker();
   const heroRef = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
+  // 滚动视差 — rAF 节流 + 直接写 DOM style
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    let raf = 0;
+    let pending = false;
+    const flush = () => {
+      pending = false;
+      const y = window.scrollY;
+      const bg = document.getElementById('ps-hero-bg');
+      if (bg) bg.style.transform = `translateY(${y * 0.4}px)`;
+    };
+    const onScroll = () => {
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   const list = active === 'Mixed' ? SHOWCASE : SHOWCASE.filter((s) => s.a === active);
@@ -52,13 +96,7 @@ export default function PremiumShowcase() {
   return (
     <div className={styles.page}>
       {/* SPOTLIGHT */}
-      <div
-        className={styles.spotlight}
-        style={{
-          background: `radial-gradient(600px circle at ${mouse.x}px ${mouse.y}px, rgba(120, 119, 198, 0.15), transparent 40%)`,
-        }}
-        aria-hidden
-      />
+      <div id="ps-spotlight" className={styles.spotlight} aria-hidden />
 
       {/* NOISE OVERLAY */}
       <div className={styles.noise} aria-hidden />
@@ -83,7 +121,7 @@ export default function PremiumShowcase() {
 
       {/* HERO */}
       <section className={styles.hero} ref={heroRef}>
-        <div className={styles.heroBg} style={{ transform: `translateY(${scrollY * 0.4}px)` }} aria-hidden>
+        <div id="ps-hero-bg" className={styles.heroBg} aria-hidden>
           <div className={styles.heroOrbA} />
           <div className={styles.heroOrbB} />
           <div className={styles.heroOrbC} />
@@ -123,19 +161,19 @@ export default function PremiumShowcase() {
         </div>
 
         <div className={styles.heroFloating} aria-hidden>
-          <div className={styles.floatCard} data-pos="1" style={{ transform: `translate(${mouse.x * 0.02}px, ${mouse.y * 0.02}px)` }}>
+          <div id="ps-card-1" className={styles.floatCard} data-pos="1">
             <div className={styles.floatCardInner} style={{ background: 'linear-gradient(135deg, #1a0033, #4d00b3, #ff0080)' }}>
               <span className={styles.floatCardTag}>HERO</span>
               <span className={styles.floatCardT}>Aetheris</span>
             </div>
           </div>
-          <div className={styles.floatCard} data-pos="2" style={{ transform: `translate(${mouse.x * -0.015}px, ${mouse.y * -0.015}px)` }}>
+          <div id="ps-card-2" className={styles.floatCard} data-pos="2">
             <div className={styles.floatCardInner} style={{ background: 'linear-gradient(135deg, #001a4d, #00b3ff)' }}>
               <span className={styles.floatCardTag}>3D</span>
               <span className={styles.floatCardT}>Layered</span>
             </div>
           </div>
-          <div className={styles.floatCard} data-pos="3" style={{ transform: `translate(${mouse.x * 0.01}px, ${mouse.y * 0.025}px)` }}>
+          <div id="ps-card-3" className={styles.floatCard} data-pos="3">
             <div className={styles.floatCardInner} style={{ background: 'linear-gradient(135deg, #ffd83d, #ff0080, #5d00b3)' }}>
               <span className={styles.floatCardTag}>LANDING</span>
               <span className={styles.floatCardT}>Prisma</span>

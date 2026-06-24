@@ -80,6 +80,7 @@
   font-size: 1.4rem;
   animation: spin 9s linear infinite;
   display: inline-block;
+  will-change: transform;
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
