@@ -52,10 +52,10 @@ export default function Steampunk() {
           </div>
         </div>
         <div className={styles.navLinks}>
-          <a>THE WORKS</a>
-          <a>INVENTIONS</a>
-          <a>WORKSHOPS</a>
-          <a>DISPATCH</a>
+          <a href="#">THE WORKS</a>
+          <a href="#">INVENTIONS</a>
+          <a href="#">WORKSHOPS</a>
+          <a href="#">DISPATCH</a>
         </div>
         <div className={styles.navDate}>
           <span>23 · JUNE · 2026</span>

@@ -37,10 +37,10 @@ export default function Macaron() {
           <span className={styles.brandName}>Macaron Dreams</span>
         </div>
         <div className={styles.navLinks}>
-          <a>Menu</a>
-          <a>Flavors</a>
-          <a>About</a>
-          <a>Visit</a>
+          <a href="#">Menu</a>
+          <a href="#">Flavors</a>
+          <a href="#">About</a>
+          <a href="#">Visit</a>
         </div>
         <div className={styles.navCart}>
           <button className={styles.cartBtn}>🛒 2</button>

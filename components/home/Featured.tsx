@@ -44,10 +44,14 @@ export function Featured() {
     const cards = document.querySelectorAll<HTMLElement>(`.${styles.item}`);
     const cleanups: Array<() => void> = [];
     cards.forEach((card) => {
-      const onMove = (e: MouseEvent) => {
+      let raf = 0;
+      let pending = false;
+      let mx = 0, my = 0;
+      const flush = () => {
+        pending = false;
         const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
+        const x = (mx - rect.left) / rect.width;
+        const y = (my - rect.top) / rect.height;
         card.style.setProperty('--mx', `${x * 100}%`);
         card.style.setProperty('--my', `${y * 100}%`);
         const rotX = (0.5 - y) * 6;
@@ -60,14 +64,23 @@ export function Featured() {
           ease: 'power2.out',
         });
       };
+      const onMove = (e: MouseEvent) => {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!pending) {
+          pending = true;
+          raf = requestAnimationFrame(flush);
+        }
+      };
       const onLeave = () => {
         gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
       };
-      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mousemove', onMove, { passive: true });
       card.addEventListener('mouseleave', onLeave);
       cleanups.push(() => {
         card.removeEventListener('mousemove', onMove);
         card.removeEventListener('mouseleave', onLeave);
+        if (raf) cancelAnimationFrame(raf);
       });
     });
     return () => cleanups.forEach((c) => c());

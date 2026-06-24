@@ -48,6 +48,11 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'fantasy', name: '奇幻', english: 'Fantasy' },
 ];
 
+/** 分类 ID → 中文标签（统一导出，避免多处重复维护） */
+export const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
+  TEMPLATE_CATEGORIES.map((c) => [c.id, c.name]),
+);
+
 const lz = (id: string) => () => import(`@/components/templates/${id}`);
 
 export const TEMPLATES: Template[] = [

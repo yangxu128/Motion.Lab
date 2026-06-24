@@ -29,18 +29,31 @@ function Magnetic({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const btn = ref.current;
     if (!btn) return;
-    const onMove = (e: MouseEvent) => {
+    let raf = 0;
+    let pending = false;
+    let mx = 0, my = 0;
+    const flush = () => {
+      pending = false;
       const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+      const x = mx - rect.left - rect.width / 2;
+      const y = my - rect.top - rect.height / 2;
       btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
     };
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
     const onLeave = () => { btn.style.transform = 'translate(0, 0)'; };
-    btn.addEventListener('mousemove', onMove);
+    btn.addEventListener('mousemove', onMove, { passive: true });
     btn.addEventListener('mouseleave', onLeave);
     return () => {
       btn.removeEventListener('mousemove', onMove);
       btn.removeEventListener('mouseleave', onLeave);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
   return <button ref={ref} className={styles.magnetic}>{children}</button>;

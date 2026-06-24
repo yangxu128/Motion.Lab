@@ -40,9 +40,9 @@ export default function Memphis() {
           </div>
         </div>
         <div className={styles.navLinks}>
-          <a>★ shop</a>
-          <a>★ about</a>
-          <a>★ contact</a>
+          <a href="#">★ shop</a>
+          <a href="#">★ about</a>
+          <a href="#">★ contact</a>
         </div>
         <div className={styles.navCart}>
           <button className={styles.cartBtn}>🛒 <span>3</span></button>

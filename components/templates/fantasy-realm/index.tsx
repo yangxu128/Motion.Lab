@@ -163,6 +163,8 @@ export default function FantasyRealm() {
         loop
         muted
         playsInline
+        aria-hidden="true"
+        tabIndex={-1}
         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260602_150901_c45b90ec-18d7-42ff-90e2-b95d7109e330.mp4"
       />
       {/* 顶部轻雾化（让 nav 文字更可读） */}

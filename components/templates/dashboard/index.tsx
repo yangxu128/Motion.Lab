@@ -173,10 +173,14 @@ function useTilt() {
   useEffect(() => {
     const card = ref.current;
     if (!card) return;
-    const onMove = (e: MouseEvent) => {
+    let raf = 0;
+    let pending = false;
+    let mx = 0, my = 0;
+    const flush = () => {
+      pending = false;
       const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
+      const x = (mx - rect.left) / rect.width;
+      const y = (my - rect.top) / rect.height;
       const rx = (0.5 - y) * 4;
       const ry = (x - 0.5) * 4;
       card.style.setProperty('--rx', `${rx}deg`);
@@ -184,15 +188,24 @@ function useTilt() {
       card.style.setProperty('--mx', `${x * 100}%`);
       card.style.setProperty('--my', `${y * 100}%`);
     };
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
     const onLeave = () => {
       card.style.setProperty('--rx', '0deg');
       card.style.setProperty('--ry', '0deg');
     };
-    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mousemove', onMove, { passive: true });
     card.addEventListener('mouseleave', onLeave);
     return () => {
       card.removeEventListener('mousemove', onMove);
       card.removeEventListener('mouseleave', onLeave);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
   return ref;

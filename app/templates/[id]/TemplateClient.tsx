@@ -2,19 +2,8 @@
 import { useEffect, useState, type ComponentType } from 'react';
 import Link from 'next/link';
 import type { Template } from '@/data/templates';
+import { CATEGORY_LABEL } from '@/data/templates';
 import styles from './template-detail.module.css';
-
-const CATEGORY_LABEL: Record<string, string> = {
-  marketing: '营销', product: '产品', auth: '认证', commerce: '电商', creative: '创意',
-  brutalism: '新粗野', neumorphism: '拟物', cyberpunk: '赛博', y2k: 'Y2K',
-  terminal: '终端', spatial: '空间', swiss: '瑞士', memphis: '孟菲斯',
-  tech: '科技', minimal: '极简', bauhaus: '包豪斯', steampunk: '蒸汽', macaron: '马卡龙',
-  showcase: '高级展示',
-  atmospheric: '氛围',
-  painterly: '油画',
-  cinematic: '电影',
-  fantasy: '奇幻',
-};
 
 type Meta = Omit<Template, 'preview'>;
 

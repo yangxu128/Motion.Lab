@@ -98,10 +98,14 @@ export function Manifesto() {
     // 3D tilt on each card
     const cleanups: Array<() => void> = [];
     cards.forEach((card) => {
-      const onMove = (e: MouseEvent) => {
+      let raf = 0;
+      let pending = false;
+      let mx = 0, my = 0;
+      const flush = () => {
+        pending = false;
         const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
+        const x = (mx - rect.left) / rect.width;
+        const y = (my - rect.top) / rect.height;
         const rotX = (0.5 - y) * 10;
         const rotY = (x - 0.5) * 10;
         gsap.to(card, {
@@ -111,18 +115,26 @@ export function Manifesto() {
           duration: 0.3,
           ease: 'power2.out',
         });
-        // Update CSS variable for spotlight position
         card.style.setProperty('--mx', `${x * 100}%`);
         card.style.setProperty('--my', `${y * 100}%`);
+      };
+      const onMove = (e: MouseEvent) => {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!pending) {
+          pending = true;
+          raf = requestAnimationFrame(flush);
+        }
       };
       const onLeave = () => {
         gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
       };
-      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mousemove', onMove, { passive: true });
       card.addEventListener('mouseleave', onLeave);
       cleanups.push(() => {
         card.removeEventListener('mousemove', onMove);
         card.removeEventListener('mouseleave', onLeave);
+        if (raf) cancelAnimationFrame(raf);
       });
     });
 

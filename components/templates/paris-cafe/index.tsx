@@ -168,10 +168,10 @@ export default function ParisCafe() {
           </div>
         </div>
         <div className={styles.navLinks}>
-          <a>Menu</a>
-          <a>Wine</a>
-          <a>Story</a>
-          <a>Visit</a>
+          <a href="#">Menu</a>
+          <a href="#">Wine</a>
+          <a href="#">Story</a>
+          <a href="#">Visit</a>
         </div>
         <button className={styles.navCta}>Reserve a table</button>
       </nav>

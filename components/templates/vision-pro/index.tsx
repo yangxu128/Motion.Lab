@@ -36,11 +36,11 @@ export default function VisionPro() {
           </div>
         </div>
         <div className={styles.navLinks}>
-          <a>Overview</a>
-          <a>Features</a>
-          <a>Apps</a>
-          <a>Specs</a>
-          <a>Buy</a>
+          <a href="#">Overview</a>
+          <a href="#">Features</a>
+          <a href="#">Apps</a>
+          <a href="#">Specs</a>
+          <a href="#">Buy</a>
         </div>
         <div className={styles.navCta}>
           <button className={styles.ghostBtn}>Try a demo</button>

@@ -91,22 +91,35 @@ export function EffectCard({ effect }: { effect: Effect }) {
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
-    const onMove = (e: MouseEvent) => {
+    let raf = 0;
+    let pending = false;
+    let mx = 0, my = 0;
+    const flush = () => {
+      pending = false;
       const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const x = (mx - rect.left) / rect.width - 0.5;
+      const y = (my - rect.top) / rect.height - 0.5;
       el.style.setProperty('--mx', `${(x + 0.5) * 100}%`);
       el.style.setProperty('--my', `${(y + 0.5) * 100}%`);
       gsap.to(el, { rotateX: -y * 4, rotateY: x * 4, transformPerspective: 1000, duration: 0.3, ease: 'power2.out' });
     };
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!pending) {
+        pending = true;
+        raf = requestAnimationFrame(flush);
+      }
+    };
     const onLeave = () => {
       gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
     };
-    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mousemove', onMove, { passive: true });
     el.addEventListener('mouseleave', onLeave);
     return () => {
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 

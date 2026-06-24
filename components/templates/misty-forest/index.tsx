@@ -131,10 +131,10 @@ export default function MistyForest() {
           <span className={styles.brandName}>WoodNest</span>
         </div>
         <div className={styles.navLinks}>
-          <a>Locations</a>
-          <a>Rooms</a>
-          <a>Experiences</a>
-          <a>Contact</a>
+          <a href="#">Locations</a>
+          <a href="#">Rooms</a>
+          <a href="#">Experiences</a>
+          <a href="#">Contact</a>
         </div>
         <button className={styles.navCta}>Book Now</button>
       </nav>
