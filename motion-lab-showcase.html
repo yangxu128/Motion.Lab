@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Motion.Lab · AI 动效实验室 — TRAE 参赛作品</title>
+<meta name="description" content="160 个精选前端动效 + 23 套整页模板 + SKILL.md 协议，让 AI Agent 像查字典一样获取可复制的动效源码。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ========== 基础 ========== */
+:root {
+  --bg: #fafafa;
+  --fg: #0a0a0a;
+  --muted: #6b6b6b;
+  --line: rgba(10,10,10,0.08);
+  --card: #ffffff;
+  --radius: 20px;
+  --shadow: 0 8px 32px rgba(10,10,10,0.06);
+  --accent-h: 280;
+  --accent: hsl(var(--accent-h) 90% 60%);
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ========== 背景 blob 动画（柔和、不抢戏） ========== */
+.blob-bg {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+}
+.blob-bg div {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
+  animation: blobFloat 18s ease-in-out infinite;
+}
+.blob-bg div:nth-child(1) {
+  width: 500px; height: 500px; top: -10%; left: -5%;
+  background: hsl(280 90% 70%);
+}
+.blob-bg div:nth-child(2) {
+  width: 400px; height: 400px; top: 40%; right: -10%;
+  background: hsl(340 90% 70%);
+  animation-delay: -6s;
+}
+.blob-bg div:nth-child(3) {
+  width: 450px; height: 450px; bottom: -10%; left: 30%;
+  background: hsl(180 90% 60%);
+  animation-delay: -12s;
+}
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.1); }
+  66% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+/* ========== 容器 ========== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========== HERO ========== */
+.hero {
+  padding: 100px 0 80px;
+  position: relative;
+}
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--accent);
+  background: hsl(var(--accent-h) 60% 96%);
+  padding: 6px 14px; border-radius: 999px;
+  margin-bottom: 24px;
+  animation: fadeRise 0.6s ease-out both;
+}
+.kicker::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 12px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.4; transform: scale(0.85); } }
+
+h1.title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin: 0 0 24px;
+  animation: fadeRise 0.6s ease-out 0.1s both;
+}
+h1.title em {
+  font-style: italic;
+  background: linear-gradient(120deg, hsl(280 90% 60%), hsl(340 90% 60%), hsl(30 95% 55%));
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: hueShift 8s linear infinite;
+}
+@keyframes hueShift { to { background-position: 200% 0; } }
+
+.lede {
+  font-size: clamp(18px, 2vw, 22px);
+  color: var(--muted);
+  max-width: 720px;
+  line-height: 1.55;
+  margin: 0 0 40px;
+  animation: fadeRise 0.6s ease-out 0.2s both;
+}
+.lede strong { color: var(--fg); font-weight: 600; }
+
+@keyframes fadeRise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== 数据条 ========== */
+.stats {
+  display: flex; flex-wrap: wrap; gap: 32px 48px;
+  padding: 32px 0; margin: 40px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 48px; line-height: 1;
+  font-weight: 400;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+}
+.stat-value .unit { font-size: 24px; color: var(--muted); margin-left: 2px; }
+.stat-label { font-size: 13px; color: var(--muted); letter-spacing: 0.05em; }
+
+/* ========== Section ========== */
+section.block {
+  padding: 80px 0;
+  position: relative;
+}
+section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+section h2 .num {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--accent);
+  margin-right: 12px;
+  vertical-align: middle;
+}
+section .sublede {
+  font-size: 18px; color: var(--muted);
+  max-width: 720px;
+  margin: 0 0 48px;
+}
+
+/* ========== 痛点 3 卡片 ========== */
+.pains {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.pain-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.pain-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.pain-card .icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: hsl(var(--accent-h) 60% 96%);
+  color: var(--accent);
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+.pain-card h3 {
+  font-size: 18px; font-weight: 600;
+  margin: 0 0 8px;
+}
+.pain-card p {
+  font-size: 14px; color: var(--muted);
+  margin: 0; line-height: 1.6;
+}
+
+/* ========== 4 步流程 ========== */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  position: relative;
+}
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  position: relative;
+  counter-increment: step;
+}
+.flow::before {
+  content: ''; position: absolute;
+  top: 60px; left: 5%; right: 5%; height: 2px;
+  background: linear-gradient(90deg, var(--accent), hsl(340 90% 60%), hsl(30 95% 55%));
+  z-index: 0;
+  opacity: 0.3;
+}
+.flow-step .num {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: white;
+  font-weight: 700; font-size: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px hsla(var(--accent-h) 90% 60% / 0.3);
+}
+.flow-step h3 {
+  font-size: 17px; font-weight: 600;
+  margin: 0 0 8px;
+}
+.flow-step p {
+  font-size: 14px; color: var(--muted);
+  margin: 0; line-height: 1.6;
+}
+
+/* ========== 模板画廊（masonry 风格） ========== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform 0.4s;
+}
+.gallery-item:hover { transform: scale(1.02); }
+.gallery-item:nth-child(odd) { aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(3n) { aspect-ratio: 1; }
+.gallery-item .bg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-family: var(--font-display); font-size: 24px;
+  font-style: italic;
+  text-align: center; padding: 20px;
+  line-height: 1.1;
+}
+.gallery-item .label {
+  position: absolute; bottom: 12px; left: 16px;
+  font-size: 12px; font-weight: 600;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+  color: white;
+  padding: 4px 10px; border-radius: 999px;
+}
+.gallery-item .idx {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 12px; font-weight: 600;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.8);
+}
+
+/* 23 个渐变背景（每个模板一个） */
+.g1 { background: linear-gradient(135deg, hsl(280 90% 50%), hsl(320 90% 40%)); }
+.g2 { background: linear-gradient(135deg, hsl(210 90% 50%), hsl(180 90% 50%)); }
+.g3 { background: linear-gradient(135deg, hsl(340 90% 55%), hsl(20 95% 55%)); }
+.g4 { background: linear-gradient(135deg, hsl(0 0% 10%), hsl(280 80% 20%)); }
+.g5 { background: linear-gradient(135deg, hsl(40 95% 60%), hsl(20 95% 60%)); }
+.g6 { background: linear-gradient(135deg, hsl(160 90% 50%), hsl(180 80% 50%)); }
+.g7 { background: linear-gradient(135deg, hsl(280 80% 70%), hsl(340 80% 70%)); }
+.g8 { background: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 15%)); }
+.g9 { background: linear-gradient(135deg, hsl(50 100% 60%), hsl(20 100% 60%)); }
+.g10 { background: linear-gradient(135deg, hsl(200 90% 60%), hsl(280 80% 60%)); }
+.g11 { background: linear-gradient(135deg, hsl(220 30% 92%), hsl(220 30% 98%)); color: #0a0a0a; }
+.g12 { background: linear-gradient(135deg, hsl(20 90% 60%), hsl(40 90% 50%)); }
+.g13 { background: linear-gradient(135deg, hsl(280 60% 30%), hsl(0 0% 5%)); }
+.g14 { background: linear-gradient(135deg, hsl(30 70% 50%), hsl(0 0% 15%)); }
+.g15 { background: linear-gradient(135deg, hsl(330 80% 80%), hsl(180 70% 80%)); color: #2a1a3a; }
+.g16 { background: linear-gradient(135deg, hsl(0 0% 4%), hsl(280 90% 12%)); }
+.g17 { background: linear-gradient(135deg, hsl(140 50% 30%), hsl(60 30% 20%)); }
+.g18 { background: linear-gradient(135deg, hsl(220 80% 25%), hsl(180 70% 50%)); }
+.g19 { background: linear-gradient(135deg, hsl(280 70% 60%), hsl(20 70% 60%)); }
+.g20 { background: linear-gradient(135deg, hsl(0 0% 95%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
+.g21 { background: linear-gradient(135deg, hsl(210 50% 50%), hsl(280 60% 50%)); }
+.g22 { background: linear-gradient(135deg, hsl(280 90% 25%), hsl(340 80% 25%)); }
+.g23 { background: linear-gradient(135deg, hsl(0 0% 92%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
+
+/* ========== 动效展示网格 ========== */
+.effects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.effect-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.effect-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.effect-card .demo {
+  height: 120px;
+  background: hsl(var(--accent-h) 30% 96%);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.effect-card h4 {
+  font-size: 14px; font-weight: 600; margin: 0;
+  font-family: var(--font-mono);
+}
+.effect-card .cat {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(0,0,0,0.6); color: white;
+  font-family: var(--font-mono);
+}
+
+/* 6 个 live demo 区域 */
+.demo-fadein { animation: fadeIn 2s ease infinite; }
+@keyframes fadeIn { 0%, 50% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+
+.demo-typewriter {
+  font-family: var(--font-mono); font-size: 14px;
+  color: var(--fg);
+  overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent);
+  width: 0; max-width: 100%;
+  animation: type 4s steps(20) infinite;
+}
+@keyframes type { 0% { width: 0; } 50%, 80% { width: 110px; } 90%, 100% { width: 0; } }
+
+.demo-ripple {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--accent);
+  position: relative;
+}
+.demo-ripple::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  animation: ripple 1.4s ease-out infinite;
+}
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.demo-flip {
+  width: 60px; height: 60px;
+  background: var(--accent);
+  border-radius: 8px;
+  animation: flip 3s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+@keyframes flip {
+  0%, 100% { transform: rotateY(0); }
+  50% { transform: rotateY(180deg); background: hsl(340 90% 60%); }
+}
+
+.demo-orbit {
+  width: 60px; height: 60px;
+  border: 2px dashed var(--accent);
+  border-radius: 50%;
+  position: relative;
+}
+.demo-orbit::before {
+  content: ''; position: absolute;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent);
+  top: -6px; left: 50%; margin-left: -6px;
+  animation: orbit 2s linear infinite;
+}
+@keyframes orbit {
+  to { transform: rotate(360deg); transform-origin: 30px 36px; }
+}
+
+.demo-glow {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--accent);
+  animation: glow 1.6s ease-in-out infinite;
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsla(var(--accent-h) 90% 60% / 0.7); }
+  50% { box-shadow: 0 0 40px 16px hsla(var(--accent-h) 90% 60% / 0); }
+}
+
+/* ========== AI 对话演示 ========== */
+.chat-demo {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  max-width: 720px; margin: 0 auto;
+}
+.chat-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.03);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px; font-weight: 500;
+}
+.chat-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+}
+.chat-body { padding: 24px; min-height: 280px; }
+.msg {
+  display: flex; gap: 12px; margin-bottom: 18px;
+  animation: msgIn 0.4s ease-out both;
+}
+.msg.user { flex-direction: row-reverse; }
+.msg-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px; line-height: 1.5;
+}
+.msg.user .msg-bubble {
+  background: var(--accent); color: white;
+  border-bottom-right-radius: 4px;
+}
+.msg.agent .msg-bubble {
+  background: rgba(0,0,0,0.04);
+  border-bottom-left-radius: 4px;
+}
+.msg-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+}
+.msg.user .msg-avatar { background: var(--accent); color: white; }
+.msg.agent .msg-avatar { background: hsl(0 0% 10%); color: white; }
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg:nth-child(1) { animation-delay: 0.2s; }
+.msg:nth-child(2) { animation-delay: 0.6s; }
+.msg:nth-child(3) { animation-delay: 1.0s; }
+.msg:nth-child(4) { animation-delay: 1.4s; }
+.msg code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(255,255,255,0.15);
+  padding: 1px 6px; border-radius: 4px;
+}
+.msg.agent code { background: rgba(0,0,0,0.06); }
+.typing { display: inline-flex; gap: 3px; padding: 4px 0; }
+.typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--muted);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.15s; }
+.typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* ========== 价值 ========== */
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.value-card {
+  background: linear-gradient(135deg, hsl(var(--accent-h) 60% 97%), white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+}
+.value-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 400;
+  margin: 0 0 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.value-card .num-big {
+  font-family: var(--font-display);
+  font-size: 56px; line-height: 1;
+  background: linear-gradient(135deg, var(--accent), hsl(340 90% 60%));
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  margin: 16px 0 12px;
+}
+.value-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+/* ========== 下载 SKILL.md 框 ========== */
+.download {
+  background: var(--card);
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  max-width: 720px; margin: 0 auto;
+}
+.download pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: left;
+  background: rgba(0,0,0,0.04);
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 20px 0;
+  line-height: 1.6;
+}
+.download .btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px;
+  background: var(--accent); color: white;
+  border-radius: 999px; font-weight: 600; font-size: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.download .btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px hsla(var(--accent-h) 90% 60% / 0.3);
+}
+
+/* ========== Footer ========== */
+footer {
+  padding: 60px 0 40px;
+  text-align: center;
+  font-size: 13px; color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin-top: 60px;
+}
+footer a { color: var(--accent); }
+footer .badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px;
+  background: hsl(var(--accent-h) 60% 96%);
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .hero { padding: 60px 0 40px; }
+  section.block { padding: 50px 0; }
+  .stats { gap: 20px 32px; }
+  .stat-value { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 背景 blob -->
+<div class="blob-bg">
+  <div></div><div></div><div></div>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero container">
+  <span class="kicker">TRAE · 学习工作赛道 · 2026</span>
+  <h1 class="title">让 AI 学会 <em>动效</em>，<br/>像查字典一样简单。</h1>
+  <p class="lede">
+    <strong>Motion.Lab</strong> 把 <strong>160</strong> 个精选前端动效、<strong>23</strong> 套整页模板打包成标准 <strong>SKILL.md</strong> 协议，
+    安装到任何 AI Agent（Claude Code / Cursor / Trae / Coze），用自然语言就能拿到<strong>可调参、可复制</strong>的动效源码。
+  </p>
+
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-value">160</span>
+      <span class="stat-label">精选动效</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">23</span>
+      <span class="stat-label">整页模板</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">4</span>
+      <span class="stat-label">动效分类</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">100<span class="unit">%</span></span>
+      <span class="stat-label">开源 + 免费</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">3<span class="unit">min</span></span>
+      <span class="stat-label">接入 AI Agent</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 痛点 ========== -->
+<section class="block container">
+  <h2><span class="num">01</span>解决的痛点</h2>
+  <p class="sublede">做前端动效时，每个人都掉进过同样的坑。</p>
+  <div class="pains">
+    <div class="pain-card">
+      <div class="icon">🧩</div>
+      <h3>找不到合适的动效</h3>
+      <p>CodePen、Cuberto、Awwwards、YouTube 散落各处，没有统一检索；想"加个打字机"要在 5 个网站切换。</p>
+    </div>
+    <div class="pain-card">
+      <div class="icon">⚙️</div>
+      <h3>找到却不可调参</h3>
+      <p>复制到项目里发现颜色 / 速度 / 触发时机和图不一样，又得自己改源码试，浪费时间。</p>
+    </div>
+    <div class="pain-card">
+      <div class="icon">🤖</div>
+      <h3>AI 不会做动效</h3>
+      <p>让 AI 写"按钮波纹"它会输出很基础的方案；每次都重描述需求，没有项目级动效库可调用。</p>
+    </div>
+    <div class="pain-card">
+      <div class="icon">📦</div>
+      <h3>无法沉淀资产</h3>
+      <p>做完一个项目的动效无法复用，下次又得重新找；团队成员各自维护，无法共享。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4 步流程 ========== -->
+<section class="block container" style="counter-reset: step;">
+  <h2><span class="num">02</span>3 分钟接入 AI</h2>
+  <p class="sublede">从打开网站到 AI 输出可用代码，只需 4 步。</p>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="num">1</div>
+      <h3>下载 SKILL.md</h3>
+      <p>点击下载按钮，存到 Agent 项目的 <code>.trae/skills/</code> 或 <code>.claude/skills/</code> 目录。</p>
+    </div>
+    <div class="flow-step">
+      <div class="num">2</div>
+      <h3>自然语言提问</h3>
+      <p>告诉 Agent 你想要的动效 — "按钮波纹"、"粒子背景"、"打字机"等，160 个动效秒级匹配。</p>
+    </div>
+    <div class="flow-step">
+      <div class="num">3</div>
+      <h3>拿到 3 段代码</h3>
+      <p>Agent 输出 HTML + CSS + JS 三段源码，附可调参数表，参数化 <code>--duration</code> 等 CSS 变量。</p>
+    </div>
+    <div class="flow-step">
+      <div class="num">4</div>
+      <h3>复制即用</h3>
+      <p>粘贴到项目，调参数即可生效；如需更深定制，访问官网 <code>/lab/&lt;id&gt;</code> 在线实时调参。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 动效展示 ========== -->
+<section class="block container">
+  <h2><span class="num">03</span>160 个动效，6 个现场感受</h2>
+  <p class="sublede">CSS 动画、GSAP、Three.js、Canvas 物理 — 全部可直接调参与复制。</p>
+  <div class="effects">
+    <div class="effect-card">
+      <span class="cat">基础</span>
+      <div class="demo"><div class="demo-fadein" style="font-size: 32px; font-weight: 700; color: var(--accent);">Hello</div></div>
+      <h4>fade-in-up</h4>
+    </div>
+    <div class="effect-card">
+      <span class="cat">文字</span>
+      <div class="demo"><div class="demo-typewriter">Hello Motion Lab</div></div>
+      <h4>text-typewriter</h4>
+    </div>
+    <div class="effect-card">
+      <span class="cat">交互</span>
+      <div class="demo"><div class="demo-ripple"></div></div>
+      <h4>click-ripple</h4>
+    </div>
+    <div class="effect-card">
+      <span class="cat">交互</span>
+      <div class="demo"><div class="demo-flip"></div></div>
+      <h4>hover-flip-card</h4>
+    </div>
+    <div class="effect-card">
+      <span class="cat">基础</span>
+      <div class="demo"><div class="demo-orbit"></div></div>
+      <h4>orbit-loader</h4>
+    </div>
+    <div class="effect-card">
+      <span class="cat">高级</span>
+      <div class="demo"><div class="demo-glow"></div></div>
+      <h4>pulse-glow</h4>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 23 模板画廊 ========== -->
+<section class="block container">
+  <h2><span class="num">04</span>23 套整页模板</h2>
+  <p class="sublede">每套模板都是 5-10 个动效的组合落地页，覆盖营销、产品、认证、电商、创意 5 类场景 + 13 种视觉风格。</p>
+  <div class="gallery">
+    <div class="gallery-item"><div class="bg g1">Aetheris</div><span class="label">高级展示</span><span class="idx">01</span></div>
+    <div class="gallery-item"><div class="bg g2">SaaS</div><span class="label">产品</span><span class="idx">02</span></div>
+    <div class="gallery-item"><div class="bg g3">Promo</div><span class="label">营销</span><span class="idx">03</span></div>
+    <div class="gallery-item"><div class="bg g4">Brutalism</div><span class="label">新粗野</span><span class="idx">04</span></div>
+    <div class="gallery-item"><div class="bg g5">Sunset</div><span class="label">创意</span><span class="idx">05</span></div>
+    <div class="gallery-item"><div class="bg g6">Ocean</div><span class="label">氛围</span><span class="idx">06</span></div>
+    <div class="gallery-item"><div class="bg g7">Macaron</div><span class="label">马卡龙</span><span class="idx">07</span></div>
+    <div class="gallery-item"><div class="bg g8">Terminal</div><span class="label">终端</span><span class="idx">08</span></div>
+    <div class="gallery-item"><div class="bg g9">Memphis</div><span class="label">孟菲斯</span><span class="idx">09</span></div>
+    <div class="gallery-item"><div class="bg g10">Cyberpunk</div><span class="label">赛博</span><span class="idx">10</span></div>
+    <div class="gallery-item"><div class="bg g11">Swiss</div><span class="label">瑞士</span><span class="idx">11</span></div>
+    <div class="gallery-item"><div class="bg g12">Steampunk</div><span class="label">蒸汽</span><span class="idx">12</span></div>
+    <div class="gallery-item"><div class="bg g13">Neumorphism</div><span class="label">拟物</span><span class="idx">13</span></div>
+    <div class="gallery-item"><div class="bg g14">Y2K</div><span class="label">Y2K</span><span class="idx">14</span></div>
+    <div class="gallery-item"><div class="bg g15">Sweet</div><span class="label">马卡龙</span><span class="idx">15</span></div>
+    <div class="gallery-item"><div class="bg g16">Vision Pro</div><span class="label">空间</span><span class="idx">16</span></div>
+    <div class="gallery-item"><div class="bg g17">Misty Forest</div><span class="label">氛围</span><span class="idx">17</span></div>
+    <div class="gallery-item"><div class="bg g18">Tech</div><span class="label">科技</span><span class="idx">18</span></div>
+    <div class="gallery-item"><div class="bg g19">Bauhaus</div><span class="label">包豪斯</span><span class="idx">19</span></div>
+    <div class="gallery-item"><div class="bg g20">Minimal</div><span class="label">极简</span><span class="idx">20</span></div>
+    <div class="gallery-item"><div class="bg g21">Paris Café</div><span class="label">油画</span><span class="idx">21</span></div>
+    <div class="gallery-item"><div class="bg g22">Velorah</div><span class="label">电影</span><span class="idx">22</span></div>
+    <div class="gallery-item"><div class="bg g23">Faeloria</div><span class="label">奇幻</span><span class="idx">23</span></div>
+  </div>
+</section>
+
+<!-- ========== AI 对话演示 ========== -->
+<section class="block container">
+  <h2><span class="num">05</span>AI Agent 实战对话</h2>
+  <p class="sublede">当 Motion.Lab 的 SKILL.md 装进 Agent 后，对话就像这样：</p>
+  <div class="chat-demo">
+    <div class="chat-bar">
+      <span class="chat-dot" style="background:#ff5f57"></span>
+      <span class="chat-dot" style="background:#febc2e"></span>
+      <span class="chat-dot" style="background:#28c840"></span>
+      <span style="margin-left: 12px;">Motion.Lab Agent</span>
+    </div>
+    <div class="chat-body">
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">帮我给按钮加个点击波纹效果</div>
+      </div>
+      <div class="msg agent">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          推荐 <code>click-ripple-material</code>。<br/>
+          关键参数：<code>--duration: 0.6s</code>、<code>--color: currentColor</code>。<br/>
+          复制下面的 HTML+CSS+JS 即可生效。
+        </div>
+      </div>
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">首页大标题想要打字机效果</div>
+      </div>
+      <div class="msg agent">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          推荐 <code>text-typewriter-multi</code>（多行循环版）。<br/>
+          支持 <code>--speed</code>、<code>--cursor</code> 颜色。已附 HTML+CSS+JS 源码。
+          <div class="typing" style="margin-top: 6px;"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 价值 ========== -->
+<section class="block container">
+  <h2><span class="num">06</span>价值与意义</h2>
+  <p class="sublede">效率 + 开源 + A11y 三个维度，都站得住脚。</p>
+  <div class="values">
+    <div class="value-card">
+      <h3>⏱️ 效率提升</h3>
+      <div class="num-big">2,500<span style="font-size: 24px;">h/月</span></div>
+      <p>把"找 → 试 → 改 → 用"四步压缩为"搜 → 复制"，单动效平均节省 15 分钟，160 个动效 × 月活 1 万次引用 ≈ 月省 2500 小时。</p>
+    </div>
+    <div class="value-card">
+      <h3>🌐 开源协议</h3>
+      <div class="num-big">SKILL.md</div>
+      <p>标准 Markdown 协议，任何 AI Agent 零成本接入动效能力。弥合"AI 不会做动效"鸿沟，让大模型真正理解并产出可调参的现代前端动效。</p>
+    </div>
+    <div class="value-card">
+      <h3>♿ A11y 友好</h3>
+      <div class="num-big">100<span style="font-size: 24px;">%</span></div>
+      <p>统一 <code>prefers-reduced-motion</code> 降级与参数边界。避免 AI 生成可访问性差或卡顿的代码，从源头保证 web 动效对所有用户都可用。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 下载 SKILL.md ========== -->
+<section class="block container">
+  <h2><span class="num">07</span>试试看</h2>
+  <p class="sublede">点开 <a href="https://motionlab.uanx.online" target="_blank">motionlab.uanx.online</a> 即可下载 SKILL.md，并访问在线调参面板。</p>
+  <div class="download">
+    <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">SKILL.md · 21.4 KB · 160 effects</div>
+    <pre>---
+name: motion-lab
+description: Motion.Lab 动效库 — 160 个精选前端动效，
+  每个动效提供可直接复制的 HTML/CSS/JS 源码与可调参数。
+  当用户需要为网页、组件、落地页添加动画效果时使用。
+---
+
+# Motion.Lab 动效库
+
+Motion.Lab 是一个包含 **160 个精选前端动效**的中文参考库，
+覆盖基础、文字、交互、高级四大类。
+
+- 线上站点：https://motionlab.uanx.online
+- 实验室：https://motionlab.uanx.online/lab
+- 源码仓库：https://github.com/yangxu128/Motion.Lab
+
+## 动效清单（节选）
+
+| ID | 名称 | 难度 | 说明 |
+|------|------|------|------|
+| fade-in-up | 淡入上滑 | ★☆☆ | 元素入场动画 |
+| text-typewriter | 打字机 | ★★☆ | 单行打字机 |
+| click-ripple-material | 点击波纹 | ★★☆ | Material 风格波纹 |
+| particle-fountain | 粒子喷泉 | ★★★ | Canvas 物理 |
+...</pre>
+    <a class="btn" href="https://motionlab.uanx.online/skill" target="_blank">
+      ⬇ 下载 SKILL.md
+    </a>
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer>
+  <div class="container">
+    <div style="margin-bottom: 12px;">
+      <span class="badge">学习工作</span>
+      <span class="badge" style="background: hsl(0 0% 96%); color: var(--muted);">TRAE 2026 参赛作品</span>
+    </div>
+    <div>
+      <a href="https://motionlab.uanx.online" target="_blank">Motion.Lab</a> ·
+      <a href="https://github.com/yangxu128/Motion.Lab" target="_blank">GitHub</a> ·
+      Made with ✨ and patience
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
