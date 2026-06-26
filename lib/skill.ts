@@ -1,7 +1,7 @@
 // lib/skill.ts — 生成可供 AI Agent 使用的 SKILL.md 内容（从 EFFECTS 数据动态构建，始终同步）
 import { EFFECTS, CATEGORIES, type EffectCategory } from '@/data/effects';
 
-const SITE_URL = 'https://motion-lab.vercel.app';
+const SITE_URL = 'https://motionlab.uanx.online';
 
 const CATEGORY_LABEL: Record<EffectCategory, string> = {
   basic: '基础',

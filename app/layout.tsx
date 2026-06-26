@@ -10,7 +10,7 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://motion-lab.vercel.app'),
+  metadataBase: new URL('https://motionlab.uanx.online'),
   title: {
     default: 'Motion.Lab — 动效实验室',
     template: '%s — Motion.Lab',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    url: 'https://motion-lab.vercel.app',
+    url: 'https://motionlab.uanx.online',
     siteName: 'Motion.Lab',
     title: 'Motion.Lab — 动效实验室',
     description: '160 个精选动效的中文参考站,支持调参与代码复制。',

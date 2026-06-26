@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { EFFECTS } from '@/data/effects';
 import { TEMPLATES } from '@/data/templates';
 
-const BASE = 'https://motion-lab.vercel.app';
+const BASE = 'https://motionlab.uanx.online';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

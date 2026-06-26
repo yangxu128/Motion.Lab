@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE = 'https://motion-lab.vercel.app';
+const BASE = 'https://motionlab.uanx.online';
 
 export default function robots(): MetadataRoute.Robots {
   return {
