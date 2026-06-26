@@ -424,6 +424,13 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
 
           {/* 右栏：演示对话窗口 + 代码片段 */}
           <div ref={demoRef} className={styles.heroRight}>
+            {/* 顶部能力徽章 — 放在 demo 框上方一行，不覆盖内容 */}
+            <div className={styles.featureRow} aria-hidden>
+              <span className={styles.featureChip} style={{ color: 'hsl(280 85% 50%)' }}>· 自然语言</span>
+              <span className={styles.featureChip} style={{ color: 'hsl(340 85% 50%)' }}>· 一键复制</span>
+              <span className={styles.featureChip} style={{ color: 'hsl(30 95% 45%)' }}>· {effectsCount} 动效</span>
+            </div>
+
             <div className={styles.demo}>
               <div className={styles.demoBar}>
                 <span className={styles.demoDot} style={{ background: '#ff5f57' }} />
@@ -466,11 +473,6 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
 <span className={styles.snippetCmt}>{'# 做个粒子背景\n'}</span><span className={styles.snippetKey}>推荐</span> <span className={styles.snippetStr}>flow-field / particle-galaxy</span>
               </pre>
             </div>
-
-            {/* 浮动标签 — 锚定在 demo 容器边界内 */}
-            <div className={styles.floatTag} style={{ top: '12%', right: '-12px', background: 'hsl(280 85% 60%)' }}>自然语言</div>
-            <div className={styles.floatTag} style={{ top: '48%', left: '-12px', background: 'hsl(340 85% 60%)' }}>一键复制</div>
-            <div className={styles.floatTag} style={{ bottom: '28%', right: '-18px', background: 'hsl(30 95% 55%)' }}>160 动效</div>
           </div>
         </div>
 

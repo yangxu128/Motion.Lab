@@ -306,43 +306,26 @@
 .snippetStr { color: hsl(30 90% 70%); }
 .snippetCmt { color: hsl(220 10% 45%); font-style: italic; }
 
-/* Floating tags around demo — repositioned inside the demo column bounds */
-.floatTag {
-  position: absolute;
-  padding: 7px 14px;
-  border-radius: 9999px;
-  color: white;
+/* 能力徽章 — 放在 demo 框上方一行，不覆盖内容 */
+.featureRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  z-index: 2;
-  animation: floatTag 4s ease-in-out infinite;
-  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.featureChip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-}
-
-.floatTag::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: white;
-}
-
-.floatTag:nth-of-type(1) { animation-delay: 0s; }
-.floatTag:nth-of-type(2) { animation-delay: -1.3s; }
-.floatTag:nth-of-type(3) { animation-delay: -2.6s; }
-
-@keyframes floatTag {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  line-height: 1;
+  opacity: 0.85;
 }
 
 @media (max-width: 1024px) {
   .demo { height: 320px; }
-  .floatTag { display: none; }
+  .featureRow { font-size: 11px; gap: 0.5rem; }
 }
 
 /* Old heroContent — keep for backwards compat in case */
