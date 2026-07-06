@@ -26,10 +26,10 @@ export default function Swiss() {
           <span className={styles.navSub}>/ QUARTERLY Nº 142</span>
         </div>
         <div className={styles.navLinks}>
-          <a href="#">Index</a>
-          <a href="#">Articles</a>
-          <a href="#">Archive</a>
-          <a href="#">Subscribe</a>
+          <button type="button">Index</button>
+          <button type="button">Articles</button>
+          <button type="button">Archive</button>
+          <button type="button">Subscribe</button>
         </div>
       </nav>
 
@@ -114,7 +114,7 @@ export default function Swiss() {
               <h3 className={styles.articleTitle}>{a.t}</h3>
               <div className={styles.articleAuthor}>{a.a}</div>
               <p className={styles.articleDesc}>{a.d}</p>
-              <a href="#" className={styles.articleMore}>Read →</a>
+              <button type="button" className={styles.articleMore}>Read →</button>
             </article>
           ))}
         </div>

@@ -63,15 +63,17 @@
   letter-spacing: 0.04em;
 }
 .navLinks { display: flex; gap: 24px; }
-.navLinks a {
+.navLinks button {
   text-decoration: none;
   color: #8888a0;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
+  background: none; border: none; padding: 0; font-family: inherit;
+  cursor: pointer;
   transition: color 0.2s;
 }
-.navLinks a:hover { color: #00ffd0; text-shadow: 0 0 8px rgba(0, 255, 208, 0.6); }
+.navLinks button:hover { color: #00ffd0; text-shadow: 0 0 8px rgba(0, 255, 208, 0.6); }
 .navRight { display: flex; align-items: center; gap: 16px; font-size: 11px; }
 .signal { color: #00ffd0; text-shadow: 0 0 6px rgba(0, 255, 208, 0.8); }
 .zone {

@@ -4,9 +4,9 @@ import { gsap } from 'gsap';
 import styles from './Hero.module.css';
 
 const BADGES = [
-  { label: '160 Effects', color: 'hsl(280 85% 60%)' },
-  { label: '参数可调', color: 'hsl(210 85% 55%)' },
-  { label: '一键复制', color: 'hsl(340 85% 55%)' },
+  { label: '160 Effects', color: 'hsl(280 70% 50%)' },
+  { label: '参数可调', color: 'hsl(210 70% 48%)' },
+  { label: '一键复制', color: 'hsl(340 70% 50%)' },
 ];
 
 export function Hero() {
@@ -130,11 +130,11 @@ export function Hero() {
   return (
     <section ref={heroRef} className={styles.hero}>
       {/* Floating blobs */}
-      <div className={styles.blob} style={{ top: '10%', left: '5%', width: 300, height: 300, background: 'hsl(280 90% 60%)', animationDelay: '0s' }} />
-      <div className={styles.blob} style={{ top: '60%', right: '8%', width: 400, height: 400, background: 'hsl(340 90% 55%)', animationDelay: '-2s' }} />
-      <div className={styles.blob} style={{ bottom: '15%', left: '25%', width: 250, height: 250, background: 'hsl(180 90% 50%)', animationDelay: '-4s' }} />
-      <div className={styles.blob} style={{ top: '25%', right: '20%', width: 200, height: 200, background: 'hsl(30 95% 55%)', animationDelay: '-6s' }} />
-      <div className={styles.blob} style={{ bottom: '30%', left: '60%', width: 180, height: 180, background: 'hsl(210 90% 55%)', animationDelay: '-3s' }} />
+      <div className={styles.blob} style={{ top: '10%', left: '5%', width: 300, height: 300, background: 'hsl(280 70% 55%)', animationDelay: '0s' }} />
+      <div className={styles.blob} style={{ top: '60%', right: '8%', width: 400, height: 400, background: 'hsl(340 70% 50%)', animationDelay: '-2s' }} />
+      <div className={styles.blob} style={{ bottom: '15%', left: '25%', width: 250, height: 250, background: 'hsl(180 70% 45%)', animationDelay: '-4s' }} />
+      <div className={styles.blob} style={{ top: '25%', right: '20%', width: 200, height: 200, background: 'hsl(30 80% 50%)', animationDelay: '-6s' }} />
+      <div className={styles.blob} style={{ bottom: '30%', left: '60%', width: 180, height: 180, background: 'hsl(210 70% 50%)', animationDelay: '-3s' }} />
 
       <div className={styles.content}>
         <div className={styles.kicker}>Motion.Lab · 2026</div>

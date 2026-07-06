@@ -31,7 +31,7 @@
   transform: rotate(-2deg);
 }
 .navLinks { display: flex; gap: 24px; }
-.navLinks a {
+.navLinks button {
   text-decoration: none;
   color: #0a0a0a;
   font-size: 13px;
@@ -40,9 +40,12 @@
   letter-spacing: 0.06em;
   padding: 6px 8px;
   border-bottom: 2px solid transparent;
+  background: none; border-top: none; border-left: none; border-right: none;
+  font-family: inherit;
+  cursor: pointer;
   transition: all 0.15s;
 }
-.navLinks a:hover {
+.navLinks button:hover {
   border-color: #0a0a0a;
   background: #FFE600;
 }

@@ -79,7 +79,7 @@ export function EffectCard({ effect }: { effect: Effect }) {
         const cRect = cardRef.current.getBoundingClientRect();
         const heart = document.createElement('span');
         heart.className = styles.flyHeart;
-        heart.textContent = '❤';
+        heart.textContent = '+1';
         heart.style.left = `${rect.left - cRect.left + rect.width / 2}px`;
         heart.style.top = `${rect.top - cRect.top + rect.height / 2}px`;
         cardRef.current.appendChild(heart);
@@ -147,18 +147,36 @@ export function EffectCard({ effect }: { effect: Effect }) {
             aria-label={liked ? `已点赞（${likes}）` : '点赞'}
             title={liked ? `已点赞 · ${likes}` : '点赞'}
           >
-            <span className={styles.heartIcon}>{liked ? '❤' : '♡'}</span>
+            <svg className={styles.heartIcon} viewBox="0 0 24 24" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
             <span className={styles.likeCount}>{likes}</span>
           </button>
         </div>
         <div className={styles.desc}>{effect.description}</div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-          {effect.tags.slice(0, 2).map((t) => <span key={t} className={styles.tag}>{t}</span>)}
+          {effect.tags.slice(0, 2).map((t, i) => <span key={`${t}-${i}`} className={styles.tag}>{t}</span>)}
         </div>
         <div className={styles.actions}>
-          <Button onClick={(e) => handleButtonClick(e, replay)}>▶ 重播</Button>
-          <Button onClick={(e) => handleButtonClick(e, () => openPanel('params'))}>⚙ 调参</Button>
-          <Button onClick={(e) => handleButtonClick(e, () => openPanel('code'))}>{'< / >'} 代码</Button>
+          <Button onClick={(e) => handleButtonClick(e, replay)}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden style={{ marginRight: 4 }}><path d="M8 5v14l11-7z"/></svg>
+            重播
+          </Button>
+          <Button onClick={(e) => handleButtonClick(e, () => openPanel('params'))}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ marginRight: 4 }}>
+              <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+            调参
+          </Button>
+          <Button onClick={(e) => handleButtonClick(e, () => openPanel('code'))}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ marginRight: 4 }}>
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+            代码
+          </Button>
         </div>
       </div>
     </div>

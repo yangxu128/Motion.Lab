@@ -78,14 +78,16 @@
   font-weight: 700;
 }
 .navLinks { display: flex; gap: 28px; }
-.navLinks a {
+.navLinks button {
   font-size: 13px; color: var(--mid); cursor: pointer;
   padding: 6px 0;
   border-bottom: 1px solid transparent;
+  background: none; border-top: none; border-left: none; border-right: none;
+  font-family: inherit;
   transition: all 0.2s;
 }
-.navLinks a:hover { color: var(--ink); }
-.navLinks a[data-active] { color: var(--ink); border-bottom-color: var(--ink); }
+.navLinks button:hover { color: var(--ink); }
+.navLinks button[data-active] { color: var(--ink); border-bottom-color: var(--ink); }
 .navRight { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .navGhost {
   background: transparent; color: var(--ink); border: 0;

@@ -40,7 +40,27 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" className={`${geist.variable} ${mono.variable}`}>
-      <body><HSLBackground /><DotGrid /><SiteHeader />{children}<SiteFooter /></body>
+      <body>
+        <HSLBackground />
+        <DotGrid />
+        {/* 全局 grain 颗粒纹理（按 design-taste-frontend-v1 Section 5 规则：fixed + pointer-events: none） */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: 'none',
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+            opacity: 0.5,
+            mixBlendMode: 'multiply',
+          }}
+        />
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

@@ -10,7 +10,7 @@ export default function Brutalism() {
           <span className={styles.brandBox}>BRUTAL™</span>
         </div>
         <div className={styles.navLinks}>
-          <a href="#">Work</a><a href="#">Shop</a><a href="#">About</a><a href="#">Contact</a>
+          <button type="button">Work</button><button type="button">Shop</button><button type="button">About</button><button type="button">Contact</button>
         </div>
         <button className={styles.cta}>GET IT →</button>
       </nav>

@@ -17,7 +17,7 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.45;
+  opacity: 0.4;
   pointer-events: none;
   z-index: 0;
   animation: orbPulse 10s ease-in-out infinite;
@@ -87,7 +87,7 @@
   font-family: var(--font-display);
   font-size: 32px;
   font-weight: 900;
-  background: linear-gradient(135deg, hsl(280 85% 55%), hsl(340 85% 55%));
+  background: linear-gradient(135deg, hsl(280 70% 50%), hsl(340 70% 50%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -117,9 +117,9 @@
 .bigAccent {
   background: linear-gradient(
     135deg,
-    hsl(280 85% 55%) 0%,
-    hsl(340 85% 55%) 50%,
-    hsl(20 95% 55%) 100%
+    hsl(280 70% 50%) 0%,
+    hsl(340 70% 50%) 50%,
+    hsl(20 80% 50%) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -163,7 +163,7 @@
 
 .ctaBtn:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 32px hsl(280 70% 50% / 0.35);
+  box-shadow: 0 12px 32px rgba(10, 10, 10, 0.15);
 }
 
 /* Click ripple */

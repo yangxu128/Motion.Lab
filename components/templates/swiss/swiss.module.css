@@ -30,11 +30,13 @@
 .navWord { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
 .navSub { font-size: 11px; color: var(--dim); letter-spacing: 0.05em; }
 .navLinks { display: flex; gap: 28px; }
-.navLinks a {
+.navLinks button {
   font-size: 13px; color: var(--ink); cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
   border-bottom: 1px solid transparent; transition: border-color 0.2s;
+  background: none; border-top: none; border-left: none; border-right: none;
+  padding: 0; font-family: inherit;
 }
-.navLinks a:hover { border-bottom-color: var(--ink); }
+.navLinks button:hover { border-bottom-color: var(--ink); }
 
 /* ISSUE BAND */
 .issueBand {
@@ -198,6 +200,9 @@
   font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
   color: var(--red); cursor: pointer;
   border-top: 1px solid var(--ink); padding-top: 12px;
+  background: none; border-bottom: none; border-left: none; border-right: none;
+  text-align: left; font-family: inherit;
+  display: block; width: 100%;
 }
 
 /* QUOTE */

@@ -53,14 +53,16 @@
 .navName { font-size: 14px; font-weight: 700; letter-spacing: 0.2em; }
 .navSub { font-size: 10px; letter-spacing: 0.15em; opacity: 0.8; }
 .navLinks { display: flex; gap: 24px; }
-.navLinks a {
+.navLinks button {
   font-size: 12px; letter-spacing: 0.2em; color: var(--cream);
   cursor: pointer;
   padding: 4px 8px;
   border: 1px solid transparent;
+  background: none;
+  font-family: inherit;
   transition: all 0.2s;
 }
-.navLinks a:hover {
+.navLinks button:hover {
   border-color: var(--brass-light);
   background: rgba(216, 165, 116, 0.1);
 }

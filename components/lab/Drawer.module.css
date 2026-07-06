@@ -1,6 +1,6 @@
 .scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 .scrim[data-open='true'] { opacity: 1; pointer-events: auto; }
-.drawer { position: fixed; top: 0; right: 0; height: 100vh; width: min(480px, 100vw); background: var(--card); z-index: 101; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; }
+.drawer { position: fixed; top: 0; right: 0; height: 100dvh; width: min(480px, 100vw); background: var(--card); z-index: 101; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; }
 .drawer[data-open='true'] { transform: translateX(0); box-shadow: -16px 0 40px rgba(0,0,0,0.1); }
 .header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .title { font-size: 18px; font-weight: 700; }

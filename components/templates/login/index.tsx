@@ -171,7 +171,7 @@ export default function Login() {
               <label className={styles.check}>
                 <input type="checkbox" /> 记住我
               </label>
-              <a href="#" className={styles.forgot}>忘记密码？</a>
+              <button type="button" className={styles.forgot}>忘记密码？</button>
             </div>
           )}
           <RippleButton type="submit" className={styles.submit}>

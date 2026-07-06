@@ -108,10 +108,10 @@ export default function PremiumShowcase() {
           <span className={styles.brandWord}>motion<em>showcase</em></span>
         </div>
         <div className={styles.navLinks}>
-          <a href="#" data-active>Templates</a>
-          <a href="#">Backgrounds</a>
-          <a href="#">3D</a>
-          <a href="#">Pricing</a>
+          <button type="button" data-active>Templates</button>
+          <button type="button">Backgrounds</button>
+          <button type="button">3D</button>
+          <button type="button">Pricing</button>
         </div>
         <div className={styles.navRight}>
           <button className={styles.navGhost}>Sign in</button>

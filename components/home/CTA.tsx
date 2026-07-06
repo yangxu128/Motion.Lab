@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/Button';
 import styles from './CTA.module.css';
 
 const PARTICLES = [
-  { top: '15%', left: '10%', size: 6, delay: '0s', color: 'hsl(280 80% 60%)' },
-  { top: '25%', left: '75%', size: 4, delay: '-1s', color: 'hsl(340 80% 55%)' },
-  { top: '65%', left: '20%', size: 5, delay: '-2s', color: 'hsl(180 80% 50%)' },
-  { top: '70%', left: '80%', size: 3, delay: '-3s', color: 'hsl(30 90% 55%)' },
-  { top: '40%', left: '50%', size: 7, delay: '-1.5s', color: 'hsl(210 80% 55%)' },
-  { top: '85%', left: '45%', size: 4, delay: '-0.5s', color: 'hsl(260 70% 58%)' },
-  { top: '10%', left: '45%', size: 5, delay: '-2.5s', color: 'hsl(320 80% 56%)' },
-  { top: '55%', left: '88%', size: 4, delay: '-4s', color: 'hsl(150 75% 48%)' },
+  { top: '15%', left: '10%', size: 6, delay: '0s', color: 'hsl(280 65% 50%)' },
+  { top: '25%', left: '75%', size: 4, delay: '-1s', color: 'hsl(340 65% 50%)' },
+  { top: '65%', left: '20%', size: 5, delay: '-2s', color: 'hsl(180 65% 42%)' },
+  { top: '70%', left: '80%', size: 3, delay: '-3s', color: 'hsl(30 80% 48%)' },
+  { top: '40%', left: '50%', size: 7, delay: '-1.5s', color: 'hsl(210 65% 50%)' },
+  { top: '85%', left: '45%', size: 4, delay: '-0.5s', color: 'hsl(260 60% 50%)' },
+  { top: '10%', left: '45%', size: 5, delay: '-2.5s', color: 'hsl(320 65% 50%)' },
+  { top: '55%', left: '88%', size: 4, delay: '-4s', color: 'hsl(150 60% 42%)' },
 ];
 
 // Animated stats with count-up
@@ -96,9 +96,9 @@ export function CTA() {
   return (
     <section ref={sectionRef} className={styles.section}>
       {/* Background glow orbs */}
-      <div className={styles.glowOrb} style={{ top: '10%', left: '15%', width: 360, height: 360, background: 'hsl(280 75% 70%)' }} />
-      <div className={styles.glowOrb} style={{ bottom: '5%', right: '10%', width: 320, height: 320, background: 'hsl(330 80% 68%)' }} />
-      <div className={styles.glowOrb} style={{ top: '45%', left: '50%', width: 280, height: 280, background: 'hsl(30 90% 65%)', transform: 'translate(-50%, -50%)' }} />
+      <div className={styles.glowOrb} style={{ top: '10%', left: '15%', width: 360, height: 360, background: 'hsl(280 65% 60%)' }} />
+      <div className={styles.glowOrb} style={{ bottom: '5%', right: '10%', width: 320, height: 320, background: 'hsl(330 65% 58%)' }} />
+      <div className={styles.glowOrb} style={{ top: '45%', left: '50%', width: 280, height: 280, background: 'hsl(30 80% 55%)', transform: 'translate(-50%, -50%)' }} />
 
       {/* Floating particles */}
       {PARTICLES.map((p, i) => (

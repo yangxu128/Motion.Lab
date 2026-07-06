@@ -5,7 +5,7 @@
    ============================================ */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,7 +14,7 @@
 }
 
 @media (max-width: 640px) {
-  .hero { padding: 100px 20px 60px; min-height: 92vh; }
+  .hero { padding: 100px 20px 60px; min-height: 92dvh; }
 }
 
 .blob {
@@ -96,7 +96,7 @@
   font-family: var(--font-display);
   font-size: 24px;
   font-weight: 900;
-  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(340 90% 60%));
+  background: linear-gradient(135deg, hsl(280 70% 55%), hsl(340 70% 55%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -163,7 +163,7 @@
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
-  color: hsl(340 85% 55%);
+  color: hsl(340 70% 50%);
   letter-spacing: 0.1em;
 }
 
@@ -171,7 +171,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: hsl(340 85% 55%);
+  background: hsl(340 70% 50%);
   animation: livePulse 1.4s ease-in-out infinite;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .demoUser .demoBadge { background: hsl(220 15% 90%); color: hsl(220 15% 35%); }
-.demoAgent .demoBadge { background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 85% 60%)); color: white; }
+.demoAgent .demoBadge { background: linear-gradient(135deg, hsl(280 70% 55%), hsl(340 70% 55%)); color: white; }
 
 .demoText {
   background: hsl(220 15% 95%);
@@ -236,7 +236,7 @@
   display: inline-block;
   width: 2px;
   height: 13px;
-  background: hsl(280 85% 60%);
+  background: hsl(280 70% 55%);
   margin-left: 1px;
   vertical-align: middle;
   animation: cursorBlink 0.8s steps(2) infinite;
@@ -302,7 +302,7 @@
   word-break: break-word;
 }
 
-.snippetKey { color: hsl(280 90% 75%); }
+.snippetKey { color: hsl(280 70% 70%); }
 .snippetStr { color: hsl(30 90% 70%); }
 .snippetCmt { color: hsl(220 10% 45%); font-style: italic; }
 
@@ -356,7 +356,7 @@
   bottom: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, hsl(280 80% 60%), hsl(340 80% 55%));
+  background: linear-gradient(90deg, hsl(280 70% 55%), hsl(340 70% 50%));
   border-radius: 1px;
 }
 
@@ -367,10 +367,10 @@
   line-height: 1;
   background: linear-gradient(
     135deg,
-    hsl(280 90% 60%) 0%,
-    hsl(340 90% 60%) 33%,
-    hsl(30 95% 55%) 66%,
-    hsl(180 90% 50%) 100%
+    hsl(280 70% 50%) 0%,
+    hsl(340 70% 50%) 33%,
+    hsl(30 80% 48%) 66%,
+    hsl(180 70% 42%) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -426,7 +426,7 @@
 }
 
 .heroStrong {
-  background: linear-gradient(135deg, hsl(280 90% 60%), hsl(340 90% 60%));
+  background: linear-gradient(135deg, hsl(280 70% 55%), hsl(340 70% 55%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -481,7 +481,7 @@
 }
 .btnPrimary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 32px hsl(280 70% 50% / 0.35);
+  box-shadow: 0 12px 32px rgba(10, 10, 10, 0.15);
 }
 
 .btnSecondary {
@@ -543,19 +543,23 @@
 }
 
 /* ============================================
-   Steps — 与 Manifesto 一致的 3D tilt + spotlight
+   Steps — Bento 2.0 zig-zag（破除 3-equal-column 俗套）
    ============================================ */
 .steps {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
   max-width: 1240px;
   margin: 0 auto;
   perspective: 1200px;
 }
+.stepCard:nth-child(1) { grid-column: span 4; grid-row: span 1; }
+.stepCard:nth-child(2) { grid-column: span 2; }
+.stepCard:nth-child(3) { grid-column: span 6; }
 
-@media (max-width: 900px) {
-  .steps { grid-template-columns: 1fr; gap: 20px; }
+@media (max-width: 1024px) {
+  .steps { grid-template-columns: 1fr; }
+  .stepCard:nth-child(n) { grid-column: span 1; grid-row: auto; }
 }
 
 .stepCard {
@@ -563,7 +567,7 @@
   padding: 36px 32px 32px;
   background: var(--card);
   border-radius: var(--radius-card, 20px);
-  border-top: 4px solid var(--cat-color, hsl(280 85% 60%));
+  border-top: 4px solid var(--cat-color, hsl(280 70% 55%));
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.04);
@@ -573,9 +577,9 @@
   will-change: auto;
 }
 
-.stepCard:nth-child(1) { --cat-color: hsl(280 85% 60%); }
-.stepCard:nth-child(2) { --cat-color: hsl(340 85% 60%); }
-.stepCard:nth-child(3) { --cat-color: hsl(30 95% 55%); }
+.stepCard:nth-child(1) { --cat-color: hsl(280 70% 50%); }
+.stepCard:nth-child(2) { --cat-color: hsl(340 70% 50%); }
+.stepCard:nth-child(3) { --cat-color: hsl(30 80% 48%); }
 
 .stepCard::before {
   content: '';
@@ -677,7 +681,6 @@
   contain: paint;
   will-change: auto;
 }
-
 .exampleCard:hover {
   box-shadow:
     0 20px 48px color-mix(in srgb, var(--card-accent) 22%, transparent),
@@ -844,7 +847,7 @@
 .modeTab:hover { color: hsl(220 10% 90%); }
 
 .modeTabActive {
-  background: hsl(280 85% 60%);
+  background: hsl(280 70% 55%);
   color: white;
 }
 
@@ -885,7 +888,7 @@
   margin: 0 0 32px;
   background: hsl(220 15% 10%);
   border: 1px solid hsl(220 15% 22%);
-  border-left: 3px solid hsl(280 85% 60%);
+  border-left: 3px solid hsl(280 70% 55%);
   border-radius: 8px;
   padding: 16px 20px;
   position: relative;
@@ -906,7 +909,7 @@
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 4px;
-  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 85% 60%));
+  background: linear-gradient(135deg, hsl(280 70% 55%), hsl(340 70% 55%));
   color: white;
   letter-spacing: 0.06em;
 }
@@ -931,7 +934,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  color: hsl(280 90% 75%);
+  color: hsl(280 70% 70%);
   letter-spacing: 0.04em;
 }
 
@@ -955,8 +958,8 @@
 .markdown h4 { font-size: 15px; color: hsl(220 10% 75%); }
 
 .markdown p { margin: 0.8em 0; }
-.markdown a { color: hsl(280 90% 75%); text-decoration: none; border-bottom: 1px solid hsl(280 60% 40% / 0.5); transition: border-color 0.2s; }
-.markdown a:hover { border-color: hsl(280 90% 75%); }
+.markdown a { color: hsl(280 70% 70%); text-decoration: none; border-bottom: 1px solid hsl(280 60% 40% / 0.5); transition: border-color 0.2s; }
+.markdown a:hover { border-color: hsl(280 70% 70%); }
 
 .markdown ul, .markdown ol { padding-left: 1.8em; margin: 0.8em 0; }
 .markdown li { margin: 0.3em 0; }
@@ -1009,7 +1012,7 @@
 .markdown blockquote {
   margin: 1em 0;
   padding: 8px 16px;
-  border-left: 3px solid hsl(280 85% 60%);
+  border-left: 3px solid hsl(280 70% 55%);
   background: hsl(280 30% 15%);
   color: hsl(220 10% 80%);
   border-radius: 0 6px 6px 0;
@@ -1057,7 +1060,7 @@
   font-weight: 700;
   padding: 4px 12px;
   border-radius: 6px;
-  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 85% 60%));
+  background: linear-gradient(135deg, hsl(280 70% 55%), hsl(340 70% 55%));
   color: white;
   letter-spacing: 0.04em;
 }

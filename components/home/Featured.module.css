@@ -26,9 +26,9 @@
   border-radius: 2px;
   background: linear-gradient(
     90deg,
-    hsl(280 70% 60%),
-    hsl(340 70% 55%),
-    hsl(30 75% 55%),
+    hsl(280 65% 55%),
+    hsl(340 65% 50%),
+    hsl(30 75% 48%),
     transparent
   );
 }

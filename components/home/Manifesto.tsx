@@ -2,121 +2,101 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import styles from './Manifesto.module.css';
-import { CATEGORIES } from '@/data/effects';
 
-const CATEGORY_COLORS: Record<string, { color: string; bg: string; icon: string }> = {
-  basic: {
-    color: 'hsl(210 90% 55%)',
-    bg: 'hsl(210 60% 97%)',
-    icon: '◆',
+const PRINCIPLES = [
+  {
+    n: '01',
+    title: '可调参',
+    desc: '每个动效都用 CSS 变量组织参数：--duration、--ease、--hue、--intensity。复制到项目后，改 1 个数字就能改 10 个元素的动效，无需逐个修改。',
+    color: 'hsl(280 70% 50%)',
+    meta: 'PARAMETERIZE',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="4" y1="21" x2="4" y2="14" />
+        <line x1="4" y1="10" x2="4" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12" y2="3" />
+        <line x1="20" y1="21" x2="20" y2="16" />
+        <line x1="20" y1="12" x2="20" y2="3" />
+        <line x1="1" y1="14" x2="7" y2="14" />
+        <line x1="9" y1="8" x2="15" y2="8" />
+        <line x1="17" y1="16" x2="23" y2="16" />
+      </svg>
+    ),
   },
-  text: {
-    color: 'hsl(280 80% 60%)',
-    bg: 'hsl(280 55% 96%)',
-    icon: '✦',
+  {
+    n: '02',
+    title: '可复制',
+    desc: '复制即用。一段 HTML、一段 CSS、一段 JS，无外部依赖。',
+    color: 'hsl(340 70% 50%)',
+    meta: 'NO-DEPENDENCY',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" />
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+    ),
   },
-  interaction: {
-    color: 'hsl(340 85% 60%)',
-    bg: 'hsl(340 50% 97%)',
-    icon: '◈',
+  {
+    n: '03',
+    title: '可访问',
+    desc: '统一 prefers-reduced-motion 降级。',
+    color: 'hsl(30 80% 48%)',
+    meta: 'A11Y-FIRST',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="5" r="2" />
+        <path d="M5 9c2 1 5 1 7 1s5 0 7-1" />
+        <path d="M5 9v4c0 3 3 5 7 5s7-2 7-5V9" />
+        <path d="M9 22l3-4 3 4" />
+      </svg>
+    ),
   },
-  advanced: {
-    color: 'hsl(30 95% 55%)',
-    bg: 'hsl(30 70% 95%)',
-    icon: '✧',
+  {
+    n: '04',
+    title: '可进化',
+    desc: 'SKILL.md 协议让任何 AI Agent 直接调用。',
+    color: 'hsl(180 70% 42%)',
+    meta: 'AI-NATIVE',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+      </svg>
+    ),
   },
-};
+];
 
 export function Manifesto() {
-  const items = CATEGORIES.filter((c) => c.id !== 'all');
-  const gridRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Heading char-by-char reveal on scroll
+  // 鼠标视差 tilt + 卡片 mouse-following spotlight（直接操作 DOM，rAF 节流）
   useEffect(() => {
-    if (!headingRef.current) return;
-    const heading = headingRef.current;
-    // Wrap text nodes in spans for animation
-    const text = heading.textContent || '';
-    heading.innerHTML = '';
-    Array.from(text).forEach((ch) => {
-      const span = document.createElement('span');
-      span.textContent = ch;
-      span.style.display = 'inline-block';
-      span.setAttribute('data-heading-char', '');
-      heading.appendChild(span);
-    });
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            gsap.from(heading.querySelectorAll('[data-heading-char]'), {
-              y: 80,
-              opacity: 0,
-              rotateX: -90,
-              stagger: 0.02,
-              duration: 0.7,
-              ease: 'power3.out',
-            });
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(heading);
-    return () => observer.disconnect();
-  }, []);
-
-  // Card entrance + 3D tilt + mouse-following spotlight
-  useEffect(() => {
-    if (!gridRef.current) return;
-    const cards = Array.from(gridRef.current.querySelectorAll<HTMLElement>(`.${styles.card}`));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            gsap.from(cards, {
-              y: 60,
-              opacity: 0,
-              scale: 0.9,
-              rotateY: 15,
-              stagger: 0.12,
-              duration: 0.8,
-              ease: 'power3.out',
-            });
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(gridRef.current);
-
-    // 3D tilt on each card
+    const section = sectionRef.current;
+    if (!section) return;
+    const cards = section.querySelectorAll<HTMLElement>(`.${styles.card}`);
     const cleanups: Array<() => void> = [];
     cards.forEach((card) => {
       let raf = 0;
       let pending = false;
-      let mx = 0, my = 0;
+      let mx = 0;
+      let my = 0;
       const flush = () => {
         pending = false;
         const rect = card.getBoundingClientRect();
         const x = (mx - rect.left) / rect.width;
         const y = (my - rect.top) / rect.height;
-        const rotX = (0.5 - y) * 10;
-        const rotY = (x - 0.5) * 10;
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+        const rotX = (0.5 - y) * 4;
+        const rotY = (x - 0.5) * 4;
         gsap.to(card, {
           rotateX: rotX,
           rotateY: rotY,
-          transformPerspective: 800,
-          duration: 0.3,
+          transformPerspective: 1200,
+          duration: 0.4,
           ease: 'power2.out',
+          overwrite: 'auto',
         });
-        card.style.setProperty('--mx', `${x * 100}%`);
-        card.style.setProperty('--my', `${y * 100}%`);
       };
       const onMove = (e: MouseEvent) => {
         mx = e.clientX;
@@ -127,7 +107,7 @@ export function Manifesto() {
         }
       };
       const onLeave = () => {
-        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.7, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' });
       };
       card.addEventListener('mousemove', onMove, { passive: true });
       card.addEventListener('mouseleave', onLeave);
@@ -137,47 +117,29 @@ export function Manifesto() {
         if (raf) cancelAnimationFrame(raf);
       });
     });
-
-    return () => {
-      observer.disconnect();
-      cleanups.forEach((c) => c());
-    };
+    return () => cleanups.forEach((c) => c());
   }, []);
 
-  const copy: Record<string, string> = {
-    basic: '纯 CSS，无需 JS，五种缓动曲线覆盖 80% 场景。',
-    text: '让文字本身成为主角，排版的呼吸感。',
-    interaction: '鼠标是新的指尖，每一次悬停都是对话。',
-    advanced: 'GSAP、Three.js、WebGL —— 当浏览器成为画布。',
-  };
-
   return (
-    <section className={styles.section}>
-      <h2 ref={headingRef} className={styles.heading}>
-        四种语言四十种节奏
+    <section ref={sectionRef} className={styles.section}>
+      <h2 className={styles.heading}>
+        我们的<span className={styles.headingAccent}>原则</span>
       </h2>
-      <div className={styles.grid} ref={gridRef}>
-        {items.map((c, i) => {
-          const theme = CATEGORY_COLORS[c.id];
-          return (
-            <div
-              key={c.id}
-              className={styles.card}
-              style={{
-                '--cat-color': theme.color,
-                '--cat-bg': theme.bg,
-                background: theme.bg,
-              } as React.CSSProperties}
-            >
-              <div className={styles.cardIcon}>{theme.icon}</div>
-              <div className={styles.num} style={{ color: theme.color }}>
-                0{i + 1} / {c.english}
-              </div>
-              <h3>{c.name}</h3>
-              <p>{copy[c.id]}</p>
+      <div className={styles.grid}>
+        {PRINCIPLES.map((p) => (
+          <article
+            key={p.n}
+            className={styles.card}
+            style={{ '--cat-color': p.color } as React.CSSProperties}
+          >
+            <div className={styles.cardIcon} aria-hidden>
+              {p.icon}
             </div>
-          );
-        })}
+            <div className={styles.num}>{p.n} · {p.meta}</div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

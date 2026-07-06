@@ -22,7 +22,7 @@ export default function Cyberpunk() {
           <span className={styles.brandBox}>://NEXUS_88</span>
         </div>
         <div className={styles.navLinks}>
-          <a href="#">CHANNELS</a><a href="#">STREAMS</a><a href="#">NETWORK</a><a href="#">JOBS</a>
+          <button type="button">CHANNELS</button><button type="button">STREAMS</button><button type="button">NETWORK</button><button type="button">JOBS</button>
         </div>
         <div className={styles.navRight}>
           <span className={styles.signal}>●●●</span>

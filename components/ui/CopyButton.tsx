@@ -11,6 +11,6 @@ export function CopyButton({ text }: { text: string }) {
         try { await navigator.clipboard.writeText(text); setDone(true); setTimeout(() => setDone(false), 1500); }
         catch { /* fallback in CodePanel */ }
       }}
-    >{done ? '✓ 已复制' : '复制'}</button>
+    >{done ? '已复制' : '复制'}</button>
   );
 }

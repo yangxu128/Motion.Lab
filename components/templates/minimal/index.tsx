@@ -15,12 +15,12 @@ export default function Minimal() {
     <div className={styles.page}>
       {/* NAV */}
       <nav className={styles.nav}>
-        <a href="#" className={styles.brand}>KIRA</a>
+        <button type="button" className={styles.brand}>KIRA</button>
         <div className={styles.links}>
-          <a href="#">Index</a>
-          <a href="#">Work</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+          <button type="button">Index</button>
+          <button type="button">Work</button>
+          <button type="button">About</button>
+          <button type="button">Contact</button>
         </div>
       </nav>
 
@@ -65,13 +65,13 @@ export default function Minimal() {
         </div>
         <div className={styles.worksList}>
           {WORKS.map((w) => (
-            <a href="#" key={w.n} className={styles.work}>
+            <button type="button" key={w.n} className={styles.work}>
               <span className={styles.workN}>{w.n}</span>
               <span className={styles.workT}>{w.t}</span>
               <span className={styles.workC}>{w.c}</span>
               <span className={styles.workY}>{w.y}</span>
               <span className={styles.workArrow}>→</span>
-            </a>
+            </button>
           ))}
         </div>
       </section>
@@ -115,7 +115,7 @@ export default function Minimal() {
       {/* CONTACT */}
       <section className={styles.contact}>
         <div className={styles.contactLabel}>Say hello</div>
-        <a href="#" className={styles.contactMail}>hello@kira.studio</a>
+        <button type="button" className={styles.contactMail}>hello@kira.studio</button>
         <div className={styles.contactFoot}>
           <span>© 2026 KIRA Studio</span>
           <span>Last updated · 23.06.2026</span>

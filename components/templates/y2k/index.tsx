@@ -30,10 +30,10 @@ export default function Y2k() {
           <span className={styles.brandSub}>x X-TREME CYBER FASHION</span>
         </div>
         <div className={styles.navLinks}>
-          <a href="#">SHOP</a>
-          <a href="#">★ NEW</a>
-          <a href="#">SALE</a>
-          <a href="#">★ ABOUT</a>
+          <button type="button">SHOP</button>
+          <button type="button">★ NEW</button>
+          <button type="button">SALE</button>
+          <button type="button">★ ABOUT</button>
         </div>
         <div className={styles.navRight}>
           <button className={styles.cart}>🛒 <span>3</span></button>

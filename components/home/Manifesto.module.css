@@ -3,6 +3,10 @@
   position: relative;
 }
 
+@media (max-width: 640px) {
+  .section { padding: 80px 20px; }
+}
+
 /* Heading with accent numbers */
 .heading {
   font-size: clamp(48px, 8vw, 120px);
@@ -10,37 +14,63 @@
   line-height: 1.05;
   letter-spacing: -0.03em;
   perspective: 1000px;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .headingAccent {
-  background: linear-gradient(135deg, hsl(280 85% 60%), hsl(340 80% 55%));
+  background: linear-gradient(135deg, hsl(280 70% 50%), hsl(340 70% 50%));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 900;
 }
 
-/* Grid layout */
+/* === Bento 2.0 zig-zag（破除 4-equal-column 俗套） === */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(220px, auto);
+  gap: 16px;
+  max-width: 1240px;
+  margin: 0 auto;
   perspective: 1200px;
+}
+
+/* 第 1 张占满 4 列、第 2 张 2 列；第 3 张 3 列、第 4 张 3 列（错落） */
+.card:nth-child(1) { grid-column: span 4; grid-row: span 2; }
+.card:nth-child(2) { grid-column: span 2; }
+.card:nth-child(3) { grid-column: span 2; }
+.card:nth-child(4) { grid-column: span 4; }
+
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card:nth-child(1) { grid-column: span 2; grid-row: auto; }
+  .card:nth-child(2),
+  .card:nth-child(3),
+  .card:nth-child(4) { grid-column: span 1; }
+}
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  .card:nth-child(n) { grid-column: span 1; }
 }
 
 /* Colorful cards with 3D tilt + spotlight */
 .card {
   position: relative;
-  padding: 36px 32px 32px;
-  border-radius: var(--radius-card, 20px);
+  padding: 40px 36px;
+  border-radius: var(--radius-card, 24px);
   border-top: 4px solid var(--cat-color);
+  background: var(--card);
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.06),
-    0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    0 4px 24px rgba(10, 10, 10, 0.04),
+    0 1px 4px rgba(10, 10, 10, 0.03);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   transform-style: preserve-3d;
-  will-change: transform;
+  will-change: auto;
+  display: flex; flex-direction: column; gap: 16px;
 }
 
 /* Mouse-following spotlight */
@@ -53,7 +83,7 @@
   transition: opacity 0.35s ease;
   background: radial-gradient(
     300px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--cat-color) 18%, transparent),
+    color-mix(in srgb, var(--cat-color) 14%, transparent),
     transparent 60%
   );
   pointer-events: none;
@@ -63,14 +93,11 @@
 .card::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   border-radius: inherit;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--cat-color) 6%, transparent),
+    color-mix(in srgb, var(--cat-color) 5%, transparent),
     transparent 50%
   );
   opacity: 0;
@@ -80,9 +107,10 @@
 }
 
 .card:hover {
+  transform: translateY(-4px);
   box-shadow:
-    0 30px 60px color-mix(in srgb, var(--cat-color) 22%, transparent),
-    0 8px 24px rgba(0, 0, 0, 0.1);
+    0 20px 40px color-mix(in srgb, var(--cat-color) 16%, transparent),
+    0 8px 24px rgba(10, 10, 10, 0.06);
 }
 
 .card:hover::before,
@@ -96,48 +124,73 @@
   z-index: 1;
 }
 
-/* Decorative icon in card */
+/* Decorative icon in card (SVG now) */
 .cardIcon {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 36px;
-  opacity: 0.18;
+  top: 24px;
+  right: 24px;
+  width: 40px; height: 40px;
+  opacity: 0.5;
   color: var(--cat-color);
-  line-height: 1;
-  transform: rotate(0deg);
-  transition: transform 0.6s ease;
+  transition: transform 0.6s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)), opacity 0.4s ease;
   z-index: 1;
 }
 
 .card:hover .cardIcon {
-  transform: rotate(180deg) scale(1.1);
-  opacity: 0.4;
+  transform: rotate(8deg) scale(1.08);
+  opacity: 0.8;
 }
 
 /* Card number in category color */
 .num {
   font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--cat-color);
 }
 
 /* Card title */
 .card h3 {
-  font-size: 40px;
+  font-size: clamp(26px, 3vw, 38px);
   margin-bottom: 14px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: hsl(220 15% 18%);
+  color: hsl(220 12% 18%);
+  line-height: 1.1;
+  font-family: var(--font-display);
 }
 
 /* Card description */
 .card p {
   color: hsl(220 10% 45%);
-  line-height: 1.6;
+  line-height: 1.65;
   font-size: 15px;
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* Meta strip at bottom of large card */
+.cardMeta {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cardMeta .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cat-color);
+  display: inline-block;
 }

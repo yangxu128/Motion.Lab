@@ -1,6 +1,6 @@
 .header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: rgba(250,250,250,0.7); backdrop-filter: saturate(180%) blur(12px); -webkit-backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border); }
 .logo { font-family: var(--font-display); font-weight: 900; font-size: 20px; letter-spacing: -0.03em; display: flex; align-items: center; gap: 8px; }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: hsl(var(--accent-h) 90% 60%); display: inline-block; animation: pulse 2.5s ease-in-out infinite; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: hsl(var(--accent-h) 70% 55%); display: inline-block; animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
 .nav { display: flex; gap: 24px; font-size: 14px; font-weight: 500; }
 .nav a { opacity: 0.6; transition: opacity 0.2s; }

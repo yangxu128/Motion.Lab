@@ -245,11 +245,11 @@ export default function Dashboard() {
             ['用户', '◒'],
             ['订单', '◓'],
             ['设置', '◔'],
-          ].map(([label, icon, active]) => (
-            <a key={label as string} href="#" className={styles.navItem} data-active={!!active}>
+          ].map(([label, icon, active], i) => (
+            <button key={i} type="button" className={styles.navItem} data-active={!!active}>
               <span className={styles.navIcon}>{icon as string}</span>
               <span>{label as string}</span>
-            </a>
+            </button>
           ))}
         </nav>
         <div className={styles.sideFoot}>

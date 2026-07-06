@@ -107,9 +107,9 @@ export function Featured() {
                 style={
                   {
                     '--card-hue': hue,
-                    '--card-bg-start': `hsl(${hue} 70% 96%)`,
-                    '--card-bg-end': `hsl(${hue} 50% 98%)`,
-                    '--card-accent': `hsl(${hue} 85% 55%)`,
+                    '--card-bg-start': `hsl(${hue} 55% 96%)`,
+                    '--card-bg-end': `hsl(${hue} 40% 98%)`,
+                    '--card-accent': `hsl(${hue} 65% 50%)`,
                   } as React.CSSProperties
                 }
               >
@@ -119,7 +119,7 @@ export function Featured() {
                 {/* Animated element inside card */}
                 <div className={styles.cardAnim}>
                   <div className={styles.animRing} />
-                  <div className={styles.animDot} style={{ background: `hsl(${hue} 80% 55%)` }} />
+                  <div className={styles.animDot} style={{ background: `hsl(${hue} 65% 50%)` }} />
                 </div>
 
                 <span className={styles.catTag}>{catLabel}</span>

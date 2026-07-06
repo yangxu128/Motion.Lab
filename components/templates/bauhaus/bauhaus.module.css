@@ -68,13 +68,15 @@
 .navWord { font-size: 18px; font-weight: 800; letter-spacing: 0.3em; }
 .navYear { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-align: center; }
 .navLinks { display: flex; gap: 24px; justify-content: flex-end; }
-.navLinks a {
+.navLinks button {
   font-size: 12px; font-weight: 600; letter-spacing: 0.15em; color: var(--ink);
   cursor: pointer; padding: 4px 0;
   border-bottom: 2px solid transparent;
+  background: none; border-top: none; border-left: none; border-right: none;
+  font-family: inherit;
   transition: border-color 0.2s;
 }
-.navLinks a:hover { border-bottom-color: var(--red); }
+.navLinks button:hover { border-bottom-color: var(--red); }
 
 /* HERO */
 .hero {

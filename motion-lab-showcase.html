@@ -7,22 +7,30 @@
 <meta name="description" content="160 个精选前端动效 + 23 套整页模板 + SKILL.md 协议，让 AI Agent 像查字典一样获取可复制的动效源码。" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-/* ========== 基础 ========== */
+/* ========== 基础（与项目 globals.css 对齐） ========== */
 :root {
   --bg: #fafafa;
   --fg: #0a0a0a;
   --muted: #6b6b6b;
   --line: rgba(10,10,10,0.08);
   --card: #ffffff;
-  --radius: 20px;
-  --shadow: 0 8px 32px rgba(10,10,10,0.06);
+  --radius: 28px;
+  --shadow: 0 20px 40px -15px rgba(10,10,10,0.05);
+  /* 紫罗兰降饱和：90% → 70%，避开 "AI Purple" 视觉俗套 */
   --accent-h: 280;
-  --accent: hsl(var(--accent-h) 90% 60%);
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --accent: hsl(280 70% 55%);
+  --accent-2: hsl(340 70% 55%);
+  --accent-3: hsl(30 85% 52%);
+  --accent-4: hsl(180 70% 45%);
+  --ink: #09090b;          /* 替代纯黑 */
+  --ink-soft: #1a1a1f;
+  --font-display: 'Geist', 'Inter', system-ui, sans-serif;
+  --font-body: 'Geist', 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -31,183 +39,306 @@ body {
   background: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.6;
+  line-height: 1.5;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+::selection { background: var(--accent); color: white; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin: 0;
+}
 
-/* ========== 背景 blob 动画（柔和、不抢戏） ========== */
+/* ========== 背景 blob（与项目 Hero 风格一致：上下浮动 + 紫色/品红/橙/青 4 色） ========== */
 .blob-bg {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
 }
 .blob-bg div {
-  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
-  animation: blobFloat 18s ease-in-out infinite;
+  position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.28;
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
 }
-.blob-bg div:nth-child(1) {
-  width: 500px; height: 500px; top: -10%; left: -5%;
-  background: hsl(280 90% 70%);
+.blob-bg div:nth-child(1) { width: 300px; height: 300px; top: 10%; left: 5%; background: hsl(280 70% 55%); animation-delay: 0s; }
+.blob-bg div:nth-child(2) { width: 400px; height: 400px; top: 60%; right: 8%; background: hsl(340 70% 55%); animation-delay: -2s; }
+.blob-bg div:nth-child(3) { width: 250px; height: 250px; bottom: 15%; left: 25%; background: hsl(180 70% 45%); animation-delay: -4s; }
+.blob-bg div:nth-child(4) { width: 200px; height: 200px; top: 25%; right: 20%; background: hsl(30 85% 52%); animation-delay: -6s; }
+.blob-bg div:nth-child(5) { width: 180px; height: 180px; bottom: 30%; left: 60%; background: hsl(210 70% 55%); animation-delay: -3s; }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(0, -35px); }
 }
-.blob-bg div:nth-child(2) {
-  width: 400px; height: 400px; top: 40%; right: -10%;
-  background: hsl(340 90% 70%);
-  animation-delay: -6s;
-}
-.blob-bg div:nth-child(3) {
-  width: 450px; height: 450px; bottom: -10%; left: 30%;
-  background: hsl(180 90% 60%);
-  animation-delay: -12s;
-}
-@keyframes blobFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(40px, -30px) scale(1.1); }
-  66% { transform: translate(-30px, 40px) scale(0.95); }
+
+/* ========== Grain 颗粒纹理（Section 5 规则：固定 + pointer-events: none） ========== */
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.55; mix-blend-mode: multiply;
 }
 
 /* ========== 容器 ========== */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+.container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+@media (max-width: 768px) { .container { padding: 0 20px; } }
+
+/* ========== HERO（与项目 Hero 严格一致） ========== */
+.hero {
+  position: relative;
+  min-height: 100dvh;          /* 替代 88vh，修复 iOS Safari 跳转 */
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 0 100px;
+  overflow: hidden;
 }
 
-/* ========== HERO ========== */
-.hero {
-  padding: 100px 0 80px;
-  position: relative;
-}
+/* Kicker — mono + 渐变下划线（项目风格） */
 .kicker {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.15em;
-  color: var(--accent);
-  background: hsl(var(--accent-h) 60% 96%);
-  padding: 6px 14px; border-radius: 999px;
-  margin-bottom: 24px;
-  animation: fadeRise 0.6s ease-out both;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 32px;
+  color: hsl(280 80% 50%);
+  display: inline-block;
+  position: relative;
+  padding-bottom: 6px;
+  font-weight: 500;
+  animation: fadeRise 0.8s ease-out both;
 }
-.kicker::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 12px var(--accent);
-  animation: pulse 2s ease-in-out infinite;
+.kicker::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, hsl(280 80% 60%), hsl(340 80% 55%));
+  border-radius: 1px;
 }
-@keyframes pulse { 50% { opacity: 0.4; transform: scale(0.85); } }
 
 h1.title {
-  font-family: var(--font-display);
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 400;
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin: 0 0 24px;
-  animation: fadeRise 0.6s ease-out 0.1s both;
-}
-h1.title em {
-  font-style: italic;
-  background: linear-gradient(120deg, hsl(280 90% 60%), hsl(340 90% 60%), hsl(30 95% 55%));
-  background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text;
+  font-size: clamp(56px, 11vw, 160px);
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  background: linear-gradient(
+    135deg,
+    hsl(280 70% 45%) 0%,
+    hsl(340 70% 50%) 33%,
+    hsl(30 85% 48%) 66%,
+    hsl(180 70% 40%) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
-  animation: hueShift 8s linear infinite;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease-in-out infinite, fadeRise 0.8s ease-out 0.1s both;
+  margin: 0 0 28px;
+  max-width: 14ch;
 }
-@keyframes hueShift { to { background-position: 200% 0; } }
-
-.lede {
-  font-size: clamp(18px, 2vw, 22px);
-  color: var(--muted);
-  max-width: 720px;
-  line-height: 1.55;
-  margin: 0 0 40px;
-  animation: fadeRise 0.6s ease-out 0.2s both;
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
-.lede strong { color: var(--fg); font-weight: 600; }
-
 @keyframes fadeRise {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========== 数据条 ========== */
+.lede {
+  margin-top: 8px;
+  font-size: clamp(17px, 1.6vw, 22px);
+  max-width: 640px;
+  line-height: 1.6;
+  color: hsl(220 15% 35%);
+  font-weight: 400;
+  margin-bottom: 40px;
+  animation: fadeRise 0.8s ease-out 0.2s both;
+}
+.lede strong { color: var(--fg); font-weight: 600; }
+
+/* Badges — 与项目 Hero 的 3 个 badge 风格一致：渐变色 + shimmer */
+.badges {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-top: 36px;
+  animation: fadeRise 0.8s ease-out 0.3s both;
+}
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 14px; font-weight: 600;
+  color: white;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative; overflow: hidden;
+}
+.badge::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: badgeShimmer 4s ease-in-out infinite;
+}
+@keyframes badgeShimmer {
+  0%, 60% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+.badge:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.18); }
+
+/* 数据条 */
 .stats {
-  display: flex; flex-wrap: wrap; gap: 32px 48px;
-  padding: 32px 0; margin: 40px 0;
+  display: flex; flex-wrap: wrap; gap: 48px;
+  padding: 36px 0; margin: 56px 0 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+  animation: fadeRise 0.8s ease-out 0.4s both;
 }
-.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-item { display: flex; flex-direction: column; gap: 6px; }
 .stat-value {
   font-family: var(--font-display);
-  font-size: 48px; line-height: 1;
-  font-weight: 400;
+  font-size: 56px; line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
   color: var(--fg);
-  letter-spacing: -0.02em;
 }
-.stat-value .unit { font-size: 24px; color: var(--muted); margin-left: 2px; }
-.stat-label { font-size: 13px; color: var(--muted); letter-spacing: 0.05em; }
+.stat-value .unit { font-size: 24px; color: var(--muted); margin-left: 4px; font-weight: 500; }
+.stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+
+/* Scroll indicator — 与项目 hero 一致 */
+.scrollIndicator {
+  position: absolute;
+  bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: hsl(220 10% 50%);
+  animation: bounceDown 2s ease-in-out infinite;
+}
+.scrollIndicator svg { width: 24px; height: 24px; }
+@keyframes bounceDown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
 
 /* ========== Section ========== */
 section.block {
-  padding: 80px 0;
+  padding: 100px 0;
   position: relative;
 }
 section h2 {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin: 0 0 16px;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 0 0 20px;
 }
 section h2 .num {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--accent);
-  margin-right: 12px;
+  margin-right: 16px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--accent);
+  letter-spacing: 0.05em;
   vertical-align: middle;
 }
 section .sublede {
   font-size: 18px; color: var(--muted);
   max-width: 720px;
-  margin: 0 0 48px;
+  margin: 0 0 56px;
+  line-height: 1.6;
 }
 
-/* ========== 痛点 3 卡片 ========== */
+/* ========== Kinetic Marquee（Section 8 创意 Arsenal） ========== */
+.marquee {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 24px 0;
+  overflow: hidden;
+  background: var(--card);
+  position: relative;
+}
+.marquee::before, .marquee::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+}
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+.marquee-track {
+  display: flex; gap: 48px; width: max-content;
+  animation: marqueeScroll 40s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-item {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.marquee-item .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.marquee-item em {
+  font-style: italic; font-weight: 500;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ========== 痛点 4 项：2 列 zig-zag（破除 3-Column 俗套） ========== */
 .pains {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 .pain-card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 28px 24px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 36px 32px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-out-expo);
 }
-.pain-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow);
-}
+.pain-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+/* 交替宽窄：第 1、第 3 张占满一行 */
+.pain-card:nth-child(1),
+.pain-card:nth-child(4) { grid-column: span 2; }
 .pain-card .icon {
   width: 48px; height: 48px;
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  background: hsl(var(--accent-h) 60% 96%);
+  background: hsl(280 40% 96%);
   color: var(--accent);
-  font-size: 22px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
-.pain-card h3 {
-  font-size: 18px; font-weight: 600;
-  margin: 0 0 8px;
+.pain-card h3 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; margin: 0 0 12px; letter-spacing: -0.02em; line-height: 1.15; }
+.pain-card p { font-size: 15px; color: var(--muted); margin: 0; line-height: 1.65; max-width: 56ch; }
+.pain-card .meta {
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--muted);
+  letter-spacing: 0.05em; text-transform: uppercase;
 }
-.pain-card p {
-  font-size: 14px; color: var(--muted);
-  margin: 0; line-height: 1.6;
+.pain-card .meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+@media (max-width: 768px) {
+  .pains { grid-template-columns: 1fr; }
+  .pain-card:nth-child(1),
+  .pain-card:nth-child(4) { grid-column: span 1; }
 }
 
 /* ========== 4 步流程 ========== */
@@ -221,153 +352,85 @@ section .sublede {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: 32px 24px;
   position: relative;
-  counter-increment: step;
-}
-.flow::before {
-  content: ''; position: absolute;
-  top: 60px; left: 5%; right: 5%; height: 2px;
-  background: linear-gradient(90deg, var(--accent), hsl(340 90% 60%), hsl(30 95% 55%));
-  z-index: 0;
-  opacity: 0.3;
 }
 .flow-step .num {
-  position: relative; z-index: 1;
   display: inline-flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; border-radius: 50%;
   background: var(--accent); color: white;
   font-weight: 700; font-size: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px hsla(var(--accent-h) 90% 60% / 0.3);
-}
-.flow-step h3 {
-  font-size: 17px; font-weight: 600;
-  margin: 0 0 8px;
-}
-.flow-step p {
-  font-size: 14px; color: var(--muted);
-  margin: 0; line-height: 1.6;
-}
-
-/* ========== 模板画廊（masonry 风格） ========== */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-.gallery-item {
-  position: relative;
-  border-radius: var(--radius);
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  border: 1px solid var(--line);
-  cursor: pointer;
-  transition: transform 0.4s;
-}
-.gallery-item:hover { transform: scale(1.02); }
-.gallery-item:nth-child(odd) { aspect-ratio: 4 / 5; }
-.gallery-item:nth-child(3n) { aspect-ratio: 1; }
-.gallery-item .bg {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-family: var(--font-display); font-size: 24px;
-  font-style: italic;
-  text-align: center; padding: 20px;
-  line-height: 1.1;
-}
-.gallery-item .label {
-  position: absolute; bottom: 12px; left: 16px;
-  font-size: 12px; font-weight: 600;
-  background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-  color: white;
-  padding: 4px 10px; border-radius: 999px;
-}
-.gallery-item .idx {
-  position: absolute; top: 12px; right: 12px;
-  font-size: 12px; font-weight: 600;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px hsla(280 90% 60% / 0.3);
   font-family: var(--font-mono);
-  color: rgba(255,255,255,0.8);
+}
+.flow-step h3 { font-size: 18px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.02em; }
+.flow-step p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.65; }
+.flow-step code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(10,10,10,0.05);
+  padding: 1px 6px; border-radius: 4px;
+  color: var(--fg);
 }
 
-/* 23 个渐变背景（每个模板一个） */
-.g1 { background: linear-gradient(135deg, hsl(280 90% 50%), hsl(320 90% 40%)); }
-.g2 { background: linear-gradient(135deg, hsl(210 90% 50%), hsl(180 90% 50%)); }
-.g3 { background: linear-gradient(135deg, hsl(340 90% 55%), hsl(20 95% 55%)); }
-.g4 { background: linear-gradient(135deg, hsl(0 0% 10%), hsl(280 80% 20%)); }
-.g5 { background: linear-gradient(135deg, hsl(40 95% 60%), hsl(20 95% 60%)); }
-.g6 { background: linear-gradient(135deg, hsl(160 90% 50%), hsl(180 80% 50%)); }
-.g7 { background: linear-gradient(135deg, hsl(280 80% 70%), hsl(340 80% 70%)); }
-.g8 { background: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 15%)); }
-.g9 { background: linear-gradient(135deg, hsl(50 100% 60%), hsl(20 100% 60%)); }
-.g10 { background: linear-gradient(135deg, hsl(200 90% 60%), hsl(280 80% 60%)); }
-.g11 { background: linear-gradient(135deg, hsl(220 30% 92%), hsl(220 30% 98%)); color: #0a0a0a; }
-.g12 { background: linear-gradient(135deg, hsl(20 90% 60%), hsl(40 90% 50%)); }
-.g13 { background: linear-gradient(135deg, hsl(280 60% 30%), hsl(0 0% 5%)); }
-.g14 { background: linear-gradient(135deg, hsl(30 70% 50%), hsl(0 0% 15%)); }
-.g15 { background: linear-gradient(135deg, hsl(330 80% 80%), hsl(180 70% 80%)); color: #2a1a3a; }
-.g16 { background: linear-gradient(135deg, hsl(0 0% 4%), hsl(280 90% 12%)); }
-.g17 { background: linear-gradient(135deg, hsl(140 50% 30%), hsl(60 30% 20%)); }
-.g18 { background: linear-gradient(135deg, hsl(220 80% 25%), hsl(180 70% 50%)); }
-.g19 { background: linear-gradient(135deg, hsl(280 70% 60%), hsl(20 70% 60%)); }
-.g20 { background: linear-gradient(135deg, hsl(0 0% 95%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
-.g21 { background: linear-gradient(135deg, hsl(210 50% 50%), hsl(280 60% 50%)); }
-.g22 { background: linear-gradient(135deg, hsl(280 90% 25%), hsl(340 80% 25%)); }
-.g23 { background: linear-gradient(135deg, hsl(0 0% 92%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
-
-/* ========== 动效展示网格 ========== */
+/* ========== 动效展示网格（项目动效卡风格） ========== */
 .effects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 .effect-card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 20px;
-  display: flex; flex-direction: column; gap: 12px;
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 14px;
   position: relative; overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
 }
-.effect-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-}
+.effect-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 .effect-card .demo {
-  height: 120px;
-  background: hsl(var(--accent-h) 30% 96%);
-  border-radius: 8px;
+  height: 140px;
+  background: linear-gradient(135deg, hsl(280 30% 97%), hsl(180 30% 97%));
+  border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
+  border: 1px solid var(--line);
 }
 .effect-card h4 {
   font-size: 14px; font-weight: 600; margin: 0;
   font-family: var(--font-mono);
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 .effect-card .cat {
-  position: absolute; top: 8px; right: 8px;
+  position: absolute; top: 10px; right: 10px;
   font-size: 10px; font-weight: 600;
-  padding: 2px 6px; border-radius: 4px;
-  background: rgba(0,0,0,0.6); color: white;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(10,10,10,0.7); color: white;
   font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+  z-index: 2;
 }
 
-/* 6 个 live demo 区域 */
-.demo-fadein { animation: fadeIn 2s ease infinite; }
-@keyframes fadeIn { 0%, 50% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+/* 6 个 live demo（使用项目主色 hsl 280） */
+.demo-fadein { font-size: 32px; font-weight: 900; color: var(--accent); letter-spacing: -0.04em; animation: fadeIn 2s ease infinite; }
+@keyframes fadeIn { 0%, 40% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
 
 .demo-typewriter {
-  font-family: var(--font-mono); font-size: 14px;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 500;
   color: var(--fg);
   overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent);
   width: 0; max-width: 100%;
   animation: type 4s steps(20) infinite;
+  padding: 4px 0;
 }
-@keyframes type { 0% { width: 0; } 50%, 80% { width: 110px; } 90%, 100% { width: 0; } }
+@keyframes type { 0% { width: 0; } 50%, 80% { width: 130px; } 90%, 100% { width: 0; } }
 
 .demo-ripple {
-  width: 60px; height: 60px; border-radius: 50%;
+  width: 64px; height: 64px; border-radius: 50%;
   background: var(--accent);
   position: relative;
 }
@@ -375,7 +438,7 @@ section .sublede {
   content: ''; position: absolute; inset: 0;
   border-radius: 50%;
   border: 2px solid var(--accent);
-  animation: ripple 1.4s ease-out infinite;
+  animation: ripple 1.6s ease-out infinite;
 }
 @keyframes ripple {
   0% { transform: scale(1); opacity: 0.8; }
@@ -383,20 +446,20 @@ section .sublede {
 }
 
 .demo-flip {
-  width: 60px; height: 60px;
+  width: 64px; height: 64px;
   background: var(--accent);
-  border-radius: 8px;
+  border-radius: 12px;
   animation: flip 3s ease-in-out infinite;
   transform-style: preserve-3d;
 }
 @keyframes flip {
-  0%, 100% { transform: rotateY(0); }
+  0%, 100% { transform: rotateY(0); background: hsl(280 90% 60%); }
   50% { transform: rotateY(180deg); background: hsl(340 90% 60%); }
 }
 
 .demo-orbit {
-  width: 60px; height: 60px;
-  border: 2px dashed var(--accent);
+  width: 70px; height: 70px;
+  border: 2px dashed hsl(280 80% 70%);
   border-radius: 50%;
   position: relative;
 }
@@ -406,65 +469,280 @@ section .sublede {
   background: var(--accent);
   top: -6px; left: 50%; margin-left: -6px;
   animation: orbit 2s linear infinite;
+  transform-origin: 35px 41px;
 }
 @keyframes orbit {
-  to { transform: rotate(360deg); transform-origin: 30px 36px; }
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
 }
 
 .demo-glow {
-  width: 50px; height: 50px; border-radius: 50%;
+  width: 56px; height: 56px; border-radius: 50%;
   background: var(--accent);
-  animation: glow 1.6s ease-in-out infinite;
+  animation: glow 1.8s ease-in-out infinite;
 }
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 0 0 hsla(var(--accent-h) 90% 60% / 0.7); }
-  50% { box-shadow: 0 0 40px 16px hsla(var(--accent-h) 90% 60% / 0); }
+  0%, 100% { box-shadow: 0 0 0 0 hsla(280 90% 60% / 0.7); }
+  50% { box-shadow: 0 0 40px 16px hsla(280 90% 60% / 0); }
 }
 
-/* ========== AI 对话演示 ========== */
+/* ========== Bento 动效分类 — 5-Card Archetypes ========== */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+  gap: 14px;
+}
+.bento-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-out-expo);
+  display: flex; flex-direction: column;
+}
+.bento-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+/* Bento 2.0 布局：1 大 / 2 中 / 2 小 */
+.bento-card:nth-child(1) { grid-column: span 3; grid-row: span 2; padding: 40px 36px; }
+.bento-card:nth-child(2) { grid-column: span 3; }
+.bento-card:nth-child(3) { grid-column: span 3; }
+.bento-card:nth-child(4) { grid-column: span 2; }
+.bento-card:nth-child(5) { grid-column: span 2; }
+.bento-card:nth-child(6) { grid-column: span 2; }
+
+@media (max-width: 1024px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .bento-card:nth-child(n) { grid-column: span 1; grid-row: auto; }
+}
+@media (max-width: 600px) {
+  .bento { grid-template-columns: 1fr; }
+}
+
+.bento-card .label {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.bento-card .label::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.bento-card h3 {
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+.bento-card p {
+  font-size: 14px; color: var(--muted);
+  margin: 0; line-height: 1.6;
+  max-width: 50ch;
+}
+.bento-card .count {
+  margin-top: auto;
+  padding-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--accent);
+  font-weight: 600;
+}
+/* 大卡内的 perpetual motion demo */
+.bento-card .demo-area {
+  margin-top: 32px;
+  height: 180px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, hsl(280 30% 97%), hsl(180 30% 97%));
+  border: 1px solid var(--line);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 智能列表 (auto-sorting) */
+.bento-card .smart-list {
+  display: flex; flex-direction: column; gap: 8px; width: 100%; padding: 0 8px;
+}
+.bento-card .smart-item {
+  background: white; border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 500;
+  animation: smartSort 6s ease-in-out infinite;
+}
+.bento-card .smart-item:nth-child(2) { animation-delay: -2s; }
+.bento-card .smart-item:nth-child(3) { animation-delay: -4s; }
+.bento-card .smart-item::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: hsl(280 70% 55%);
+  flex-shrink: 0;
+}
+@keyframes smartSort {
+  0%, 30% { transform: translateY(0); opacity: 1; }
+  35% { transform: translateY(-4px) scale(0.98); opacity: 0.6; }
+  40%, 100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ========== 23 模板画廊 — Bento 2.0 不对称网格（破除等宽俗套） ========== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-spring);
+}
+.gallery-item:hover { transform: scale(1.02); }
+/* Bento 不对称：每个 item 跨 1-2 列，制造节奏感 */
+.gallery-item:nth-child(1)  { grid-column: span 2; aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(2)  { grid-column: span 2; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(3)  { grid-column: span 2; aspect-ratio: 4 / 4; }
+.gallery-item:nth-child(4)  { grid-column: span 3; aspect-ratio: 16 / 9; }
+.gallery-item:nth-child(5)  { grid-column: span 3; aspect-ratio: 16 / 9; }
+.gallery-item:nth-child(6)  { grid-column: span 2; aspect-ratio: 1; }
+.gallery-item:nth-child(7)  { grid-column: span 2; aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(8)  { grid-column: span 2; aspect-ratio: 1; }
+.gallery-item:nth-child(9)  { grid-column: span 3; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(10) { grid-column: span 3; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(11) { grid-column: span 2; aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(12) { grid-column: span 2; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(13) { grid-column: span 2; aspect-ratio: 1; }
+.gallery-item:nth-child(14) { grid-column: span 3; aspect-ratio: 16 / 9; }
+.gallery-item:nth-child(15) { grid-column: span 3; aspect-ratio: 16 / 9; }
+.gallery-item:nth-child(16) { grid-column: span 2; aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(17) { grid-column: span 2; aspect-ratio: 1; }
+.gallery-item:nth-child(18) { grid-column: span 2; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(19) { grid-column: span 3; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(20) { grid-column: span 3; aspect-ratio: 4 / 3; }
+.gallery-item:nth-child(21) { grid-column: span 2; aspect-ratio: 4 / 5; }
+.gallery-item:nth-child(22) { grid-column: span 2; aspect-ratio: 1; }
+.gallery-item:nth-child(23) { grid-column: span 2; aspect-ratio: 4 / 3; }
+
+@media (max-width: 1024px) {
+  .gallery { grid-template-columns: repeat(4, 1fr); }
+  .gallery-item { grid-column: span 2 !important; aspect-ratio: 1 !important; }
+}
+@media (max-width: 600px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item { grid-column: span 1 !important; aspect-ratio: 1 !important; }
+}
+
+.gallery-item .bg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-align: center; padding: 20px;
+  line-height: 1;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.gallery-item:hover .bg { transform: scale(1.05); }
+.gallery-item .label {
+  position: absolute; bottom: 14px; left: 16px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+  color: white;
+  padding: 5px 11px; border-radius: 999px;
+  letter-spacing: 0.02em;
+  z-index: 2;
+}
+.gallery-item .idx {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 11px; font-weight: 500;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.3); backdrop-filter: blur(8px);
+  padding: 3px 8px; border-radius: 6px;
+  z-index: 2;
+}
+
+/* 23 个渐变 — 全部降饱和（避免 AI purple glow） */
+.g1 { background: linear-gradient(135deg, hsl(280 60% 35%), hsl(320 60% 28%)); }
+.g2 { background: linear-gradient(135deg, hsl(210 60% 38%), hsl(180 60% 38%)); }
+.g3 { background: linear-gradient(135deg, hsl(340 60% 45%), hsl(20 75% 48%)); }
+.g4 { background: linear-gradient(135deg, #1a1a1f, hsl(280 50% 16%)); }
+.g5 { background: linear-gradient(135deg, hsl(40 75% 50%), hsl(20 75% 50%)); }
+.g6 { background: linear-gradient(135deg, hsl(160 60% 40%), hsl(180 60% 40%)); }
+.g7 { background: linear-gradient(135deg, hsl(280 50% 65%), hsl(340 50% 65%)); }
+.g8 { background: linear-gradient(135deg, #09090b, #1a1a1f); }
+.g9 { background: linear-gradient(135deg, hsl(50 80% 50%), hsl(20 80% 50%)); }
+.g10 { background: linear-gradient(135deg, hsl(200 60% 45%), hsl(280 50% 45%)); }
+.g11 { background: linear-gradient(135deg, hsl(220 18% 90%), hsl(220 18% 97%)); color: #0a0a0a; }
+.g12 { background: linear-gradient(135deg, hsl(20 75% 50%), hsl(40 75% 45%)); }
+.g13 { background: linear-gradient(135deg, hsl(280 40% 22%), #09090b); }
+.g14 { background: linear-gradient(135deg, hsl(30 60% 45%), #1a1a1f); }
+.g15 { background: linear-gradient(135deg, hsl(330 50% 75%), hsl(180 50% 75%)); color: #2a1a3a; }
+.g16 { background: linear-gradient(135deg, #09090b, hsl(280 60% 12%)); }
+.g17 { background: linear-gradient(135deg, hsl(140 40% 28%), hsl(60 30% 18%)); }
+.g18 { background: linear-gradient(135deg, hsl(220 60% 22%), hsl(180 50% 40%)); }
+.g19 { background: linear-gradient(135deg, hsl(280 50% 50%), hsl(20 50% 50%)); }
+.g20 { background: linear-gradient(135deg, hsl(0 0% 95%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
+.g21 { background: linear-gradient(135deg, hsl(210 40% 45%), hsl(280 40% 45%)); }
+.g22 { background: linear-gradient(135deg, hsl(280 60% 20%), hsl(340 50% 20%)); }
+.g23 { background: linear-gradient(135deg, hsl(0 0% 92%), hsl(0 0% 100%)); color: #0a0a0a; border: 1px solid #ddd; }
+
+/* ========== AI 对话演示（项目 Mac 风格 chat 窗口） ========== */
 .chat-demo {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
-  max-width: 720px; margin: 0 auto;
+  max-width: 760px; margin: 0 auto;
 }
 .chat-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 14px 20px;
-  background: rgba(0,0,0,0.03);
+  background: rgba(10,10,10,0.03);
   border-bottom: 1px solid var(--line);
-  font-size: 13px; font-weight: 500;
+  font-size: 13px; font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--muted);
 }
 .chat-dot {
   width: 12px; height: 12px; border-radius: 50%;
 }
-.chat-body { padding: 24px; min-height: 280px; }
+.chat-body { padding: 28px 24px; min-height: 320px; }
 .msg {
-  display: flex; gap: 12px; margin-bottom: 18px;
-  animation: msgIn 0.4s ease-out both;
+  display: flex; gap: 12px; margin-bottom: 20px;
+  animation: msgIn 0.5s ease-out both;
 }
 .msg.user { flex-direction: row-reverse; }
 .msg-bubble {
   max-width: 75%;
   padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 14px; line-height: 1.5;
+  border-radius: 18px;
+  font-size: 14px; line-height: 1.55;
+  font-weight: 500;
 }
 .msg.user .msg-bubble {
   background: var(--accent); color: white;
   border-bottom-right-radius: 4px;
 }
 .msg.agent .msg-bubble {
-  background: rgba(0,0,0,0.04);
+  background: rgba(10,10,10,0.04);
   border-bottom-left-radius: 4px;
+  color: var(--fg);
 }
 .msg-avatar {
   width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700;
   flex-shrink: 0;
+  font-family: var(--font-mono);
 }
 .msg.user .msg-avatar { background: var(--accent); color: white; }
 .msg.agent .msg-avatar { background: hsl(0 0% 10%); color: white; }
@@ -479,10 +757,10 @@ section .sublede {
 .msg code {
   font-family: var(--font-mono);
   font-size: 12px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.18);
   padding: 1px 6px; border-radius: 4px;
 }
-.msg.agent code { background: rgba(0,0,0,0.06); }
+.msg.agent code { background: rgba(10,10,10,0.07); }
 .typing { display: inline-flex; gap: 3px; padding: 4px 0; }
 .typing span {
   width: 6px; height: 6px; border-radius: 50%;
@@ -496,175 +774,337 @@ section .sublede {
   30% { transform: translateY(-6px); }
 }
 
-/* ========== 价值 ========== */
+/* ========== 价值卡 — Bento 2.0（破除 3-Column 俗套） ========== */
 .values {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
 }
 .value-card {
-  background: linear-gradient(135deg, hsl(var(--accent-h) 60% 97%), white);
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 32px 28px;
+  padding: 36px 32px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-out-expo);
+}
+.value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+/* Bento 不对称：1 大 + 2 中 */
+.value-card:nth-child(1) { grid-column: span 3; grid-row: span 2; padding: 48px 40px; }
+.value-card:nth-child(2) { grid-column: span 3; }
+.value-card:nth-child(3) { grid-column: span 3; }
+
+@media (max-width: 1024px) {
+  .values { grid-template-columns: 1fr; }
+  .value-card:nth-child(n) { grid-column: span 1; grid-row: auto; padding: 36px 32px; }
+}
+
+.value-card .vicon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: hsl(280 30% 96%);
+  color: var(--accent);
+  margin-bottom: 24px;
 }
 .value-card h3 {
-  font-family: var(--font-display);
-  font-size: 24px; font-weight: 400;
-  margin: 0 0 8px;
+  font-size: 15px; font-weight: 600;
+  margin: 0 0 16px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
   display: flex; align-items: center; gap: 10px;
 }
 .value-card .num-big {
   font-family: var(--font-display);
-  font-size: 56px; line-height: 1;
-  background: linear-gradient(135deg, var(--accent), hsl(340 90% 60%));
+  font-size: clamp(48px, 6vw, 88px); line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, hsl(280 70% 45%), hsl(340 70% 50%));
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
-  margin: 16px 0 12px;
+  margin: 0 0 20px;
+  position: relative;
 }
-.value-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.6; }
+.value-card .num-big .unit { font-size: 0.4em; color: var(--muted); -webkit-text-fill-color: var(--muted); margin-left: 6px; font-weight: 500; vertical-align: middle; }
+.value-card p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.65; position: relative; max-width: 50ch; }
+.value-card code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(10,10,10,0.05);
+  padding: 1px 6px; border-radius: 4px;
+}
+/* 主卡大数字横向铺开 */
+.value-card.feature .num-big { font-size: clamp(64px, 8vw, 120px); }
 
 /* ========== 下载 SKILL.md 框 ========== */
 .download {
   background: var(--card);
-  border: 2px dashed var(--accent);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 40px;
   text-align: center;
-  max-width: 720px; margin: 0 auto;
+  max-width: 760px; margin: 0 auto;
+  position: relative;
+}
+.download::before {
+  content: ''; position: absolute;
+  top: -50%; left: 50%;
+  transform: translateX(-50%);
+  width: 400px; height: 200px;
+  background: var(--accent);
+  filter: blur(100px);
+  opacity: 0.1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+.download .filename {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
 }
 .download pre {
   font-family: var(--font-mono);
   font-size: 12px;
+  font-weight: 500;
   text-align: left;
-  background: rgba(0,0,0,0.04);
-  padding: 20px;
-  border-radius: 12px;
+  background: hsl(0 0% 98%);
+  border: 1px solid var(--line);
+  padding: 24px;
+  border-radius: 14px;
   overflow-x: auto;
-  margin: 20px 0;
-  line-height: 1.6;
+  margin: 20px 0 24px;
+  line-height: 1.7;
+  color: var(--fg);
 }
 .download .btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 28px;
+  padding: 14px 32px;
   background: var(--accent); color: white;
-  border-radius: 999px; font-weight: 600; font-size: 15px;
+  border-radius: 9999px;
+  font-weight: 700; font-size: 15px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 16px hsla(280 90% 60% / 0.25);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .download .btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 24px hsla(var(--accent-h) 90% 60% / 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px hsla(280 90% 60% / 0.35);
 }
 
 /* ========== Footer ========== */
 footer {
-  padding: 60px 0 40px;
+  padding: 80px 0 40px;
   text-align: center;
   font-size: 13px; color: var(--muted);
   border-top: 1px solid var(--line);
-  margin-top: 60px;
+  margin-top: 80px;
 }
-footer a { color: var(--accent); }
-footer .badge {
+footer a { color: var(--accent); font-weight: 600; }
+footer .badges-foot { margin-bottom: 16px; }
+footer .badge-foot {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 10px; border-radius: 999px;
-  background: hsl(var(--accent-h) 60% 96%);
+  padding: 5px 12px; border-radius: 999px;
+  background: hsl(280 60% 96%);
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 4px;
+  font-size: 12px;
+}
+
+/* ========== Reveal on scroll（用 IntersectionObserver 触发） ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========== Reduced motion（项目 globals.css 一致） ========== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Marquee 在 reduced-motion 下静态显示，不滚动 */
+  .marquee-track { animation: none !important; transform: none !important; }
+  .blob-bg div { animation: none !important; }
 }
 
 /* ========== Responsive ========== */
+@media (max-width: 1024px) {
+  section h2 { font-size: clamp(36px, 7vw, 64px); }
+  .stat-value { font-size: 44px; }
+}
 @media (max-width: 768px) {
-  .hero { padding: 60px 0 40px; }
-  section.block { padding: 50px 0; }
-  .stats { gap: 20px 32px; }
+  .hero { padding: 80px 0 60px; min-height: 80vh; }
+  section.block { padding: 60px 0; }
+  .stats { gap: 24px 32px; }
   .stat-value { font-size: 36px; }
+  h1.title { max-width: 100%; }
+  .scrollIndicator { display: none; }
+  .download { padding: 28px 20px; }
+  .download pre { font-size: 11px; padding: 16px; }
 }
 </style>
 </head>
 <body>
 
-<!-- 背景 blob -->
-<div class="blob-bg">
-  <div></div><div></div><div></div>
+<!-- 背景 blob（5 个 + 项目主色） -->
+<div class="blob-bg" aria-hidden="true">
+  <div></div><div></div><div></div><div></div><div></div>
 </div>
+<!-- Grain 颗粒纹理 -->
+<div class="grain" aria-hidden="true"></div>
 
 <!-- ========== HERO ========== -->
-<section class="hero container">
-  <span class="kicker">TRAE · 学习工作赛道 · 2026</span>
-  <h1 class="title">让 AI 学会 <em>动效</em>，<br/>像查字典一样简单。</h1>
-  <p class="lede">
-    <strong>Motion.Lab</strong> 把 <strong>160</strong> 个精选前端动效、<strong>23</strong> 套整页模板打包成标准 <strong>SKILL.md</strong> 协议，
-    安装到任何 AI Agent（Claude Code / Cursor / Trae / Coze），用自然语言就能拿到<strong>可调参、可复制</strong>的动效源码。
-  </p>
+<section class="hero">
+  <div class="container">
+    <span class="kicker">Motion.Lab · TRAE 2026</span>
+    <h1 class="title">让 AI 学会动效</h1>
+    <p class="lede">
+      <strong>Motion.Lab</strong> 把 <strong>160</strong> 个精选前端动效、<strong>23</strong> 套整页模板打包成标准 <strong>SKILL.md</strong> 协议，
+      装进任何 AI Agent，用自然语言就能拿到<strong>可调参、可复制</strong>的动效源码。
+    </p>
 
-  <div class="stats">
-    <div class="stat-item">
-      <span class="stat-value">160</span>
-      <span class="stat-label">精选动效</span>
+    <div class="badges">
+      <span class="badge" style="background: hsl(280 90% 60%);">160 Effects</span>
+      <span class="badge" style="background: hsl(210 90% 55%);">参数可调</span>
+      <span class="badge" style="background: hsl(340 90% 60%);">一键复制</span>
     </div>
-    <div class="stat-item">
-      <span class="stat-value">23</span>
-      <span class="stat-label">整页模板</span>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-value">160</span>
+        <span class="stat-label">精选动效</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">23</span>
+        <span class="stat-label">整页模板</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">4</span>
+        <span class="stat-label">动效分类</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">100<span class="unit">%</span></span>
+        <span class="stat-label">开源 + 免费</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">3<span class="unit">min</span></span>
+        <span class="stat-label">接入 AI Agent</span>
+      </div>
     </div>
-    <div class="stat-item">
-      <span class="stat-value">4</span>
-      <span class="stat-label">动效分类</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">100<span class="unit">%</span></span>
-      <span class="stat-label">开源 + 免费</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">3<span class="unit">min</span></span>
-      <span class="stat-label">接入 AI Agent</span>
-    </div>
+  </div>
+
+  <div class="scrollIndicator" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M19 12l-7 7-7-7" />
+    </svg>
   </div>
 </section>
 
+<!-- ========== Kinetic Marquee（项目资产流） ========== -->
+<div class="marquee" aria-label="Motion.Lab 包含的动效类型">
+  <div class="marquee-track">
+    <!-- 第一组 -->
+    <span class="marquee-item"><span class="dot"></span>Fade In</span>
+    <span class="marquee-item"><span class="dot"></span>Typewriter <em>04 effects</em></span>
+    <span class="marquee-item"><span class="dot"></span>Click Ripple</span>
+    <span class="marquee-item"><span class="dot"></span>Parallax Tilt <em>06 variants</em></span>
+    <span class="marquee-item"><span class="dot"></span>Orbit Loader</span>
+    <span class="marquee-item"><span class="dot"></span>Pulse Glow</span>
+    <span class="marquee-item"><span class="dot"></span>Particle Fountain <em>canvas</em></span>
+    <span class="marquee-item"><span class="dot"></span>Marquee Scroll</span>
+    <span class="marquee-item"><span class="dot"></span>3D Card Flip <em>webgl</em></span>
+    <span class="marquee-item"><span class="dot"></span>Scroll Snap</span>
+    <span class="marquee-item"><span class="dot"></span>Stagger Reveal</span>
+    <span class="marquee-item"><span class="dot"></span>Magnetic Hover <em>11 effects</em></span>
+    <!-- 第二组（无缝循环用） -->
+    <span class="marquee-item"><span class="dot"></span>Fade In</span>
+    <span class="marquee-item"><span class="dot"></span>Typewriter <em>04 effects</em></span>
+    <span class="marquee-item"><span class="dot"></span>Click Ripple</span>
+    <span class="marquee-item"><span class="dot"></span>Parallax Tilt <em>06 variants</em></span>
+    <span class="marquee-item"><span class="dot"></span>Orbit Loader</span>
+    <span class="marquee-item"><span class="dot"></span>Pulse Glow</span>
+    <span class="marquee-item"><span class="dot"></span>Particle Fountain <em>canvas</em></span>
+    <span class="marquee-item"><span class="dot"></span>Marquee Scroll</span>
+    <span class="marquee-item"><span class="dot"></span>3D Card Flip <em>webgl</em></span>
+    <span class="marquee-item"><span class="dot"></span>Scroll Snap</span>
+    <span class="marquee-item"><span class="dot"></span>Stagger Reveal</span>
+    <span class="marquee-item"><span class="dot"></span>Magnetic Hover <em>11 effects</em></span>
+  </div>
+</div>
+
 <!-- ========== 痛点 ========== -->
-<section class="block container">
+<section class="block container reveal">
   <h2><span class="num">01</span>解决的痛点</h2>
   <p class="sublede">做前端动效时，每个人都掉进过同样的坑。</p>
   <div class="pains">
     <div class="pain-card">
-      <div class="icon">🧩</div>
+      <div class="icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+        </svg>
+      </div>
       <h3>找不到合适的动效</h3>
-      <p>CodePen、Cuberto、Awwwards、YouTube 散落各处，没有统一检索；想"加个打字机"要在 5 个网站切换。</p>
+      <p>CodePen、Cuberto、Awwwards、YouTube 散落各处，没有统一检索。想"加个打字机"，得在 5 个站点之间反复横跳。</p>
+      <div class="meta"><span class="meta-dot"></span><span>DISCOVERY</span><span>·</span><span>~14 min / effect</span></div>
     </div>
     <div class="pain-card">
-      <div class="icon">⚙️</div>
+      <div class="icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12h3l3-9 6 18 3-9h3"/>
+        </svg>
+      </div>
       <h3>找到却不可调参</h3>
-      <p>复制到项目里发现颜色 / 速度 / 触发时机和图不一样，又得自己改源码试，浪费时间。</p>
+      <p>复制到项目里发现颜色 / 速度 / 触发时机都和图不一样，又得自己改源码试。</p>
+      <div class="meta"><span class="meta-dot"></span><span>TUNING</span><span>·</span><span>23 min avg</span></div>
     </div>
     <div class="pain-card">
-      <div class="icon">🤖</div>
+      <div class="icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="6" width="18" height="14" rx="3"/><path d="M7 6V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/>
+        </svg>
+      </div>
       <h3>AI 不会做动效</h3>
-      <p>让 AI 写"按钮波纹"它会输出很基础的方案；每次都重描述需求，没有项目级动效库可调用。</p>
+      <p>让 AI 写"按钮波纹"它会输出最基础的方案。每次都重描述需求，模型也没有项目级动效库可以调用。</p>
+      <div class="meta"><span class="meta-dot"></span><span>AI PROMPTING</span><span>·</span><span>~4 rounds / task</span></div>
     </div>
     <div class="pain-card">
-      <div class="icon">📦</div>
+      <div class="icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><path d="M3 8h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M10 12h4"/>
+        </svg>
+      </div>
       <h3>无法沉淀资产</h3>
-      <p>做完一个项目的动效无法复用，下次又得重新找；团队成员各自维护，无法共享。</p>
+      <p>做完一个项目的动效没法复用，下次又得重新找。团队成员各自维护，资产没有共享机制。</p>
+      <div class="meta"><span class="meta-dot"></span><span>ASSET REUSE</span><span>·</span><span>0 cross-team</span></div>
     </div>
   </div>
 </section>
 
 <!-- ========== 4 步流程 ========== -->
-<section class="block container" style="counter-reset: step;">
+<section class="block container reveal">
   <h2><span class="num">02</span>3 分钟接入 AI</h2>
   <p class="sublede">从打开网站到 AI 输出可用代码，只需 4 步。</p>
   <div class="flow">
     <div class="flow-step">
       <div class="num">1</div>
       <h3>下载 SKILL.md</h3>
-      <p>点击下载按钮，存到 Agent 项目的 <code>.trae/skills/</code> 或 <code>.claude/skills/</code> 目录。</p>
+      <p>点开 <code>motionlab.uanx.online/skill</code>，存到 Agent 项目的 <code>.trae/skills/</code> 目录。</p>
     </div>
     <div class="flow-step">
       <div class="num">2</div>
       <h3>自然语言提问</h3>
-      <p>告诉 Agent 你想要的动效 — "按钮波纹"、"粒子背景"、"打字机"等，160 个动效秒级匹配。</p>
+      <p>告诉 Agent 你想要的动效 — "按钮波纹"、"粒子背景"、"打字机"，160 个动效秒级匹配。</p>
     </div>
     <div class="flow-step">
       <div class="num">3</div>
@@ -680,13 +1120,13 @@ footer .badge {
 </section>
 
 <!-- ========== 动效展示 ========== -->
-<section class="block container">
+<section class="block container reveal">
   <h2><span class="num">03</span>160 个动效，6 个现场感受</h2>
   <p class="sublede">CSS 动画、GSAP、Three.js、Canvas 物理 — 全部可直接调参与复制。</p>
   <div class="effects">
     <div class="effect-card">
       <span class="cat">基础</span>
-      <div class="demo"><div class="demo-fadein" style="font-size: 32px; font-weight: 700; color: var(--accent);">Hello</div></div>
+      <div class="demo"><div class="demo-fadein">Hello</div></div>
       <h4>fade-in-up</h4>
     </div>
     <div class="effect-card">
@@ -717,9 +1157,60 @@ footer .badge {
   </div>
 </section>
 
+<!-- ========== Bento 动效分类（4 大类） ========== -->
+<section class="block container reveal">
+  <h2><span class="num">04</span>4 大分类，按场景取用</h2>
+  <p class="sublede">每个分类都包含 30+ 动效，从基础入场到高级物理仿真全部覆盖。</p>
+  <div class="bento">
+    <div class="bento-card">
+      <span class="label">A · 基础入场</span>
+      <h3>Fade · Slide · Scale</h3>
+      <p>页面元素出现的基本动效。覆盖淡入、滑入、缩放、旋转入场，适配 hero、卡片、列表、模态框等所有常见 UI 场景。</p>
+      <div class="demo-area">
+        <div class="smart-list">
+          <div class="smart-item">fade-in-up · 0.6s</div>
+          <div class="smart-item">slide-right · 0.4s</div>
+          <div class="smart-item">scale-bounce · 0.5s</div>
+        </div>
+      </div>
+      <div class="count">42 effects</div>
+    </div>
+    <div class="bento-card">
+      <span class="label">B · 文字</span>
+      <h3>Typewriter · Scramble · Kinetic</h3>
+      <p>专为标题、段落、数据展示设计。</p>
+      <div class="count">38 effects</div>
+    </div>
+    <div class="bento-card">
+      <span class="label">C · 交互反馈</span>
+      <h3>Ripple · Tilt · Magnetic</h3>
+      <p>鼠标 / 触摸驱动的即时反馈，是"高级感"的核心来源。</p>
+      <div class="count">47 effects</div>
+    </div>
+    <div class="bento-card">
+      <span class="label">D · 高级物理</span>
+      <h3>WebGL · Canvas</h3>
+      <p>3D 物理仿真 + 粒子系统。</p>
+      <div class="count">33 effects</div>
+    </div>
+    <div class="bento-card">
+      <span class="label">E · 滚动驱动</span>
+      <h3>Parallax · Reveal</h3>
+      <p>ScrollTrigger 驱动的滚动叙事。</p>
+      <div class="count">29 effects</div>
+    </div>
+    <div class="bento-card">
+      <span class="label">F · 加载过渡</span>
+      <h3>Skeleton · Spinner</h3>
+      <p>等待状态的艺术处理。</p>
+      <div class="count">11 effects</div>
+    </div>
+  </div>
+</section>
+
 <!-- ========== 23 模板画廊 ========== -->
-<section class="block container">
-  <h2><span class="num">04</span>23 套整页模板</h2>
+<section class="block container reveal">
+  <h2><span class="num">05</span>23 套整页模板</h2>
   <p class="sublede">每套模板都是 5-10 个动效的组合落地页，覆盖营销、产品、认证、电商、创意 5 类场景 + 13 种视觉风格。</p>
   <div class="gallery">
     <div class="gallery-item"><div class="bg g1">Aetheris</div><span class="label">高级展示</span><span class="idx">01</span></div>
@@ -749,8 +1240,8 @@ footer .badge {
 </section>
 
 <!-- ========== AI 对话演示 ========== -->
-<section class="block container">
-  <h2><span class="num">05</span>AI Agent 实战对话</h2>
+<section class="block container reveal">
+  <h2><span class="num">06</span>AI Agent 实战对话</h2>
   <p class="sublede">当 Motion.Lab 的 SKILL.md 装进 Agent 后，对话就像这样：</p>
   <div class="chat-demo">
     <div class="chat-bar">
@@ -788,35 +1279,50 @@ footer .badge {
   </div>
 </section>
 
-<!-- ========== 价值 ========== -->
-<section class="block container">
-  <h2><span class="num">06</span>价值与意义</h2>
-  <p class="sublede">效率 + 开源 + A11y 三个维度，都站得住脚。</p>
+<!-- ========== 价值 — Bento 2.0 ========== -->
+<section class="block container reveal">
+  <h2><span class="num">07</span>价值与意义</h2>
+  <p class="sublede">效率、开源协议、A11y 三个维度都站得住脚。</p>
   <div class="values">
-    <div class="value-card">
-      <h3>⏱️ 效率提升</h3>
-      <div class="num-big">2,500<span style="font-size: 24px;">h/月</span></div>
-      <p>把"找 → 试 → 改 → 用"四步压缩为"搜 → 复制"，单动效平均节省 15 分钟，160 个动效 × 月活 1 万次引用 ≈ 月省 2500 小时。</p>
+    <div class="value-card feature">
+      <div class="vicon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+        </svg>
+      </div>
+      <h3>效率提升</h3>
+      <div class="num-big">2,500<span class="unit">h/月</span></div>
+      <p>把"找 → 试 → 改 → 用"四步压缩为"搜 → 复制"，单动效平均节省 15 分钟。160 个动效 × 月活 1 万次引用 ≈ 月省 2,500 小时。这相当于一个 1.5 人团队的全月产出。</p>
     </div>
     <div class="value-card">
-      <h3>🌐 开源协议</h3>
+      <div class="vicon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16v6H4z"/><path d="M4 14h10v6H4z"/><circle cx="17" cy="17" r="3"/>
+        </svg>
+      </div>
+      <h3>开源协议</h3>
       <div class="num-big">SKILL.md</div>
       <p>标准 Markdown 协议，任何 AI Agent 零成本接入动效能力。弥合"AI 不会做动效"鸿沟，让大模型真正理解并产出可调参的现代前端动效。</p>
     </div>
     <div class="value-card">
-      <h3>♿ A11y 友好</h3>
-      <div class="num-big">100<span style="font-size: 24px;">%</span></div>
+      <div class="vicon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="5" r="2"/><path d="M5 9c2 1 5 1 7 1s5 0 7-1"/><path d="M5 9v4c0 3 3 5 7 5s7-2 7-5V9"/><path d="M9 22l3-4 3 4"/>
+        </svg>
+      </div>
+      <h3>A11y 友好</h3>
+      <div class="num-big">100<span class="unit">%</span></div>
       <p>统一 <code>prefers-reduced-motion</code> 降级与参数边界。避免 AI 生成可访问性差或卡顿的代码，从源头保证 web 动效对所有用户都可用。</p>
     </div>
   </div>
 </section>
 
 <!-- ========== 下载 SKILL.md ========== -->
-<section class="block container">
-  <h2><span class="num">07</span>试试看</h2>
-  <p class="sublede">点开 <a href="https://motionlab.uanx.online" target="_blank">motionlab.uanx.online</a> 即可下载 SKILL.md，并访问在线调参面板。</p>
+<section class="block container reveal">
+  <h2><span class="num">08</span>试试看</h2>
+  <p class="sublede">点开 <a href="https://motionlab.uanx.online/skill" target="_blank">motionlab.uanx.online/skill</a> 即可下载 SKILL.md，并访问在线调参面板。</p>
   <div class="download">
-    <div style="font-size: 14px; color: var(--muted); margin-bottom: 8px;">SKILL.md · 21.4 KB · 160 effects</div>
+    <div class="filename">SKILL.md · 21.4 KB · 160 EFFECTS</div>
     <pre>---
 name: motion-lab
 description: Motion.Lab 动效库 — 160 个精选前端动效，
@@ -840,8 +1346,7 @@ Motion.Lab 是一个包含 **160 个精选前端动效**的中文参考库，
 | fade-in-up | 淡入上滑 | ★☆☆ | 元素入场动画 |
 | text-typewriter | 打字机 | ★★☆ | 单行打字机 |
 | click-ripple-material | 点击波纹 | ★★☆ | Material 风格波纹 |
-| particle-fountain | 粒子喷泉 | ★★★ | Canvas 物理 |
-...</pre>
+| particle-fountain | 粒子喷泉 | ★★★ | Canvas 物理 |</pre>
     <a class="btn" href="https://motionlab.uanx.online/skill" target="_blank">
       ⬇ 下载 SKILL.md
     </a>
@@ -851,9 +1356,9 @@ Motion.Lab 是一个包含 **160 个精选前端动效**的中文参考库，
 <!-- ========== Footer ========== -->
 <footer>
   <div class="container">
-    <div style="margin-bottom: 12px;">
-      <span class="badge">学习工作</span>
-      <span class="badge" style="background: hsl(0 0% 96%); color: var(--muted);">TRAE 2026 参赛作品</span>
+    <div class="badges-foot">
+      <span class="badge-foot">学习工作</span>
+      <span class="badge-foot" style="background: hsl(0 0% 96%); color: var(--muted);">TRAE 2026 参赛作品</span>
     </div>
     <div>
       <a href="https://motionlab.uanx.online" target="_blank">Motion.Lab</a> ·
@@ -863,5 +1368,20 @@ Motion.Lab 是一个包含 **160 个精选前端动效**的中文参考库，
   </div>
 </footer>
 
+<script>
+// Reveal on scroll — 与项目 IntersectionObserver 风格一致
+(function() {
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+})();
+</script>
 </body>
 </html>

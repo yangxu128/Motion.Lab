@@ -176,7 +176,11 @@
 }
 .check { display: flex; align-items: center; gap: 6px; color: #555; cursor: pointer; }
 .check input { accent-color: hsl(280 90% 60%); }
-.forgot { color: hsl(280 90% 50%); font-weight: 500; }
+.forgot {
+  color: hsl(280 90% 50%); font-weight: 500;
+  background: none; border: none; padding: 0; font-family: inherit;
+  cursor: pointer;
+}
 
 .submitArrow { transition: transform 0.2s; }
 .submit:hover .submitArrow { transform: translateX(4px); }

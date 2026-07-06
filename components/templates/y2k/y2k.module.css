@@ -69,7 +69,7 @@
 }
 .brandSub { font-size: 10px; color: #0a0a0a; background: #fff9b0; padding: 2px 6px; transform: rotate(-2deg); margin-left: 4px; font-weight: 700; }
 .navLinks { display: flex; gap: 16px; }
-.navLinks a {
+.navLinks button {
   text-decoration: none;
   color: #0a0a0a;
   font-size: 12px;
@@ -78,9 +78,12 @@
   text-transform: uppercase;
   padding: 6px 10px;
   border: 2px solid transparent;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
   transition: all 0.15s;
 }
-.navLinks a:hover {
+.navLinks button:hover {
   border: 2px solid #0a0a0a;
   background: #fff;
   border-radius: 999px;

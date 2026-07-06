@@ -29,11 +29,11 @@ const STEPS = [
 ];
 
 const EXAMPLES = [
-  { q: '帮我给按钮加个点击波纹效果', a: 'click-ripple-material', accent: 'hsl(210 90% 55%)', accentBg: 'hsl(210 60% 97%)' },
-  { q: '首页大标题想要打字机效果', a: 'text-typewriter-multi', accent: 'hsl(280 85% 60%)', accentBg: 'hsl(280 55% 96%)' },
-  { q: '做个粒子背景', a: 'particle-fountain / canvas-starfield / flow-field', accent: 'hsl(340 85% 60%)', accentBg: 'hsl(340 50% 97%)' },
-  { q: '卡片悬停时翻转显示背面', a: 'hover-flip-card', accent: 'hsl(30 95% 55%)', accentBg: 'hsl(30 70% 95%)' },
-  { q: '页面滚动时元素淡入', a: 'scroll-reveal', accent: 'hsl(180 85% 50%)', accentBg: 'hsl(180 55% 95%)' },
+  { q: '帮我给按钮加个点击波纹效果', a: 'click-ripple-material', accent: 'hsl(210 70% 50%)', accentBg: 'hsl(210 45% 97%)' },
+  { q: '首页大标题想要打字机效果', a: 'text-typewriter-multi', accent: 'hsl(280 70% 50%)', accentBg: 'hsl(280 45% 96%)' },
+  { q: '做个粒子背景', a: 'particle-fountain / canvas-starfield / flow-field', accent: 'hsl(340 70% 50%)', accentBg: 'hsl(340 40% 97%)' },
+  { q: '卡片悬停时翻转显示背面', a: 'hover-flip-card', accent: 'hsl(30 80% 48%)', accentBg: 'hsl(30 60% 95%)' },
+  { q: '页面滚动时元素淡入', a: 'scroll-reveal', accent: 'hsl(180 70% 45%)', accentBg: 'hsl(180 45% 95%)' },
 ];
 
 const TITLE = '让 AI 调用动效';
@@ -367,10 +367,10 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
     <main className={styles.main}>
       {/* HERO — 与 Home/Hero 一致的视觉语言：blob 背景、char-by-char 渐变标题、副标题 + actions */}
       <section ref={heroRef} className={styles.hero}>
-        <div className={styles.blob} style={{ top: '10%', left: '5%', width: 320, height: 320, background: 'hsl(280 90% 60%)', animationDelay: '0s' }} />
-        <div className={styles.blob} style={{ top: '55%', right: '8%', width: 380, height: 380, background: 'hsl(340 90% 55%)', animationDelay: '-2s' }} />
-        <div className={styles.blob} style={{ bottom: '10%', left: '25%', width: 260, height: 260, background: 'hsl(180 90% 50%)', animationDelay: '-4s' }} />
-        <div className={styles.blob} style={{ top: '25%', right: '22%', width: 220, height: 220, background: 'hsl(30 95% 55%)', animationDelay: '-6s' }} />
+        <div className={styles.blob} style={{ top: '10%', left: '5%', width: 320, height: 320, background: 'hsl(280 70% 55%)', animationDelay: '0s' }} />
+        <div className={styles.blob} style={{ top: '55%', right: '8%', width: 380, height: 380, background: 'hsl(340 70% 50%)', animationDelay: '-2s' }} />
+        <div className={styles.blob} style={{ bottom: '10%', left: '25%', width: 260, height: 260, background: 'hsl(180 70% 45%)', animationDelay: '-4s' }} />
+        <div className={styles.blob} style={{ top: '25%', right: '22%', width: 220, height: 220, background: 'hsl(30 80% 50%)', animationDelay: '-6s' }} />
 
         <div className={styles.heroGrid}>
           {/* 左栏：标题/副标题/统计/CTA */}
@@ -417,7 +417,7 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                 </svg>
-                <span>{copied ? '已复制 ✓' : '复制内容'}</span>
+                <span>{copied ? '已复制' : '复制内容'}</span>
               </button>
             </div>
           </div>
@@ -426,9 +426,9 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
           <div ref={demoRef} className={styles.heroRight}>
             {/* 顶部能力徽章 — 放在 demo 框上方一行，不覆盖内容 */}
             <div className={styles.featureRow} aria-hidden>
-              <span className={styles.featureChip} style={{ color: 'hsl(280 85% 50%)' }}>· 自然语言</span>
-              <span className={styles.featureChip} style={{ color: 'hsl(340 85% 50%)' }}>· 一键复制</span>
-              <span className={styles.featureChip} style={{ color: 'hsl(30 95% 45%)' }}>· {effectsCount} 动效</span>
+              <span className={styles.featureChip} style={{ color: 'hsl(280 70% 45%)' }}>· 自然语言</span>
+              <span className={styles.featureChip} style={{ color: 'hsl(340 70% 45%)' }}>· 一键复制</span>
+              <span className={styles.featureChip} style={{ color: 'hsl(30 80% 40%)' }}>· {effectsCount} 动效</span>
             </div>
 
             <div className={styles.demo}>
@@ -623,7 +623,7 @@ export function SkillPage({ skillMd, effectsCount }: Props) {
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
-              <span>{copied ? '已复制 ✓' : '复制全部'}</span>
+              <span>{copied ? '已复制' : '复制全部'}</span>
             </button>
           </div>
         </div>

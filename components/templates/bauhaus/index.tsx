@@ -40,10 +40,10 @@ export default function Bauhaus() {
         </div>
         <div className={styles.navYear}>1919 — 1933 · DESSAU</div>
         <div className={styles.navLinks}>
-          <a href="#">Manifesto</a>
-          <a href="#">Works</a>
-          <a href="#">People</a>
-          <a href="#">Visit</a>
+          <button type="button">Manifesto</button>
+          <button type="button">Works</button>
+          <button type="button">People</button>
+          <button type="button">Visit</button>
         </div>
       </nav>
 
