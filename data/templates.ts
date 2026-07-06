@@ -327,4 +327,15 @@ export const TEMPLATES: Template[] = [
     effects: ['video-loop', 'canvas-bubbles', 'liquid-glass', 'fade-rise', 'hue-shift', 'gradient-text'],
     preview: lz('fantasy-realm'),
   },
+  {
+    id: 'nocturne',
+    name: '夜色电影',
+    englishName: 'Nocturne Cinematic',
+    description: '全屏视频背景 + 视差滚动 + 暖金光晕鼠标 + Cormorant 衬线大字 + 右侧时间轴进度 + 章节列表 + 团队卡。短片工作室/电影范儿。',
+    category: 'cinematic',
+    style: 'cinematic',
+    tags: ['cinematic', 'video-bg', 'parallax', 'serif', 'dark', 'film-studio'],
+    effects: ['video-loop', 'parallax-scroll', 'cursor-glow', 'serif-display', 'scroll-timeline', 'chapter-list', 'rise'],
+    preview: lz('nocturne'),
+  },
 ];
