@@ -7,6 +7,8 @@ export type TemplateCategory =
   | 'tech' | 'minimal' | 'bauhaus' | 'steampunk' | 'macaron'
   | 'showcase' | 'atmospheric' | 'painterly' | 'cinematic' | 'fantasy';
 
+export type CategoryKind = 'scene' | 'style';
+
 export interface Template {
   id: string;
   name: string;
@@ -21,13 +23,24 @@ export interface Template {
   preview: () => Promise<{ default: ComponentType }>;
 }
 
-export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; english: string }[] = [
+/**
+ * 主分类（场景）—— 固定 5 个 + 全部，不会随模板增长
+ * 用于顶部一级 tab
+ */
+export const SCENE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; english: string }[] = [
   { id: 'all', name: '全部', english: 'All' },
   { id: 'marketing', name: '营销', english: 'Marketing' },
   { id: 'product', name: '产品', english: 'Product' },
   { id: 'auth', name: '认证', english: 'Auth' },
   { id: 'commerce', name: '电商', english: 'Commerce' },
   { id: 'creative', name: '创意', english: 'Creative' },
+];
+
+/**
+ * 风格分类 —— 横向滚动 chip 行
+ * 后续新增风格只在这里追加一行即可，导航不撑高
+ */
+export const STYLE_CATEGORIES: { id: TemplateCategory; name: string; english: string }[] = [
   { id: 'brutalism', name: '新粗野', english: 'Brutalism' },
   { id: 'neumorphism', name: '拟物', english: 'Neumorphism' },
   { id: 'cyberpunk', name: '赛博', english: 'Cyberpunk' },
@@ -46,6 +59,12 @@ export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; 
   { id: 'painterly', name: '油画', english: 'Painterly' },
   { id: 'cinematic', name: '电影', english: 'Cinematic' },
   { id: 'fantasy', name: '奇幻', english: 'Fantasy' },
+];
+
+/** 兼容旧引用：合并的扁平分类列表（保留以便未来需要） */
+export const TEMPLATE_CATEGORIES: { id: TemplateCategory | 'all'; name: string; english: string }[] = [
+  ...SCENE_CATEGORIES,
+  ...STYLE_CATEGORIES,
 ];
 
 /** 分类 ID → 中文标签（统一导出，避免多处重复维护） */
